@@ -17,6 +17,7 @@
 */
 
 // reactstrap components
+import { useState } from "react";
 import {
   Button,
   Card,
@@ -33,6 +34,20 @@ import {
 } from "reactstrap";
 
 const Login = () => {
+  const [login,setLogin]=useState({
+    username:'',
+    password:''
+  })
+  const handleLogin=(e)=>{
+  setLogin({...login,[e.target.name]:e.target.value})
+  console.log(login)
+  }
+  const signInButton=(e)=>{
+    e.preventDefault()
+    console.log('logueando ando')
+    console.log(login)
+  }
+
   return (
     <>
       <Col lg="5" md="7">
@@ -82,6 +97,7 @@ const Login = () => {
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
+          {/* emai */}
             <Form role="form">
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
@@ -91,12 +107,16 @@ const Login = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
-                    placeholder="Email"
-                    type="email"
+                    placeholder="Username"
+                    type="text"
                     autoComplete="new-email"
+                    name="username"
+                    value={login.username}
+                    onChange={handleLogin}
                   />
                 </InputGroup>
               </FormGroup>
+              {/* password */}
               <FormGroup>
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
@@ -108,6 +128,9 @@ const Login = () => {
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
+                    name="password"
+                    value={login.password}
+                    onChange={handleLogin}
                   />
                 </InputGroup>
               </FormGroup>
@@ -125,11 +148,12 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
+                <Button className="my-4" color="primary" type="button" onClick={signInButton}>
                   Sign in
                 </Button>
               </div>
             </Form>
+
           </CardBody>
         </Card>
         <Row className="mt-3">
