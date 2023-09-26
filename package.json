@@ -43,21 +43,30 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@apollo/client": "^3.8.4",
     "@fortawesome/fontawesome-free": "6.4.0",
+    "axios": "^1.5.0",
     "bootstrap": "4.6.2",
     "chart.js": "2.9.4",
     "classnames": "2.3.2",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
+    "graphql": "^16.8.1",
+    "graphql-ws": "^5.14.0",
+    "mapbox-gl": "^2.15.0",
     "moment": "2.29.4",
+    "moment-timezone": "^0.5.43",
     "nouislider": "15.4.0",
-    "react": "18.2.0",
+    "react": ">=16.0.0",
     "react-chartjs-2": "2.11.2",
     "react-copy-to-clipboard": "5.1.0",
     "react-datetime": "3.2.0",
-    "react-dom": "18.2.0",
+    "react-dom": ">=16.0.0",
     "react-router-dom": "6.11.1",
     "react-scripts": "5.0.1",
     "reactstrap": "8.10.0",
-    "sass": "1.62.1"
+    "sass": "1.62.1",
+    "subscriptions-transport-ws": "^0.11.0"
   },
   "peerDependencies": {
     "react": ">=16.0.0",

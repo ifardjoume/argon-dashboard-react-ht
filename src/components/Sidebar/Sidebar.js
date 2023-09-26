@@ -51,6 +51,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { logOut } from "helpers";
 
 var ps;
 
@@ -174,7 +175,7 @@ const Sidebar = (props) => {
                 <span>Support</span>
               </DropdownItem>
               <DropdownItem divider />
-              <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+              <DropdownItem href="#pablo" onClick={logOut}>
                 <i className="ni ni-user-run" />
                 <span>Logout</span>
               </DropdownItem>

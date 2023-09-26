@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.3
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
@@ -26,14 +9,50 @@ import "assets/scss/argon-dashboard-react.scss";
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 
+//import App from './App';
+import { ApolloProvider } from "@apollo/client";
+import { client } from "./apolloClient";
+import { parseJwt } from "./helpers";
+import mapboxgl from "mapbox-gl"; // or "const mapboxgl = require('mapbox-gl');"
+
+const mpt = localStorage.getItem("mbt");
+mapboxgl.accessToken = mpt;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
+//chequeo la fecha de expiracion del token
+if (
+  localStorage.getItem("token") &&
+  parseInt(localStorage.getItem("expiration")) < Date.now()
+) {
+  localStorage.setItem("token", "");
+}
+
+const user_id =
+  localStorage.getItem("token")?.length > 0 &&
+  parseJwt(localStorage.getItem("token"))?.user_id;
+
+//creo un espacio para guardar las notificaciones
+if (user_id && !localStorage.getItem(`notifications`))
+  localStorage.setItem(`notifications`, "");
+if (user_id && !localStorage.getItem(`notificationsENG`))
+  localStorage.setItem(`notificationsENG`, "");
+if (user_id && !localStorage.getItem(`numberNoti`))
+  localStorage.setItem(`numberNoti`, "0");
+
+//creo un espacio para guardar el idioma
+if (user_id && !localStorage.getItem("language"))
+  localStorage.setItem("language", navigator.window.language.split("-")[0]);
+
 root.render(
+  <ApolloProvider client={client}>
   <BrowserRouter>
-    <Routes>
-      <Route path="/admin/*" element={<AdminLayout />} />
-      <Route path="/auth/*" element={<AuthLayout />} />
-      <Route path="*" element={<Navigate to="/admin/index" replace />} />
-    </Routes>
-  </BrowserRouter>
+ <Routes>
+ <Route path="/auth/*" element={<AuthLayout />} />
+    <Route path="/admin/*" element={<AdminLayout />} /> 
+   
+   <Route path="*" element={<Navigate to="/admin/index" replace />} />
+   
+ </Routes>
+</BrowserRouter>
+</ApolloProvider>
 );

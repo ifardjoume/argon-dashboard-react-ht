@@ -1,23 +1,8 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.3
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// reactstrap components
-import { useState } from "react";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { GET_COMPANY_DETAIL } from "queries";
+import { GET_USER } from "queries";
+import { LOGIN } from "queries";
+import { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -31,23 +16,204 @@ import {
   InputGroup,
   Row,
   Col,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "reactstrap";
-
+import { parseJwt, setLocalStorageData } from "../../helpers";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "const";
 const Login = () => {
-  const [login,setLogin]=useState({
-    username:'',
-    password:''
-  })
-  const handleLogin=(e)=>{
-  setLogin({...login,[e.target.name]:e.target.value})
-  console.log(login)
-  }
-  const signInButton=(e)=>{
-    e.preventDefault()
-    console.log('logueando ando')
-    console.log(login)
-  }
+  if (window.navigator.language.split("-")[0] === "es") {
+    localStorage.setItem("language", "es");
+  } else localStorage.setItem("language", "en");
 
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 600,
+    bgcolor: "white",
+    border: "0.15vw solid #00ABC8",
+    borderRadius: "2vw",
+    fontFamily: "'Quattrocento Sans', sans-serif",
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
+  //estados
+  //estado para ver si hay un error en el logeo
+  const [userError, setUserError] = useState(false);
+  const [login, setLogin] = useState({
+    username: "",
+    password: "",
+  });
+  let userId = "";
+  const [user, setUser] = useState({});
+  let token = "";
+  //estado para el modal de recovery code
+  const [recoveryModal, setRecoveryModal] = useState(false);
+  //const estado para el modal de seleccion de operario
+  const [selectOpeModal, setSelectOpeModal] = useState(false);
+  const [loginMutation, { data, loading, error }] = useMutation(LOGIN);
+  const navigate = useNavigate();
+  //query para traerme los operadores no asignados
+  const [
+    getCompanyDetail,
+    {
+      loading: companyDetailLoading,
+      error: companyDetailError,
+      data: companyDetailData,
+    },
+  ] = useLazyQuery(GET_COMPANY_DETAIL);
+
+  //para traer la data del usuario
+  const [
+    getUser,
+    {
+      data: userDataLazyQuery,
+      loading: userDataLazyQueryLoading,
+      error: userDataLazyQueryError,
+    },
+  ] = useLazyQuery(GET_USER, {
+    variables: {
+      user_id: userId,
+    },
+  });
+
+  const handleLogin = (e) => {
+    setLogin({ ...login, [e.target.name]: e.target.value });
+    console.log(login);
+  };
+  useEffect(() => {
+    let access_to;
+    setUser(userDataLazyQuery);
+
+    // si es admin se loguea de una
+    if (user?.user) {
+      if (user.user?.type === "Admin") {
+        localStorage.setItem("access", "");
+        localStorage.setItem("assigned_to", "");
+        window.location.replace("/");
+      }
+
+      //si no es admin y es mono se loguea de una, sino se abre modal para elegir operario
+
+      if (user.user?.type !== "Admin") {
+        if (user?.user?.mono === false) {
+          handleSelectOpeModal();
+        } else {
+          //busco a que compania pertenece para buscar el operario que tiene asignado
+          const fetchCompanyData = async () => {
+            await getCompanyDetail({
+              variables: {
+                company_id: user?.user?.belong_id,
+              },
+            });
+          };
+          fetchCompanyData();
+
+          //seteo el objeto access_to del operario que tiene asaignado el usuario y lo guardo en localStorage
+          access_to = companyDetailData?.company?.operators?.filter(
+            (o) => o.operator_id === user?.user?.assigned_to
+          )[0]?.access_to;
+
+          if (access_to) {
+            //esto es para setear la data en el context pero no funciona
+            //asi que la guardo en localStorage
+            // setAccessState(access_to);
+            /* 
+            el context no carga pq al hacer window.location se refresca la pagina 
+            y pierdo los datos... ya pase context x props a home, 
+            ahora desde ahi tengo que codear de nuevo las rutas protegidas
+            (actualmente redirige desde login, lo cual esta mal pq guardo access en localStorage 
+            y es hackeable)
+            */
+            // //-----------------------------------------------------//
+
+            localStorage.setItem("access", JSON.stringify(access_to));
+            localStorage.setItem("assigned_to", user?.user?.assigned_to);
+
+            if (
+              access_to.dash_control === false &&
+              access_to.dash_intransit === true
+            ) {
+              // window.location.replace(`${BASE_URL}/#in-coming`);
+              // window.location.reload(); //
+            } else if (
+              access_to.dash_control === false &&
+              access_to.dash_report === true
+            ) {
+              // window.location.replace(`${BASE_URL}/#reports`);
+              // window.location.reload(); //
+            } else if (access_to.dash_control === true) {
+              window.location.replace(`/`);
+            }
+          }
+        }
+      }
+    }
+  }, [userDataLazyQuery, user, token, companyDetailData]);
+
+  //handler cuando submiteo el form
+  let token_decoded = {};
+
+  const handleSubmit = async function (e) {
+    e.preventDefault();
+    try {
+      const result = await loginMutation({
+        variables: { username: login.username, password: login.password },
+      });
+      token = result.data.login.token;
+
+      if (parseJwt(token).SUDO) {
+        setLocalStorageData(token, (Date.now() + 86400000).toString());
+        localStorage.setItem("language", "es");
+        localStorage.setItem("assigned_to", "");
+        //window.location.replace(`/`);
+      } else {
+        //seteo el userId para traerme la info del usuario
+        token_decoded = parseJwt(token);
+        userId = token_decoded.user_id;
+        getUser();
+        setLocalStorageData(token, (Date.now() + 86400000).toString());
+       
+       // navigate(`admin/index`);
+        console.log('logueadooo')
+      }
+    } catch (error) {
+      console.log("error al logearse", error);
+      setUserError(true);
+    }
+  };
+ 
+  //hanler forgotPass
+  const handleRecoveryModal = () => {
+    setRecoveryModal(true);
+  };
+
+  const handleRecoveryModalClose = () => {
+    setRecoveryModal(false);
+  };
+
+  //handlers de select operator
+  const handleSelectOpeModal = () => {
+    setSelectOpeModal(true);
+  };
+  const handleSelectOpeModalClose = () => {
+    localStorage.setItem("token", "");
+    localStorage.setItem("expiration", "");
+    localStorage.setItem("notifications", "");
+    localStorage.setItem("notificationsENG", "");
+    localStorage.setItem("numberNoti", "");
+    localStorage.setItem("access", "");
+    localStorage.setItem("assigned_to", null);
+    window.location.replace("/");
+    setSelectOpeModal(false);
+  };
   return (
     <>
       <Col lg="5" md="7">
@@ -97,7 +263,7 @@ const Login = () => {
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
-          {/* emai */}
+            {/* emai */}
             <Form role="form">
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
@@ -148,12 +314,16 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button" onClick={signInButton}>
+                <Button
+                  className="my-4"
+                  color="primary"
+                  type="button"
+                  onClick={handleSubmit}
+                >
                   Sign in
                 </Button>
               </div>
             </Form>
-
           </CardBody>
         </Card>
         <Row className="mt-3">
@@ -161,7 +331,7 @@ const Login = () => {
             <a
               className="text-light"
               href="#pablo"
-              onClick={(e) => e.preventDefault()}
+              onClick={handleRecoveryModal}
             >
               <small>Forgot password?</small>
             </a>
@@ -177,6 +347,18 @@ const Login = () => {
           </Col>
         </Row>
       </Col>
+      {/* modal */}
+      <Modal isOpen={recoveryModal} toggle={handleRecoveryModalClose}>
+        <ModalHeader toggle={handleRecoveryModalClose}>Título del Modal</ModalHeader>
+        <ModalBody>
+          Contenido del Modal de recuperacion de contraseña
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleRecoveryModalClose}>
+            Cerrar
+          </Button>
+        </ModalFooter>
+      </Modal>
     </>
   );
 };
