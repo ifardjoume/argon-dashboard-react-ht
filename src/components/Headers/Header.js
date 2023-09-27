@@ -25,7 +25,9 @@ const Header = () => {
     prevData?.prevCompletedShipsState ? prevData?.prevCompletedShipsState : 0,
     allData?.completedShipsState
   );
-
+  const cardStyle = {
+    height: "100%", // Modifica la altura según tus necesidades
+  };
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -35,7 +37,7 @@ const Header = () => {
             <Row>
               {/* card in transit---------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0">
+                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -67,7 +69,7 @@ const Header = () => {
 
               {/* card completed---------------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0">
+                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -138,7 +140,7 @@ const Header = () => {
 
               {/* card Succeded---------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0">
+                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -169,7 +171,7 @@ const Header = () => {
               </Col>
               {/* uncertain---------------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0">
+                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -201,7 +203,7 @@ const Header = () => {
 
               {/* card failed--------------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0">
+                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
                       <div className="col">
