@@ -25,7 +25,7 @@ import { parseJwt, setLocalStorageData } from "../../helpers";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "const";
 const Login = () => {
-  if (window.navigator.language.split("-")[0] === "es") {
+  if (window.navigator.language?.split("-")[0] === "es") {
     localStorage.setItem("language", "es");
   } else localStorage.setItem("language", "en");
 
@@ -58,7 +58,7 @@ const Login = () => {
   const [recoveryModal, setRecoveryModal] = useState(false);
   //const estado para el modal de seleccion de operario
   const [selectOpeModal, setSelectOpeModal] = useState(false);
-  const [loginMutation, { data, loading, error }] = useMutation(LOGIN);
+  const [loginMutation, { data, loading, error:loginError }] = useMutation(LOGIN);
   const navigate = useNavigate();
   //query para traerme los operadores no asignados
   const [
@@ -97,7 +97,7 @@ const Login = () => {
       if (user.user?.type === "Admin") {
         localStorage.setItem("access", "");
         localStorage.setItem("assigned_to", "");
-        window.location.replace("/");
+       // window.location.replace("/");
       }
 
       //si no es admin y es mono se loguea de una, sino se abre modal para elegir operario
@@ -180,9 +180,9 @@ const Login = () => {
         userId = token_decoded.user_id;
         getUser();
         setLocalStorageData(token, (Date.now() + 86400000).toString());
-       
-       // navigate(`admin/index`);
+  
         console.log('logueadooo')
+        window.location.reload()
       }
     } catch (error) {
       console.log("error al logearse", error);
@@ -211,7 +211,7 @@ const Login = () => {
     localStorage.setItem("numberNoti", "");
     localStorage.setItem("access", "");
     localStorage.setItem("assigned_to", null);
-    window.location.replace("/");
+   // window.location.replace("/");
     setSelectOpeModal(false);
   };
   return (
@@ -323,6 +323,7 @@ const Login = () => {
                   Sign in
                 </Button>
               </div>
+             { loginError&&<div>Wrong username or password</div>}
             </Form>
           </CardBody>
         </Card>

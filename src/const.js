@@ -1,12 +1,13 @@
-import { parseJwt } from "./helpers";
+import { parseJwt,logOut } from "./helpers";
+
 //PARA TRABAJAR LOCALMENTE
-//export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "http://localhost:3000";
 
 // DEVELOPMENT/
-// export const GET_REPORT_PDF = "http://devs.h-trace.com/reports/";
-// export const BASE_URL = "http://development.h-trace.com";
-// export const SERVER_URL = "http://devs.h-trace.com";
-// export const SUBSCRIPTION_URL = "ws://devs.h-trace.com/subscriptions";
+export const GET_REPORT_PDF = "http://devs.h-trace.com/reports/";
+//export const BASE_URL = "http://development.h-trace.com";
+export const SERVER_URL = "http://devs.h-trace.com";
+export const SUBSCRIPTION_URL = "ws://devs.h-trace.com/subscriptions";
 
 // TESTING
 //  export const GET_REPORT_PDF = "http://testing.h-trace.com/reports/";
@@ -15,10 +16,10 @@ import { parseJwt } from "./helpers";
 //  export const SUBSCRIPTION_URL = "ws://testing.h-trace.com/subscriptions";
 
 // // PRODUCTION
-export const GET_REPORT_PDF = "https://api.h-trace.com/reports/";
-export const BASE_URL = "https://dashboard.h-trace.com";
-export const SERVER_URL = "https://api.h-trace.com";
-export const SUBSCRIPTION_URL = "wss://api.h-trace.com/subscriptions";
+// export const GET_REPORT_PDF = "https://api.h-trace.com/reports/";
+// //export const BASE_URL = "https://dashboard.h-trace.com";
+// export const SERVER_URL = "https://api.h-trace.com";
+// export const SUBSCRIPTION_URL = "wss://api.h-trace.com/subscriptions";
 
 //TIPOS DE USUARIOS
 export const usersType =
@@ -47,8 +48,26 @@ export const company_id =
   parseJwt(localStorage.getItem("token")).belong_id;
 export const gmt =
   localStorage.getItem("token") && parseJwt(localStorage.getItem("token")).gmt;
+export const user_id =
+  localStorage.getItem("token") &&
+  parseJwt(localStorage.getItem("token")).user_id;
 
+   export const level =localStorage.getItem("token")? parseJwt(localStorage.getItem("token")).lvl: '';
+  const access = localStorage.getItem("access");
+   const assigned = localStorage.getItem("assigned_to");
 
+ export let access_parced =()=>{
+
+    if (!parseJwt(localStorage.getItem("token")).SUDO) {
+    if (assigned === "null") logOut();
+    if (access !== "") {
+      return JSON.parse(access);
+      
+    }
+  }
+  };
+ 
+ 
 
 //MESES PARA EL CUADRO DE ESTADISTICAS
 export const meses = [

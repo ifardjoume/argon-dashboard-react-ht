@@ -237,7 +237,7 @@ function chartOptions() {
           var data = chart.data;
           var content = "";
 
-          data.labels.forEach(function (label, index) {
+          data?.labels?.forEach(function (label, index) {
             var bgColor = data.datasets[0].backgroundColor[index];
 
             content += '<span class="chart-legend-item">';

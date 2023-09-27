@@ -15,25 +15,28 @@ export function getPercentageChange(oldNumber, newNumber) {
 
   if (oldNumber === 0 || newNumber === 0 || oldNumber === newNumber)
     return null;
-
+ 
   return ((decreaseValue / oldNumber) * 100).toFixed(1) + "%";
 }
 
 //funcion para decodear el token y sacar la info
 export function parseJwt(token) {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
+  if (!token) return null;
+  else {
+    var base64Url = token?.split(".")[1];
+    var base64 = base64Url?.replace(/-/g, "+").replace(/_/g, "/");
+    var jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
 
-  localStorage.setItem("mbt", JSON.parse(jsonPayload).mb);
-  return JSON.parse(jsonPayload);
+    localStorage.setItem("mbt", JSON.parse(jsonPayload).mb);
+    return JSON.parse(jsonPayload);
+  }
 }
 
 //funcion para descargar reporte en pdf
@@ -174,19 +177,14 @@ const capitalizeFirstLetter = (string) => {
 };
 
 export const convertirHoraLocal = (fechaISO, zonaHoraria) => {
-  
-  if (fechaISO && zonaHoraria && localStorage.getItem('language') === 'es') {
+  if (fechaISO && zonaHoraria && localStorage.getItem("language") === "es") {
     const fechaUtc = utcToZonedTime(fechaISO, zonaHoraria);
-    const fechaFormateada = format(
-      fechaUtc,
-      "MMM dd  h:mm a",
-      { locale: es }
-    );
+    const fechaFormateada = format(fechaUtc, "MMM dd  h:mm a", { locale: es });
 
-    return capitalizeFirstLetter(fechaFormateada)
+    return capitalizeFirstLetter(fechaFormateada);
   }
-  if (fechaISO && zonaHoraria && localStorage.getItem('language') !== 'es') {
-    const fechaUtc = formatInTimeZone(fechaISO, zonaHoraria, 'MMM dd  h:mm a');
+  if (fechaISO && zonaHoraria && localStorage.getItem("language") !== "es") {
+    const fechaUtc = formatInTimeZone(fechaISO, zonaHoraria, "MMM dd  h:mm a");
     return fechaUtc;
   }
 };
