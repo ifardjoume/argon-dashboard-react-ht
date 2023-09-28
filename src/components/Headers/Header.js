@@ -26,7 +26,7 @@ const Header = () => {
     allData?.completedShipsState
   );
   const cardStyle = {
-    height: "100%", // Modifica la altura según tus necesidades
+    height: "8vw", // Modifica la altura según tus necesidades
   };
   return (
     <>
@@ -102,13 +102,13 @@ const Header = () => {
                             </div>
                             {localStorage.getItem("language") === "en" ? (
                               <div /*  className={styles.percentText} */>
-                                over the last{" "}
-                                 {initialFilter === "month" ? "month" : "day"}
+                               
+                                 {initialFilter === "month" ? "over the last month" : ""}
                               </div>
                             ) : (
                               <div /* className={styles.percentText} */>
-                                sobre el último 
-                                {initialFilter === "month" ? "mes" : "día"}
+                                
+                                {initialFilter === "month" ? " sobre el último mes" : ""}
                               </div>
                             )}
                           </div>
@@ -122,13 +122,13 @@ const Header = () => {
                             </div>
                             {localStorage.getItem("language") === "en" ? (
                               <div /* className={styles.percentText} */>
-                                over the last{" "}
-                                  {initialFilter === "month" ? "month" : "day"}
+                               
+                                  {initialFilter === "month" ? "  over the last month" : ""}
                               </div>
                             ) : (
                               <div /* className={styles.percentText} */>
-                                sobre el último{" "}
-                                 {initialFilter === "month" ? "mes" : "día"}
+                               
+                                 {initialFilter === "month" ? "sobre el último mes" : "día"}
                               </div>
                             )}
                           </div>
@@ -234,6 +234,10 @@ const Header = () => {
               </Col>
               <div>
                 <Button
+                 style={{
+                  borderColor: initialFilter !== 'month' &&  'initial',
+                  borderWidth: '1px',
+                }}
                   color="primary"
                   id="initial_filter_day"
                   value="day"
@@ -242,6 +246,10 @@ const Header = () => {
                   Today
                 </Button>
                 <Button
+                 style={{
+                  borderColor: initialFilter === 'month' &&'initial',
+                  borderWidth: '1px',
+                }}
                   color="success"
                   value="month"
                   onClick={handlerInitialFilter}
