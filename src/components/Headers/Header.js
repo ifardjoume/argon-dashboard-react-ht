@@ -26,26 +26,94 @@ const Header = () => {
     prevData?.prevCompletedShipsState ? prevData?.prevCompletedShipsState : 0,
     allData?.completedShipsState
   );
-  const cardStyle = {
-    minHeight: "150px", // Modifica la altura según tus necesidades
+  const percentageChange_succeded = getPercentageChange(
+    prevData?.prevSuccShipsState ? prevData?.prevSuccShipsState : 0,
+    allData?.succShipsState
+  );
+
+  const percentageChange_uncertain = getPercentageChange(
+    prevData?.prevUncertShipsState ? prevData?.prevUncertShipsState : 0,
+    allData?.uncertShipsState
+  );
+  const percentageChange_failed = getPercentageChange(
+    prevData?.prevFailShipsState ? prevData?.prevFailShipsState : 0,
+    allData?.failShipsState
+  );
+  const commonCardStyle = {
+    minHeight: "150px",
+    borderColor: "red",
+    marginBottom: "20px", // Espacio entre las cards
   };
-  const containerStyle = {
-    border: "red solid 1px",
-    display:'flex'
+
+  // Define un estilo adicional para las cards que contienen el texto "over the last month"
+  const expandedCardStyle = {
+    ...commonCardStyle,
+    maxHeight: "200px", // Establece una altura máxima para estas cards
+  };
+
+  const buttonsContainerStyle = {
+    margin: "1%",
+    position: "relative",
+    left: "-1%",
+  };
+  const cardsContainer = {
+    // border: "red solid 1px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
   };
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
-        <Container fluid style={containerStyle}>
-          <div className="header-body">
+        <Container fluid>
+          <div /* className="header-body" */>
+            {/* ---buttons---------- */}
+            <div style={buttonsContainerStyle}>
+              <Button
+                style={{
+                  borderColor: initialFilter !== "month" && "initial",
+                  borderWidth: "1px",
+                  height: "40px",
+                  textAlign: "center",
+                }}
+                color="primary"
+                id="initial_filter_day"
+                value="day"
+                onClick={handlerInitialFilter}
+              >
+                Today
+              </Button>
+              <Button
+                style={{
+                  borderColor: initialFilter === "month" && "initial",
+                  borderWidth: "1px",
+                  height: "40px",
+                  width: "150px",
+                  textAlign: "center",
+                }}
+                color="success"
+                value="month"
+                onClick={handlerInitialFilter}
+              >
+                This month
+              </Button>
+            </div>
+
             {/* Card stats */}
-            <Row>
+            <Row style={cardsContainer}>
               {/* card in transit---------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
+                <Card
+                  className="card-stats mb-4 mb-xl-0"
+                  style={
+                    initialFilter === "month"
+                      ? expandedCardStyle
+                      : commonCardStyle
+                  }
+                >
                   <CardBody>
                     <Row>
-                      <div /* className="col" */>
+                      <div >
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -66,22 +134,61 @@ const Header = () => {
                         </div>
                       </Col>
                     </Row>
-                    {/* <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fa fa-arrow-up" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p> */}
+                     {/* texto invisible para mantener tamaños */}
+                    {/* <div className="mt-3 mb-0 text-muted text-sm">
+                      {percentageChange_completed &&
+                        (percentageChange_completed.includes("-") ? (
+                          <div >
+                            <div >
+                              <span style={{visibility:" hidden"}}>
+                                {initialFilter === "month" && (
+                                  <i className="fa fa-arrow-up" />
+                                )}{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_completed.slice(1)}
+                              </span>{" "}
+                            </div>
+
+                            <div style={{visibility:" hidden"}}>
+                              {initialFilter === "month" &&
+                                "over the last month"}
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <div>
+                              <span className="text-warning mr-2">
+                                <i className="fas fa-arrow-down" />{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_completed}
+                              </span>{" "}
+                            </div>
+
+                            <div style={{visibility:" hidden"}}>
+                              {initialFilter === "month"
+                                ? "  over the last month"
+                                : ""}
+                            </div>
+                          </div>
+                        ))}
+                    </div> */}
                   </CardBody>
                 </Card>
               </Col>
 
               {/* card completed---------------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
+                <Card
+                  className="card-stats mb-4 mb-xl-0"
+                  style={
+                    initialFilter === "month"
+                      ? expandedCardStyle
+                      : commonCardStyle
+                  }
+                >
                   <CardBody>
                     <Row>
-                      <div /* className="col" */>
+                      <div>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -105,26 +212,25 @@ const Header = () => {
                     <div className="mt-3 mb-0 text-muted text-sm">
                       {percentageChange_completed &&
                         (percentageChange_completed.includes("-") ? (
-                          <div /* className={styles.percentInfoContainer} */>
-                            <div /* className={styles.percentPos} */>
+                          <div >
+                            <div >
                               <span className="text-success mr-2">
                                 {initialFilter === "month" && (
                                   <i className="fa fa-arrow-up" />
-                                )}
-
+                                )}{" "}
                                 {initialFilter === "month" &&
                                   percentageChange_completed.slice(1)}
                               </span>{" "}
                             </div>
 
-                            <div /*  className={styles.percentText} */>
+                            <div>
                               {initialFilter === "month" &&
                                 "over the last month"}
                             </div>
                           </div>
                         ) : (
-                          <div /* className={styles.percentInfoContainer} */>
-                            <div /* className={styles.percentNeg} */>
+                          <div>
+                            <div>
                               <span className="text-warning mr-2">
                                 <i className="fas fa-arrow-down" />{" "}
                                 {initialFilter === "month" &&
@@ -132,7 +238,7 @@ const Header = () => {
                               </span>{" "}
                             </div>
 
-                            <div /* className={styles.percentText} */>
+                            <div >
                               {initialFilter === "month"
                                 ? "  over the last month"
                                 : ""}
@@ -146,10 +252,17 @@ const Header = () => {
 
               {/* card Succeded---------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
+                <Card
+                  className="card-stats mb-4 mb-xl-0"
+                  style={
+                    initialFilter === "month"
+                      ? expandedCardStyle
+                      : commonCardStyle
+                  }
+                >
                   <CardBody>
                     <Row>
-                      <div /* className="col" */>
+                      <div>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -170,21 +283,59 @@ const Header = () => {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-warning mr-2">
-                        <i className="fas fa-arrow-down" /> 1.10%
-                      </span>{" "}
-                      <span className="text-nowrap">Since yesterday</span>
-                    </p>
+                    <div className="mt-3 mb-0 text-muted text-sm">
+                      {percentageChange_succeded &&
+                        (percentageChange_succeded.includes("-") ? (
+                          <div>
+                            <div>
+                              <span className="text-success mr-2">
+                                {initialFilter === "month" && (
+                                  <i className="fa fa-arrow-up" />
+                                )}{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_succeded.slice(1)}
+                              </span>{" "}
+                            </div>
+
+                            <div>
+                              {initialFilter === "month" &&
+                                "over the last month"}
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <div>
+                              <span className="text-warning mr-2">
+                                <i className="fas fa-arrow-down" />{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_succeded}
+                              </span>{" "}
+                            </div>
+
+                            <div>
+                              {initialFilter === "month"
+                                ? "  over the last month"
+                                : ""}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
                   </CardBody>
                 </Card>
               </Col>
               {/* uncertain---------------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
+                <Card
+                  className="card-stats mb-4 mb-xl-0"
+                  style={
+                    initialFilter === "month"
+                      ? expandedCardStyle
+                      : commonCardStyle
+                  }
+                >
                   <CardBody>
                     <Row>
-                      <div /* className="col" */>
+                      <div>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -205,22 +356,60 @@ const Header = () => {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fas fa-arrow-up" /> 12%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p>
+                    <div className="mt-3 mb-0 text-muted text-sm">
+                      {percentageChange_uncertain &&
+                        (percentageChange_uncertain.includes("-") ? (
+                          <div>
+                            <div>
+                              <span className="text-warning mr-2">
+                                {initialFilter === "month" && (
+                                  <i className="fa fa-arrow-up" />
+                                )}{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_uncertain.slice(1)}
+                              </span>{" "}
+                            </div>
+
+                            <div>
+                              {initialFilter === "month" &&
+                                "over the last month"}
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <div>
+                              <span className="text-success mr-2">
+                                <i className="fas fa-arrow-down" />{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_uncertain}
+                              </span>{" "}
+                            </div>
+
+                            <div>
+                              {initialFilter === "month"
+                                ? "  over the last month"
+                                : ""}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
                   </CardBody>
                 </Card>
               </Col>
 
               {/* card failed--------------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
-                <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
+                <Card
+                  className="card-stats mb-4 mb-xl-0"
+                  style={
+                    initialFilter === "month"
+                      ? expandedCardStyle
+                      : commonCardStyle
+                  }
+                >
                   <CardBody>
                     <Row>
-                      <div /* className="col" */>
+                      <div>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -241,42 +430,70 @@ const Header = () => {
                         </div>
                       </Col>
                     </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fas fa-arrow-up" /> 12%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p>
+                    <div className="mt-3 mb-0 text-muted text-sm">
+                      {percentageChange_failed &&
+                        (percentageChange_failed.includes("-") ? (
+                          <div>
+                            <div>
+                              <span className="text-warning mr-2">
+                                {initialFilter === "month" && (
+                                  <i className="fa fa-arrow-up" />
+                                )}{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_failed.slice(1)}
+                              </span>{" "}
+                            </div>
+
+                            <div>
+                              {initialFilter === "month" &&
+                                "over the last month"}
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <div>
+                              <span className="text-success mr-2">
+                                <i className="fas fa-arrow-down" />{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_failed}
+                              </span>{" "}
+                            </div>
+
+                            <div>
+                              {initialFilter === "month"
+                                ? "  over the last month"
+                                : ""}
+                            </div>
+                          </div>
+                        ))}
+                        
+                    </div>
+                    {/* texto invisible para mantener tamaños */}
+                        {/* {!percentageChange_failed && 
+                         <div className="mt-3 mb-0 text-muted text-sm">
+
+                           <div style={{visibility:" hidden"}}>
+                            <div>
+                              <span style={{visibility:" hidden"}}>
+                                {initialFilter === "month" && (
+                                  <i className="fa fa-arrow-up" />
+                                )}{" "}
+                                {initialFilter === "month" &&
+                                  percentageChange_failed}
+                              </span>{" "}
+                            </div>
+
+                            <div style={{visibility:" hidden"}}>
+                              {initialFilter === "month" &&
+                                "over the last month"}
+                            </div>
+                          </div>
+                         </div> 
+                       } */}
+
                   </CardBody>
                 </Card>
               </Col>
-
-              {/* ---buttons---------- */}
-              <div>
-                <Button
-                  style={{
-                    borderColor: initialFilter !== "month" && "initial",
-                    borderWidth: "1px",
-                  }}
-                  color="primary"
-                  id="initial_filter_day"
-                  value="day"
-                  onClick={handlerInitialFilter}
-                >
-                  Today
-                </Button>
-                <Button
-                  style={{
-                    borderColor: initialFilter === "month" && "initial",
-                    borderWidth: "1px",
-                  }}
-                  color="success"
-                  value="month"
-                  onClick={handlerInitialFilter}
-                >
-                  This month
-                </Button>
-              </div>
             </Row>
           </div>
         </Container>

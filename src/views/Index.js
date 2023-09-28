@@ -36,6 +36,8 @@ import {
   Container,
   Row,
   Col,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 
 // core components
@@ -61,6 +63,68 @@ const Index = (props) => {
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+
+
+  const [activeTab, setActiveTab] = useState('inTransit');
+
+  const toggleTab = (tab) => {
+    if (activeTab !== tab) {
+      setActiveTab(tab);
+    }
+  };
+  // Datos simulados
+  const data = {
+    inTransit: [
+      { ID: 1, ORIGIN: 'Origin 1', DEPARTURE: 'Departure 1', 'LAST CHECKPOINT': 'Checkpoint 1', CONTENT: 'Content 1', COMMENTS: 'Comments 1' },
+      { ID: 2, ORIGIN: 'Origin 2', DEPARTURE: 'Departure 2', 'LAST CHECKPOINT': 'Checkpoint 2', CONTENT: 'Content 2', COMMENTS: 'Comments 2' },
+      // Agrega más datos según sea necesario
+    ],
+    completed: [
+      { ID: 1, ORIGIN: 'Origin A', SENT: 'Sent A', RECEIVED: 'Received A', DESTINATION: 'Destination A', ALERTS: 'Alerts A', COMMENTS: 'Comments A' },
+      { ID: 2, ORIGIN: 'Origin B', SENT: 'Sent B', RECEIVED: 'Received B', DESTINATION: 'Destination B', ALERTS: 'Alerts B', COMMENTS: 'Comments B' },
+      // Agrega más datos según sea necesario
+    ],
+    succeeded: [
+      { ID: 1, ORIGIN: 'Origin X', SENT: 'Sent X', RECEIVED: 'Received X', DESTINATION: 'Destination X', ALERTS: 'Alerts X', COMMENTS: 'Comments X' },
+      { ID: 2, ORIGIN: 'Origin Y', SENT: 'Sent Y', RECEIVED: 'Received Y', DESTINATION: 'Destination Y', ALERTS: 'Alerts Y', COMMENTS: 'Comments Y' },
+      // Agrega más datos según sea necesario
+    ],
+    uncertain: [
+      { ID: 1, ORIGIN: 'Origin M', SENT: 'Sent M', RECEIVED: 'Received M', DESTINATION: 'Destination M', ALERTS: 'Alerts M', COMMENTS: 'Comments M' },
+      { ID: 2, ORIGIN: 'Origin N', SENT: 'Sent N', RECEIVED: 'Received N', DESTINATION: 'Destination N', ALERTS: 'Alerts N', COMMENTS: 'Comments N' },
+      // Agrega más datos según sea necesario
+    ],
+    failed: [
+      { ID: 1, ORIGIN: 'Origin F', SENT: 'Sent F', RECEIVED: 'Received F', DESTINATION: 'Destination F', ALERTS: 'Alerts F', COMMENTS: 'Comments F' },
+      { ID: 2, ORIGIN: 'Origin G', SENT: 'Sent G', RECEIVED: 'Received G', DESTINATION: 'Destination G', ALERTS: 'Alerts G', COMMENTS: 'Comments G' },
+      // Agrega más datos según sea necesario
+    ],
+  };
+  const renderTable = (tab) => {
+    const columns = Object.keys(data[tab][0]);
+
+    return (
+      <Table hover>
+        <thead>
+          <tr>
+            {columns.map((column) => (
+              <th key={column}>{column}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data[tab].map((item, index) => (
+            <tr key={index} className="table-row">
+              {columns.map((column) => (
+                <td key={column}>{item[column]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  };
+
   return (
     <>
       <Header />
@@ -165,62 +229,66 @@ const Index = (props) => {
                   </div>
                 </Row>
               </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Page name</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col">Unique users</th>
-                    <th scope="col">Bounce rate</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">/argon/</th>
-                    <td>4,569</td>
-                    <td>340</td>
-                    <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/index.html</th>
-                    <td>3,985</td>
-                    <td>319</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/charts.html</th>
-                    <td>3,513</td>
-                    <td>294</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      36,49%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/tables.html</th>
-                    <td>2,050</td>
-                    <td>147</td>
-                    <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/profile.html</th>
-                    <td>1,795</td>
-                    <td>190</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
+
+              {/* tabla */}
+              <div>
+      <Nav tabs>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === 'inTransit' })}
+            onClick={() => toggleTab('inTransit')}
+            href="#"
+          >
+            In Transit
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === 'completed' })}
+            onClick={() => toggleTab('completed')}
+            href="#"
+          >
+            Completed
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === 'succeeded' })}
+            onClick={() => toggleTab('succeeded')}
+            href="#"
+          >
+            Succeeded
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === 'uncertain' })}
+            onClick={() => toggleTab('uncertain')}
+            href="#"
+          >
+            Uncertain
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === 'failed' })}
+            onClick={() => toggleTab('failed')}
+            href="#"
+          >
+            Failed
+          </NavLink>
+        </NavItem>
+      </Nav>
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="inTransit">{renderTable('inTransit')}</TabPane>
+        <TabPane tabId="completed">{renderTable('completed')}</TabPane>
+        <TabPane tabId="succeeded">{renderTable('succeeded')}</TabPane>
+        <TabPane tabId="uncertain">{renderTable('uncertain')}</TabPane>
+        <TabPane tabId="failed">{renderTable('failed')}</TabPane>
+      </TabContent>
+    </div>
             </Card>
+
           </Col>
           <Col xl="4">
             <Card className="shadow">
