@@ -116,7 +116,7 @@ const Index = (props) => {
           {data[tab].map((item, index) => (
             <tr key={index} className="table-row">
               {columns.map((column) => (
-                <td key={column}>{item[column]}</td>
+                <td key={column}>{column==='COMMENTS'?'va modal':item[column]}</td>
               ))}
             </tr>
           ))}
