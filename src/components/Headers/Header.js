@@ -8,6 +8,7 @@ import {
   Nav,
   NavItem,
   Button,
+  Spinner,
 } from "reactstrap";
 import { useShipments } from "../../graphql/queries/Shipments";
 import { getPercentageChange } from "helpers";
@@ -18,7 +19,7 @@ const Header = () => {
     allData,
     handlerInitialFilter,
     prevData,
-    initialFilter
+    initialFilter,
   ] = useShipments();
   //obtengo la diferencia porcentual entre envios de hoy y dia/mes anterior
   const percentageChange_completed = getPercentageChange(
@@ -26,12 +27,16 @@ const Header = () => {
     allData?.completedShipsState
   );
   const cardStyle = {
-    height: "8vw", // Modifica la altura según tus necesidades
+    minHeight: "150px", // Modifica la altura según tus necesidades
+  };
+  const containerStyle = {
+    border: "red solid 1px",
+    display:'flex'
   };
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
-        <Container fluid>
+        <Container fluid style={containerStyle}>
           <div className="header-body">
             {/* Card stats */}
             <Row>
@@ -40,7 +45,7 @@ const Header = () => {
                 <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
-                      <div className="col">
+                      <div /* className="col" */>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -48,7 +53,11 @@ const Header = () => {
                           In Transit
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {inTransitShipsState}
+                          {loading ? (
+                            <Spinner color="primary" />
+                          ) : (
+                            inTransitShipsState
+                          )}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -72,7 +81,7 @@ const Header = () => {
                 <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
-                      <div className="col">
+                      <div /* className="col" */>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -80,7 +89,11 @@ const Header = () => {
                           Completed
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {allData?.completedShipsState}
+                          {loading ? (
+                            <Spinner color="primary" />
+                          ) : (
+                            allData?.completedShipsState
+                          )}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -95,42 +108,35 @@ const Header = () => {
                           <div /* className={styles.percentInfoContainer} */>
                             <div /* className={styles.percentPos} */>
                               <span className="text-success mr-2">
-                                <i className="fa fa-arrow-up" />
+                                {initialFilter === "month" && (
+                                  <i className="fa fa-arrow-up" />
+                                )}
 
-                                {percentageChange_completed.slice(1)}
+                                {initialFilter === "month" &&
+                                  percentageChange_completed.slice(1)}
                               </span>{" "}
                             </div>
-                            {localStorage.getItem("language") === "en" ? (
-                              <div /*  className={styles.percentText} */>
-                               
-                                 {initialFilter === "month" ? "over the last month" : ""}
-                              </div>
-                            ) : (
-                              <div /* className={styles.percentText} */>
-                                
-                                {initialFilter === "month" ? " sobre el último mes" : ""}
-                              </div>
-                            )}
+
+                            <div /*  className={styles.percentText} */>
+                              {initialFilter === "month" &&
+                                "over the last month"}
+                            </div>
                           </div>
                         ) : (
                           <div /* className={styles.percentInfoContainer} */>
                             <div /* className={styles.percentNeg} */>
                               <span className="text-warning mr-2">
                                 <i className="fas fa-arrow-down" />{" "}
-                                {percentageChange_completed}
+                                {initialFilter === "month" &&
+                                  percentageChange_completed}
                               </span>{" "}
                             </div>
-                            {localStorage.getItem("language") === "en" ? (
-                              <div /* className={styles.percentText} */>
-                               
-                                  {initialFilter === "month" ? "  over the last month" : ""}
-                              </div>
-                            ) : (
-                              <div /* className={styles.percentText} */>
-                               
-                                 {initialFilter === "month" ? "sobre el último mes" : "día"}
-                              </div>
-                            )}
+
+                            <div /* className={styles.percentText} */>
+                              {initialFilter === "month"
+                                ? "  over the last month"
+                                : ""}
+                            </div>
                           </div>
                         ))}
                     </div>
@@ -143,7 +149,7 @@ const Header = () => {
                 <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
-                      <div className="col">
+                      <div /* className="col" */>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -151,7 +157,11 @@ const Header = () => {
                           Succeded
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {allData?.succShipsState}
+                          {loading ? (
+                            <Spinner color="primary" />
+                          ) : (
+                            allData?.succShipsState
+                          )}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -174,7 +184,7 @@ const Header = () => {
                 <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
-                      <div className="col">
+                      <div /* className="col" */>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -182,7 +192,11 @@ const Header = () => {
                           Uncertain
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {allData?.uncertShipsState}
+                          {loading ? (
+                            <Spinner color="primary" />
+                          ) : (
+                            allData?.uncertShipsState
+                          )}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -206,7 +220,7 @@ const Header = () => {
                 <Card className="card-stats mb-4 mb-xl-0" style={cardStyle}>
                   <CardBody>
                     <Row>
-                      <div className="col">
+                      <div /* className="col" */>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
@@ -214,7 +228,11 @@ const Header = () => {
                           Failed
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          {allData?.failShipsState}
+                          {loading ? (
+                            <Spinner color="primary" />
+                          ) : (
+                            allData?.failShipsState
+                          )}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -232,12 +250,14 @@ const Header = () => {
                   </CardBody>
                 </Card>
               </Col>
+
+              {/* ---buttons---------- */}
               <div>
                 <Button
-                 style={{
-                  borderColor: initialFilter !== 'month' &&  'initial',
-                  borderWidth: '1px',
-                }}
+                  style={{
+                    borderColor: initialFilter !== "month" && "initial",
+                    borderWidth: "1px",
+                  }}
                   color="primary"
                   id="initial_filter_day"
                   value="day"
@@ -246,10 +266,10 @@ const Header = () => {
                   Today
                 </Button>
                 <Button
-                 style={{
-                  borderColor: initialFilter === 'month' &&'initial',
-                  borderWidth: '1px',
-                }}
+                  style={{
+                    borderColor: initialFilter === "month" && "initial",
+                    borderWidth: "1px",
+                  }}
                   color="success"
                   value="month"
                   onClick={handlerInitialFilter}

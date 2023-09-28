@@ -42,7 +42,7 @@ if (
   );
 } else {
   console.log('entrando')
-  // Obtener un token válido, por lo que muestras la pantalla de administrador
+  // Obtener un token válido, por lo que muestra la pantalla de administrador
   root.render(
     <ApolloProvider client={client}>
       <BrowserRouter>
