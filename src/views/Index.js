@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -38,10 +38,8 @@ const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
 
-
- 
   //traigo data para la tabla
-  const [changeFilter] = useShipmentsTable();
+  const [changeFilter, infoLength, info] = useShipmentsTable();
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -167,56 +165,129 @@ const Index = (props) => {
       // Agrega más datos según sea necesario
     ],
   };
-  const renderTable = (tab) => {
-    const columns = Object.keys(data[tab][0]);
 
-    const columnMappings = {
-      COMMENTS: "mo.coments",
-      ALERTS: "mo.Alerts",
-      "LAST CHECKPOINT": "mo.Check",
-    };
-    const handleDivClick = (column) => {
-      console.log("clickeando ando en " + column);
-    };
+  useEffect(() => {
+    console.log("desde el effect");
+    console.log(info);
+  }, [changeFilter]);
+
+  // const renderTable = (tab) => {
+  //   const columns = Object.keys(data[tab][0]);
+
+  //   const columnMappings = {
+  //     COMMENTS: "mo.coments",
+  //     ALERTS: "mo.Alerts",
+  //     "LAST CHECKPOINT": "mo.Check",
+  //   };
+  //   const handleDivClick = (column) => {
+  //     console.log("clickeando ando en " + column);
+  //   };
+
+  //   return (
+  //     <Table hover>
+  //       <thead>
+  //         <tr>
+  //           {columns.map((column) => (
+  //             <th key={column}>{column}</th>
+  //           ))}
+  //         </tr>
+  //       </thead>
+  //       <tbody>
+  //         {data[tab].map((item, index) => (
+  //           <tr key={index} className="table-row">
+  //             {columns.map((column) => (
+  //               <td key={column}>
+  //                 {column === "COMMENTS" ||
+  //                 column === "ALERTS" ||
+  //                 column === "LAST CHECKPOINT" ? (
+  //                   <div
+  //                     onClick={() => handleDivClick(column)}
+  //                     style={{ cursor: "pointer" }}
+  //                   >
+  //                     {columnMappings[column] || item[column]}
+  //                   </div>
+  //                 ) : (
+  //                   item[column]
+  //                 )}
+  //               </td>
+  //             ))}
+  //           </tr>
+  //         ))}
+  //       </tbody>
+  //     </Table>
+  //   );
+  // };
+  function TablaDatos() {
+    if (!info?.selectedItems || info?.selectedItems?.length === 0) {
+      return <div>No hay datos para mostrar.</div>;
+    }
 
     return (
-      <Table hover>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column}>{column}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data[tab].map((item, index) => (
-            <tr key={index} className="table-row">
-              {columns.map((column) => (
-                <td key={column}>
-                  {column === "COMMENTS" ||
-                  column === "ALERTS" ||
-                  column === "LAST CHECKPOINT" ? (
-                    <div
-                      onClick={() => handleDivClick(column)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {columnMappings[column] || item[column]}
-                    </div>
-                  ) : (
-                    item[column]
-                  )}
-                </td>
+      <>
+        {activeTab === "inTransit" ? (
+          <Table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>ORIGIN</th>
+                <th>DEPARTURE</th>
+                <th>LAST CHECKPOINT</th>
+                <th>CONTENT</th>
+                <th>COMMENTS</th>
+                {/* Agrega más encabezados según lo que quieras mostrar */}
+              </tr>
+            </thead>
+            <tbody>
+              {info?.selectedItems?.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.shipment_id}</td>
+                  <td>{item.origin_id}</td>
+                  <td>{item.departure}</td>
+                  <td>ult check</td>
+                  <th>content modal</th>
+                  <th>comments modal</th>
+                  {/* Agrega más celdas según lo que quieras mostrar */}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+            </tbody>
+          </Table>
+        ) : (
+          <Table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>ORIGIN</th>
+                <th>SENT</th>
+                <th>RECEIVED</th>
+                <th>DESTINATION</th>
+                <th>ALERTS</th>
+                <th>COMMENTS</th>
+                {/* Agrega más encabezados según lo que quieras mostrar */}
+              </tr>
+            </thead>
+            <tbody>
+              {info?.selectedItems?.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.shipment_id}</td>
+                  <td>{item.origin_id}</td>
+                  <td>{item.origin_op_id}</td>
+                  <td>{item.destination_op_id}</td>
+                  <td>{item.destination_id}</td>
+                  <td>alert modal</td>
+                  <th>comments modal</th>
+                  {/* Agrega más celdas según lo que quieras mostrar */}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </>
     );
-  };
+  }
 
   return (
     <>
-      <Header  />
+      <Header />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
@@ -301,7 +372,7 @@ const Index = (props) => {
         <Row className="mt-5">
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="shadow">
-              <CardHeader className="border-0">
+              {/* <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
                     <h3 className="mb-0">Tabla de viajes</h3>
@@ -317,9 +388,9 @@ const Index = (props) => {
                     </Button>
                   </div>
                 </Row>
-              </CardHeader>
+              </CardHeader> */}
 
-              {/* tabla */}
+              {/* -----------tabla---------------- */}
               <div>
                 <Nav tabs>
                   <NavItem>
@@ -377,19 +448,11 @@ const Index = (props) => {
                   </NavItem>
                 </Nav>
                 <TabContent activeTab={activeTab}>
-                  <TabPane tabId="inTransit">
-                    {renderTable("inTransit")}
-                  </TabPane>
-                  <TabPane tabId="completed">
-                    {renderTable("completed")}
-                  </TabPane>
-                  <TabPane tabId="succeeded">
-                    {renderTable("succeeded")}
-                  </TabPane>
-                  <TabPane tabId="uncertain">
-                    {renderTable("uncertain")}
-                  </TabPane>
-                  <TabPane tabId="failed">{renderTable("failed")}</TabPane>
+                  <TabPane tabId="inTransit">{TablaDatos("inTransit")}</TabPane>
+                  <TabPane tabId="completed">{TablaDatos("completed")}</TabPane>
+                  <TabPane tabId="succeeded">{TablaDatos("succeeded")}</TabPane>
+                  <TabPane tabId="uncertain">{TablaDatos("uncertain")}</TabPane>
+                  <TabPane tabId="failed">{TablaDatos("failed")}</TabPane>
                 </TabContent>
               </div>
             </Card>

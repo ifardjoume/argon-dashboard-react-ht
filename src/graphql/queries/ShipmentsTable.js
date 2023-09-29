@@ -211,9 +211,10 @@ let initialFilter=initialDayMonth
 
   //   // VARIABLES DONDE GUARDO LA DATA -----------------------------------------------------------------
   let infoLength = paginatedData?.shipments?.total;
-  let info = paginatedData?.shipments?.selectedItems;
-  console.log(info);
-  console.log(infoLength);
+  let info = paginatedData?.shipments
+//   console.log(info);
+//   console.log(infoLength);
+
   //   // HANDLERS --------------------------------------------------------------------------------------------
   //   //handler de las solapas
   //   const handleChange = (e, newValue) => {
@@ -295,5 +296,5 @@ let initialFilter=initialDayMonth
     console.log("error en la query de branches", branchesError);
   if (contentError)
     console.log("error en el contenido de viajes en transito", contentError);
-  return [changeFilter];
+  return [changeFilter,infoLength,info];
 }
