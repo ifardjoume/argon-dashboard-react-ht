@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.3
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import { useState } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
@@ -49,10 +32,16 @@ import {
 } from "variables/charts.js";
 
 import Header from "components/Headers/Header.js";
+import useShipmentsTable from "graphql/queries/ShipmentsTable";
 
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
+
+
+ 
+  //traigo data para la tabla
+  const [changeFilter] = useShipmentsTable();
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -64,44 +53,131 @@ const Index = (props) => {
     setChartExample1Data("data" + index);
   };
 
-
-  const [activeTab, setActiveTab] = useState('inTransit');
+  const [activeTab, setActiveTab] = useState("inTransit");
 
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
     }
+    changeFilter(tab);
   };
   // Datos simulados
   const data = {
     inTransit: [
-      { ID: 1, ORIGIN: 'Origin 1', DEPARTURE: 'Departure 1', 'LAST CHECKPOINT': 'Checkpoint 1', CONTENT: 'Content 1', COMMENTS: 'Comments 1' },
-      { ID: 2, ORIGIN: 'Origin 2', DEPARTURE: 'Departure 2', 'LAST CHECKPOINT': 'Checkpoint 2', CONTENT: 'Content 2', COMMENTS: 'Comments 2' },
+      {
+        ID: 1,
+        ORIGIN: "Origin 1",
+        DEPARTURE: "Departure 1",
+        "LAST CHECKPOINT": "Checkpoint 1",
+        CONTENT: "Content 1",
+        COMMENTS: "Comments 1",
+      },
+      {
+        ID: 2,
+        ORIGIN: "Origin 2",
+        DEPARTURE: "Departure 2",
+        "LAST CHECKPOINT": "Checkpoint 2",
+        CONTENT: "Content 2",
+        COMMENTS: "Comments 2",
+      },
       // Agrega más datos según sea necesario
     ],
     completed: [
-      { ID: 1, ORIGIN: 'Origin A', SENT: 'Sent A', RECEIVED: 'Received A', DESTINATION: 'Destination A', ALERTS: 'Alerts A', COMMENTS: 'Comments A' },
-      { ID: 2, ORIGIN: 'Origin B', SENT: 'Sent B', RECEIVED: 'Received B', DESTINATION: 'Destination B', ALERTS: 'Alerts B', COMMENTS: 'Comments B' },
+      {
+        ID: 1,
+        ORIGIN: "Origin A",
+        SENT: "Sent A",
+        RECEIVED: "Received A",
+        DESTINATION: "Destination A",
+        ALERTS: "Alerts A",
+        COMMENTS: "Comments A",
+      },
+      {
+        ID: 2,
+        ORIGIN: "Origin B",
+        SENT: "Sent B",
+        RECEIVED: "Received B",
+        DESTINATION: "Destination B",
+        ALERTS: "Alerts B",
+        COMMENTS: "Comments B",
+      },
       // Agrega más datos según sea necesario
     ],
     succeeded: [
-      { ID: 1, ORIGIN: 'Origin X', SENT: 'Sent X', RECEIVED: 'Received X', DESTINATION: 'Destination X', ALERTS: 'Alerts X', COMMENTS: 'Comments X' },
-      { ID: 2, ORIGIN: 'Origin Y', SENT: 'Sent Y', RECEIVED: 'Received Y', DESTINATION: 'Destination Y', ALERTS: 'Alerts Y', COMMENTS: 'Comments Y' },
+      {
+        ID: 1,
+        ORIGIN: "Origin X",
+        SENT: "Sent X",
+        RECEIVED: "Received X",
+        DESTINATION: "Destination X",
+        ALERTS: "Alerts X",
+        COMMENTS: "Comments X",
+      },
+      {
+        ID: 2,
+        ORIGIN: "Origin Y",
+        SENT: "Sent Y",
+        RECEIVED: "Received Y",
+        DESTINATION: "Destination Y",
+        ALERTS: "Alerts Y",
+        COMMENTS: "Comments Y",
+      },
       // Agrega más datos según sea necesario
     ],
     uncertain: [
-      { ID: 1, ORIGIN: 'Origin M', SENT: 'Sent M', RECEIVED: 'Received M', DESTINATION: 'Destination M', ALERTS: 'Alerts M', COMMENTS: 'Comments M' },
-      { ID: 2, ORIGIN: 'Origin N', SENT: 'Sent N', RECEIVED: 'Received N', DESTINATION: 'Destination N', ALERTS: 'Alerts N', COMMENTS: 'Comments N' },
+      {
+        ID: 1,
+        ORIGIN: "Origin M",
+        SENT: "Sent M",
+        RECEIVED: "Received M",
+        DESTINATION: "Destination M",
+        ALERTS: "Alerts M",
+        COMMENTS: "Comments M",
+      },
+      {
+        ID: 2,
+        ORIGIN: "Origin N",
+        SENT: "Sent N",
+        RECEIVED: "Received N",
+        DESTINATION: "Destination N",
+        ALERTS: "Alerts N",
+        COMMENTS: "Comments N",
+      },
       // Agrega más datos según sea necesario
     ],
     failed: [
-      { ID: 1, ORIGIN: 'Origin F', SENT: 'Sent F', RECEIVED: 'Received F', DESTINATION: 'Destination F', ALERTS: 'Alerts F', COMMENTS: 'Comments F' },
-      { ID: 2, ORIGIN: 'Origin G', SENT: 'Sent G', RECEIVED: 'Received G', DESTINATION: 'Destination G', ALERTS: 'Alerts G', COMMENTS: 'Comments G' },
+      {
+        ID: 1,
+        ORIGIN: "Origin F",
+        SENT: "Sent F",
+        RECEIVED: "Received F",
+        DESTINATION: "Destination F",
+        ALERTS: "Alerts F",
+        COMMENTS: "Comments F",
+      },
+      {
+        ID: 2,
+        ORIGIN: "Origin G",
+        SENT: "Sent G",
+        RECEIVED: "Received G",
+        DESTINATION: "Destination G",
+        ALERTS: "Alerts G",
+        COMMENTS: "Comments G",
+      },
       // Agrega más datos según sea necesario
     ],
   };
   const renderTable = (tab) => {
     const columns = Object.keys(data[tab][0]);
+
+    const columnMappings = {
+      COMMENTS: "mo.coments",
+      ALERTS: "mo.Alerts",
+      "LAST CHECKPOINT": "mo.Check",
+    };
+    const handleDivClick = (column) => {
+      console.log("clickeando ando en " + column);
+    };
 
     return (
       <Table hover>
@@ -116,7 +192,20 @@ const Index = (props) => {
           {data[tab].map((item, index) => (
             <tr key={index} className="table-row">
               {columns.map((column) => (
-                <td key={column}>{column==='COMMENTS'?'va modal':item[column]}</td>
+                <td key={column}>
+                  {column === "COMMENTS" ||
+                  column === "ALERTS" ||
+                  column === "LAST CHECKPOINT" ? (
+                    <div
+                      onClick={() => handleDivClick(column)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {columnMappings[column] || item[column]}
+                    </div>
+                  ) : (
+                    item[column]
+                  )}
+                </td>
               ))}
             </tr>
           ))}
@@ -127,7 +216,7 @@ const Index = (props) => {
 
   return (
     <>
-      <Header />
+      <Header  />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
@@ -208,14 +297,14 @@ const Index = (props) => {
             </Card>
           </Col>
         </Row>
-        
+
         <Row className="mt-5">
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="shadow">
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Page visits</h3>
+                    <h3 className="mb-0">Tabla de viajes</h3>
                   </div>
                   <div className="col text-right">
                     <Button
@@ -232,63 +321,78 @@ const Index = (props) => {
 
               {/* tabla */}
               <div>
-      <Nav tabs>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === 'inTransit' })}
-            onClick={() => toggleTab('inTransit')}
-            href="#"
-          >
-            In Transit
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === 'completed' })}
-            onClick={() => toggleTab('completed')}
-            href="#"
-          >
-            Completed
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === 'succeeded' })}
-            onClick={() => toggleTab('succeeded')}
-            href="#"
-          >
-            Succeeded
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === 'uncertain' })}
-            onClick={() => toggleTab('uncertain')}
-            href="#"
-          >
-            Uncertain
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            className={classnames({ active: activeTab === 'failed' })}
-            onClick={() => toggleTab('failed')}
-            href="#"
-          >
-            Failed
-          </NavLink>
-        </NavItem>
-      </Nav>
-      <TabContent activeTab={activeTab}>
-        <TabPane tabId="inTransit">{renderTable('inTransit')}</TabPane>
-        <TabPane tabId="completed">{renderTable('completed')}</TabPane>
-        <TabPane tabId="succeeded">{renderTable('succeeded')}</TabPane>
-        <TabPane tabId="uncertain">{renderTable('uncertain')}</TabPane>
-        <TabPane tabId="failed">{renderTable('failed')}</TabPane>
-      </TabContent>
-    </div>
+                <Nav tabs>
+                  <NavItem>
+                    <NavLink
+                      className={classnames({
+                        active: activeTab === "inTransit",
+                      })}
+                      onClick={() => toggleTab("inTransit")}
+                      href="#"
+                    >
+                      In Transit
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={classnames({
+                        active: activeTab === "completed",
+                      })}
+                      onClick={() => toggleTab("completed")}
+                      href="#"
+                    >
+                      Completed
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={classnames({
+                        active: activeTab === "succeeded",
+                      })}
+                      onClick={() => toggleTab("succeeded")}
+                      href="#"
+                    >
+                      Succeeded
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={classnames({
+                        active: activeTab === "uncertain",
+                      })}
+                      onClick={() => toggleTab("uncertain")}
+                      href="#"
+                    >
+                      Uncertain
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={classnames({ active: activeTab === "failed" })}
+                      onClick={() => toggleTab("failed")}
+                      href="#"
+                    >
+                      Failed
+                    </NavLink>
+                  </NavItem>
+                </Nav>
+                <TabContent activeTab={activeTab}>
+                  <TabPane tabId="inTransit">
+                    {renderTable("inTransit")}
+                  </TabPane>
+                  <TabPane tabId="completed">
+                    {renderTable("completed")}
+                  </TabPane>
+                  <TabPane tabId="succeeded">
+                    {renderTable("succeeded")}
+                  </TabPane>
+                  <TabPane tabId="uncertain">
+                    {renderTable("uncertain")}
+                  </TabPane>
+                  <TabPane tabId="failed">{renderTable("failed")}</TabPane>
+                </TabContent>
+              </div>
             </Card>
-
           </Col>
           <Col xl="4">
             <Card className="shadow">

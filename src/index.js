@@ -10,6 +10,8 @@ import { ApolloProvider } from "@apollo/client";
 import { client } from "./apolloClient";
 import { parseJwt } from "./helpers";
 import mapboxgl from "mapbox-gl";
+import { ContextFilterDayMonth } from "context/filterDayMonth";
+
 
 const mpt = localStorage.getItem("mbt");
 mapboxgl.accessToken = mpt;
@@ -32,6 +34,7 @@ if (
   console.log('al if')
   root.render(
     <ApolloProvider client={client}>
+     
       <BrowserRouter>
         <Routes>
           <Route path="/auth/*" element={<AuthLayout />} />
@@ -45,12 +48,15 @@ if (
   // Obtener un token válido, por lo que muestra la pantalla de administrador
   root.render(
     <ApolloProvider client={client}>
-      <BrowserRouter>
+       <ContextFilterDayMonth>
+         <BrowserRouter>
         <Routes>
           <Route path="/admin/*" element={<AdminLayout />} />
           <Route path="*" element={<Navigate to="/admin/index" replace />} />
         </Routes>
       </BrowserRouter>
+        </ContextFilterDayMonth>
+     
     </ApolloProvider>
   );
 }

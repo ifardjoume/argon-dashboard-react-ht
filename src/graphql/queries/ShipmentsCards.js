@@ -8,14 +8,17 @@ import axios from "axios";
 import { company_id, SERVER_URL } from "../../const";
 import { logOut, parseJwt } from "../../helpers.js";
 import {access_parced} from '../../const'
+import FilterDayMonth from "context/filterDayMonth";
 
 export const useShipments = () => {
-    
+  
     const token = localStorage.getItem("token");
   if (!parseJwt(localStorage.getItem("token")).SUDO) {
     if (access_parced.dash_control === false) logOut();
   }
-     // ESTADOS LOCALES ------------------------------------------------------------------------
+  const { initialDayMonth, setInitialDayMonth } = useContext(FilterDayMonth);
+   
+  // ESTADOS LOCALES ------------------------------------------------------------------------
   //estados donde me guardo la info traida de la query
   const [inTransitShipsState, setInTransitShipsState] = useState(0);
   const [allData, setAllData] = useState({
@@ -62,6 +65,7 @@ export const useShipments = () => {
   //estado para setear info segun dia o mes
   const handlerInitialFilter = function (e) {
     setInitialFilter(e.target.value);
+    setInitialDayMonth(e.target.value)
   };
 
   //TRAIGO LA DATA DESDE EL SERVIDOR SEGUN FILTRO MES/DIA ------------------------------------------------------------------
@@ -71,7 +75,7 @@ export const useShipments = () => {
       `${SERVER_URL}/getAllValues/${company_id}/${type}`,
       { headers: { authorization: `Bearer ${token}` } }
     );
-
+ 
 
     try {
       //data actual de viajes en transito
@@ -152,8 +156,8 @@ export const useShipments = () => {
         });
       }
       setLoading(false);
-      console.log('fetchdata')
-      console.log(result)
+     
+     
     }
     catch (error) {
       console.error("Error:", error);
@@ -201,7 +205,7 @@ export const useShipments = () => {
       updatedShipError
     );
 
-
+   
   return [inTransitShipsState,loading, allData, handlerInitialFilter,prevData,initialFilter]
       
 }

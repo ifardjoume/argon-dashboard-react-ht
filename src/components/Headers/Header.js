@@ -10,8 +10,9 @@ import {
   Button,
   Spinner,
 } from "reactstrap";
-import { useShipments } from "../../graphql/queries/Shipments";
+import { useShipments } from "../../graphql/queries/ShipmentsCards";
 import { getPercentageChange } from "helpers";
+import { useEffect } from "react";
 const Header = () => {
   const [
     inTransitShipsState,
@@ -21,6 +22,7 @@ const Header = () => {
     prevData,
     initialFilter,
   ] = useShipments();
+  
   //obtengo la diferencia porcentual entre envios de hoy y dia/mes anterior
   const percentageChange_completed = getPercentageChange(
     prevData?.prevCompletedShipsState ? prevData?.prevCompletedShipsState : 0,
@@ -62,6 +64,7 @@ const Header = () => {
     alignItems: "center",
     justifyContent: "space-between",
   };
+
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
