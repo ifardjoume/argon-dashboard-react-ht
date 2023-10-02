@@ -33,13 +33,15 @@ import {
 
 import Header from "components/Headers/Header.js";
 import useShipmentsTable from "graphql/queries/ShipmentsTable";
+import "./checkpoints.css";
+import { convertirHoraLocal } from "helpers";
 
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
 
   //traigo data para la tabla
-  const [changeFilter, infoLength, info] = useShipmentsTable();
+  const [changeFilter, infoLength, info, company_detail] = useShipmentsTable();
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -225,7 +227,7 @@ const Index = (props) => {
     return (
       <>
         {activeTab === "inTransit" ? (
-          <Table>
+          <Table className="align-items-center table-flush" responsive>
             <thead>
               <tr>
                 <th>ID</th>
@@ -241,9 +243,48 @@ const Index = (props) => {
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
                   <td>{item.shipment_id}</td>
-                  <td>{item.origin_id}</td>
-                  <td>{item.departure}</td>
-                  <td>ult check</td>
+                  <td>
+                    {" "}
+                    {company_detail?.company?.branches?.map(
+                      (b) => b?.branch_id === item?.origin_id && b?.name
+                    )}
+                  </td>
+                  <td>
+                    {convertirHoraLocal(
+                      item?.departure,
+                      company_detail?.company?.gmt
+                    )}
+                  </td>
+                  <td>
+                    {" "}
+                    {item?.checkpoints?.[item?.checkpoints.length - 1] ? (
+                      <button
+                       
+                        // onClick={() =>
+                        //   handleCheckpointsModal(s.shipment_id)
+                        // }
+                      >
+                        {
+                          // fecha y hora
+                          convertirHoraLocal(
+                            item?.checkpoints[item.checkpoints.length - 1].timestamp,
+                            company_detail?.company?.gmt
+                          ) +
+                            "  " +
+                            //ope
+                            item?.checkpoints[item.checkpoints.length - 1]
+                              ?.responsible_name +
+                            " - " +
+                            //branch
+                            item?.checkpoints[item.checkpoints.length - 1]?.location
+                        }
+                      </button>
+                    ) : (
+                      
+                       ' No checkpoints'
+                     
+                    )}
+                  </td>
                   <th>content modal</th>
                   <th>comments modal</th>
                   {/* Agrega más celdas según lo que quieras mostrar */}
@@ -252,7 +293,7 @@ const Index = (props) => {
             </tbody>
           </Table>
         ) : (
-          <Table>
+          <Table className="align-items-center table-flush" responsive>
             <thead>
               <tr>
                 <th>ID</th>
@@ -284,6 +325,7 @@ const Index = (props) => {
       </>
     );
   }
+  // checkpoints
 
   return (
     <>
@@ -369,27 +411,9 @@ const Index = (props) => {
           </Col>
         </Row>
 
-        <Row className="mt-5">
-          <Col className="mb-5 mb-xl-0" xl="8">
+        <Row className="mt-5" style={{ border: "solid red 1px" }}>
+          <Col>
             <Card className="shadow">
-              {/* <CardHeader className="border-0">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h3 className="mb-0">Tabla de viajes</h3>
-                  </div>
-                  <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
-                  </div>
-                </Row>
-              </CardHeader> */}
-
               {/* -----------tabla---------------- */}
               <div>
                 <Nav tabs>
@@ -455,114 +479,6 @@ const Index = (props) => {
                   <TabPane tabId="failed">{TablaDatos("failed")}</TabPane>
                 </TabContent>
               </div>
-            </Card>
-          </Col>
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h3 className="mb-0">Social traffic</h3>
-                  </div>
-                  <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
-                  </div>
-                </Row>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Referral</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col" />
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">Facebook</th>
-                    <td>1,480</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">60%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="60"
-                            barClassName="bg-gradient-danger"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Facebook</th>
-                    <td>5,480</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">70%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="70"
-                            barClassName="bg-gradient-success"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Google</th>
-                    <td>4,807</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">80%</span>
-                        <div>
-                          <Progress max="100" value="80" />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Instagram</th>
-                    <td>3,678</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">75%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="75"
-                            barClassName="bg-gradient-info"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">twitter</th>
-                    <td>2,645</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <span className="mr-2">30%</span>
-                        <div>
-                          <Progress
-                            max="100"
-                            value="30"
-                            barClassName="bg-gradient-warning"
-                          />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
             </Card>
           </Col>
         </Row>

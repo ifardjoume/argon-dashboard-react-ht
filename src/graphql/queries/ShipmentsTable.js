@@ -296,5 +296,5 @@ let initialFilter=initialDayMonth
     console.log("error en la query de branches", branchesError);
   if (contentError)
     console.log("error en el contenido de viajes en transito", contentError);
-  return [changeFilter,infoLength,info];
+  return [changeFilter,infoLength,info, company_detail];
 }
