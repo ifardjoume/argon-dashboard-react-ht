@@ -13,6 +13,12 @@ import {
 import { useShipments } from "../../graphql/queries/ShipmentsCards";
 import { getPercentageChange } from "helpers";
 import { useEffect } from "react";
+import inTransitIcon from "../../assets/img/icons/common/oldIcons/viajesEnCurso.png";
+import completedIcon from '../../assets/img/icons/common/oldIcons/viajesHechos.png';
+import succededIcon from '../../assets/img/icons/common/oldIcons/viajesConformes.png';
+import uncertainIcon from '../../assets/img/icons/common/oldIcons/viajesParaRevision.png';
+import failedIcon from '../../assets/img/icons/common/oldIcons/viajesConformes.png';
+import '../../assets/myCss/global.css'
 const Header = () => {
   const [
     inTransitShipsState,
@@ -22,7 +28,7 @@ const Header = () => {
     prevData,
     initialFilter,
   ] = useShipments();
-  
+
   //obtengo la diferencia porcentual entre envios de hoy y dia/mes anterior
   const percentageChange_completed = getPercentageChange(
     prevData?.prevCompletedShipsState ? prevData?.prevCompletedShipsState : 0,
@@ -41,10 +47,12 @@ const Header = () => {
     prevData?.prevFailShipsState ? prevData?.prevFailShipsState : 0,
     allData?.failShipsState
   );
+
+  //card styles
   const commonCardStyle = {
     minHeight: "150px",
-    borderColor: "red",
-    marginBottom: "20px", // Espacio entre las cards
+   // borderColor: "red",
+   
   };
 
   // Define un estilo adicional para las cards que contienen el texto "over the last month"
@@ -59,12 +67,28 @@ const Header = () => {
     left: "-1%",
   };
   const cardsContainer = {
-    // border: "red solid 1px",
+    //border: "red solid 1px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
   };
-
+  const iconCard = {
+    // border: "red solid 1px",
+    width: "2vw",
+    height: "2vw",
+  };
+  const card_Title_Icon_container = {
+    //border: "red solid 1px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+  };
+  const card_data = {
+    // border: "red solid 1px",
+    margin: "auto",
+    fontSize: "2vw",
+  };
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -116,28 +140,31 @@ const Header = () => {
                 >
                   <CardBody>
                     <Row>
-                      <div >
+                      <div style={card_Title_Icon_container}>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           In Transit
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">
-                          {loading ? (
-                            <Spinner color="primary" />
-                          ) : (
-                            inTransitShipsState
-                          )}
-                        </span>
+
+                        <img style={iconCard} src={inTransitIcon} alt="" />
                       </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                          <i className="fas fa-chart-bar" />
-                        </div>
-                      </Col>
+
+                      <span style={card_data}>
+                        {loading ? (
+                          <Spinner className="spinner" />
+                        ) : (
+                          inTransitShipsState
+                        )}
+                      </span>
+                      {/* <Col className="col-auto">
+                         <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                          <i className="fas fa-chart-bar" /> 
+                        </div> 
+                      </Col>  */}
                     </Row>
-                     {/* texto invisible para mantener tamaños */}
+                    {/* texto invisible para mantener tamaños */}
                     {/* <div className="mt-3 mb-0 text-muted text-sm">
                       {percentageChange_completed &&
                         (percentageChange_completed.includes("-") ? (
@@ -191,32 +218,33 @@ const Header = () => {
                 >
                   <CardBody>
                     <Row>
-                      <div>
+                      <div style={card_Title_Icon_container}>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           Completed
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">
+                       <img style={iconCard} src={completedIcon} alt="" />
+                      </div>
+                      <span style={card_data}>
                           {loading ? (
-                            <Spinner color="primary" />
+                            <Spinner className="spinner" />
                           ) : (
                             allData?.completedShipsState
                           )}
                         </span>
-                      </div>
-                      <Col className="col-auto">
+                      {/* <Col className="col-auto">
                         <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
                           <i className="fas fa-chart-pie" />
                         </div>
-                      </Col>
+                      </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
                       {percentageChange_completed &&
                         (percentageChange_completed.includes("-") ? (
-                          <div >
-                            <div >
+                          <div>
+                            <div>
                               <span className="text-success mr-2">
                                 {initialFilter === "month" && (
                                   <i className="fa fa-arrow-up" />
@@ -241,7 +269,7 @@ const Header = () => {
                               </span>{" "}
                             </div>
 
-                            <div >
+                            <div>
                               {initialFilter === "month"
                                 ? "  over the last month"
                                 : ""}
@@ -265,26 +293,27 @@ const Header = () => {
                 >
                   <CardBody>
                     <Row>
-                      <div>
+                      <div style={card_Title_Icon_container}>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           Succeded
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">
+                        <img style={iconCard} src={succededIcon} alt="" />
+                      </div>
+                      <span style={card_data}>
                           {loading ? (
-                            <Spinner color="primary" />
+                            <Spinner className="spinner" />
                           ) : (
                             allData?.succShipsState
                           )}
                         </span>
-                      </div>
-                      <Col className="col-auto">
+                      {/* <Col className="col-auto">
                         <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
                           <i className="fas fa-users" />
                         </div>
-                      </Col>
+                      </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
                       {percentageChange_succeded &&
@@ -338,26 +367,28 @@ const Header = () => {
                 >
                   <CardBody>
                     <Row>
-                      <div>
+                      <div style={card_Title_Icon_container}>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           Uncertain
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">
+                        <img style={iconCard} src={uncertainIcon} alt="" />
+                        
+                      </div>
+                      <span style={card_data}>
                           {loading ? (
-                            <Spinner color="primary" />
+                            <Spinner className="spinner" />
                           ) : (
                             allData?.uncertShipsState
                           )}
                         </span>
-                      </div>
-                      <Col className="col-auto">
+                      {/* <Col className="col-auto">
                         <div className="icon icon-shape bg-info text-white rounded-circle shadow">
                           <i className="fas fa-percent" />
                         </div>
-                      </Col>
+                      </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
                       {percentageChange_uncertain &&
@@ -412,26 +443,27 @@ const Header = () => {
                 >
                   <CardBody>
                     <Row>
-                      <div>
+                      <div style={card_Title_Icon_container}>
                         <CardTitle
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
                           Failed
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">
+                       <img style={iconCard} src={failedIcon} alt="" />
+                      </div>
+                      <span style={card_data}>
                           {loading ? (
-                            <Spinner color="primary" />
+                            <Spinner  className="spinner" />
                           ) : (
                             allData?.failShipsState
                           )}
                         </span>
-                      </div>
-                      <Col className="col-auto">
+                      {/* <Col className="col-auto">
                         <div className="icon icon-shape bg-info text-white rounded-circle shadow">
                           <i className="fas fa-percent" />
                         </div>
-                      </Col>
+                      </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
                       {percentageChange_failed &&
@@ -469,10 +501,9 @@ const Header = () => {
                             </div>
                           </div>
                         ))}
-                        
                     </div>
                     {/* texto invisible para mantener tamaños */}
-                        {/* {!percentageChange_failed && 
+                    {/* {!percentageChange_failed && 
                          <div className="mt-3 mb-0 text-muted text-sm">
 
                            <div style={{visibility:" hidden"}}>
@@ -493,7 +524,6 @@ const Header = () => {
                           </div>
                          </div> 
                        } */}
-
                   </CardBody>
                 </Card>
               </Col>
