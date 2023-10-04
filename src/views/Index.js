@@ -4,7 +4,8 @@ import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import { Line, Bar, Doughnut } from "react-chartjs-2";
+
 // reactstrap components
 import {
   Button,
@@ -168,10 +169,10 @@ const Index = (props) => {
     ],
   };
 
-  useEffect(() => {
-    console.log("desde el effect");
-    console.log(info);
-  }, [changeFilter]);
+  // useEffect(() => {
+  //   console.log("desde el effect");
+  //   console.log(info);
+  // }, [changeFilter]);
 
   // const renderTable = (tab) => {
   //   const columns = Object.keys(data[tab][0]);
@@ -259,15 +260,16 @@ const Index = (props) => {
                     {" "}
                     {item?.checkpoints?.[item?.checkpoints.length - 1] ? (
                       <button
-                       
-                        // onClick={() =>
-                        //   handleCheckpointsModal(s.shipment_id)
-                        // }
+
+                      // onClick={() =>
+                      //   handleCheckpointsModal(s.shipment_id)
+                      // }
                       >
                         {
                           // fecha y hora
                           convertirHoraLocal(
-                            item?.checkpoints[item.checkpoints.length - 1].timestamp,
+                            item?.checkpoints[item.checkpoints.length - 1]
+                              .timestamp,
                             company_detail?.company?.gmt
                           ) +
                             "  " +
@@ -276,13 +278,12 @@ const Index = (props) => {
                               ?.responsible_name +
                             " - " +
                             //branch
-                            item?.checkpoints[item.checkpoints.length - 1]?.location
+                            item?.checkpoints[item.checkpoints.length - 1]
+                              ?.location
                         }
                       </button>
                     ) : (
-                      
-                       ' No checkpoints'
-                     
+                      " No checkpoints"
                     )}
                   </td>
                   <th>content modal</th>
@@ -332,7 +333,48 @@ const Index = (props) => {
       <Header />
       {/* Page content */}
       <Container className="mt--7" fluid>
+        {/* ------------grafico---------- */}
         <Row>
+          {/* -----------completed-------------- */}
+          <Col xl="4">
+            <Card className="shadow">
+              <CardHeader className="bg-transparent">
+                <Row className="align-items-center">
+                  <div className="col">
+                    <h2 className="mb-0">COMPLETED</h2>
+                  </div>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                <div className="chart">
+                  <Doughnut
+                    data={chartExample2.data}
+                    options={chartExample2.options}
+                  />
+                  <div
+                    style={{
+                      fontSize: "24px",
+                      fontWeight: "bold",
+                      display: "flex",
+                      //alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      height: "100%",
+                      textAlign: "center",
+                      zIndex:"100",
+                      border: "solid red 1px",
+                      position:'relative',
+                      top:'-350px'
+                    }}
+                  >
+                    5{/*      //aca va el total de completed */}
+                    
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+          {/* --failed/uncertain -causes -braanches with more alerts----------------------- */}
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="bg-gradient-default shadow">
               <CardHeader className="bg-transparent">
@@ -386,35 +428,12 @@ const Index = (props) => {
               </CardBody>
             </Card>
           </Col>
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Performance
-                    </h6>
-                    <h2 className="mb-0">Total orders</h2>
-                  </div>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Bar
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
         </Row>
 
+        {/* -----------tabla---------------- */}
         <Row className="mt-5" style={{ border: "solid red 1px" }}>
           <Col>
             <Card className="shadow">
-              {/* -----------tabla---------------- */}
               <div>
                 <Nav tabs>
                   <NavItem>

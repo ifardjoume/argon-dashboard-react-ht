@@ -6,7 +6,7 @@ export const FilterDayMonth = createContext({});
 export const ContextFilterDayMonth = (props) => {
   //exporto un array y una funcion para modificarlo
   const [initialDayMonth, setInitialDayMonth] = useState('month');
-  console.log(initialDayMonth)
+ 
   return (
     <FilterDayMonth.Provider
       value={

@@ -295,7 +295,7 @@ function chartOptions() {
   return options;
 }
 
-// Parse global options
+// // Parse global options
 function parseOptions(parent, options) {
   for (var item in options) {
     if (typeof options[item] !== "object") {
@@ -368,47 +368,35 @@ let chartExample1 = {
 };
 
 // Example 2 of Chart inside src/views/Index.js (Total orders - Card)
+const data = {
+  labels: ["Red", "Blue", "Yellow"],
+  datasets: [
+    {
+      label: "My First Dataset",
+      data: [300, 50, 100],
+      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+    },
+  ],
+};
+
+const options = {
+  cutoutPercentage: 50,
+  plugins: {
+    doughnutCenterText: {
+      text: "123",
+      color: "#000000",
+      font: {
+        size: "24",
+        weight: "bold",
+      },
+    },
+  },
+};
+
 let chartExample2 = {
-  options: {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            callback: function (value) {
-              if (!(value % 10)) {
-                //return '$' + value + 'k'
-                return value;
-              }
-            },
-          },
-        },
-      ],
-    },
-    tooltips: {
-      callbacks: {
-        label: function (item, data) {
-          var label = data.datasets[item.datasetIndex].label || "";
-          var yLabel = item.yLabel;
-          var content = "";
-          if (data.datasets.length > 1) {
-            content += label;
-          }
-          content += yLabel;
-          return content;
-        },
-      },
-    },
-  },
-  data: {
-    labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: [
-      {
-        label: "Sales",
-        data: [25, 20, 30, 22, 17, 29],
-        maxBarThickness: 10,
-      },
-    ],
-  },
+  options: options,
+  data: data,
 };
 
 module.exports = {

@@ -31,7 +31,7 @@ if (
   !user_id || // Si no hay token
   (localStorage.getItem("token") && parseInt(localStorage.getItem("expiration")) < Date.now())
 ) {
-  console.log('al if')
+  
   root.render(
     <ApolloProvider client={client}>
      
@@ -44,7 +44,7 @@ if (
     </ApolloProvider>
   );
 } else {
-  console.log('entrando')
+  
   // Obtener un token válido, por lo que muestra la pantalla de administrador
   root.render(
     <ApolloProvider client={client}>
