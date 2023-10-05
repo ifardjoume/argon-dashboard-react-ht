@@ -22,6 +22,7 @@ import {
   Col,
   TabContent,
   TabPane,
+  Spinner,
 } from "reactstrap";
 
 // core components
@@ -36,10 +37,39 @@ import Header from "components/Headers/Header.js";
 import useShipmentsTable from "graphql/queries/ShipmentsTable";
 import "./checkpoints.css";
 import { convertirHoraLocal } from "helpers";
+import { useShipments } from "graphql/queries/ShipmentsCards";
 
 const Index = (props) => {
+  const [
+    inTransitShipsState,
+    loading,
+    allData,
+    handlerInitialFilter,
+    prevData,
+    initialFilter,
+  ] = useShipments();
   const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
+  const [chartExample1Data, setChartExample1Data] = useState("data1"); //borrar
+
+  let graphicData = {};
+  graphicData = {
+    datasets: [
+      {
+        data: [
+          allData?.succShipsState,
+          allData?.uncertShipsState,
+          allData?.failShipsState,
+        ],
+        backgroundColor: ["#33B27F", "#F0EA3F", "#D60707"],
+        borderWidth: 2,
+        cutout: "78%",
+        radius: "80%",
+      },
+    ],
+  };
+  const options = {
+    cutoutPercentage: 80,
+  };
 
   //traigo data para la tabla
   const [changeFilter, infoLength, info, company_detail] = useShipmentsTable();
@@ -169,10 +199,7 @@ const Index = (props) => {
     ],
   };
 
-  // useEffect(() => {
-  //   console.log("desde el effect");
-  //   console.log(info);
-  // }, [changeFilter]);
+ 
 
   // const renderTable = (tab) => {
   //   const columns = Object.keys(data[tab][0]);
@@ -330,12 +357,18 @@ const Index = (props) => {
 
   return (
     <>
-      <Header />
+      <Header
+        inTransitShipsState={inTransitShipsState}
+        loading={loading}
+        allData={allData}
+        handlerInitialFilter={handlerInitialFilter}
+        prevData={prevData}
+        initialFilter={initialFilter}
+      />
       {/* Page content */}
       <Container className="mt--7" fluid>
-        {/* ------------grafico---------- */}
+        {/* ------------grafico de torta completed- --------- */}
         <Row>
-          {/* -----------completed-------------- */}
           <Col xl="4">
             <Card className="shadow">
               <CardHeader className="bg-transparent">
@@ -345,31 +378,42 @@ const Index = (props) => {
                   </div>
                 </Row>
               </CardHeader>
+
               <CardBody>
                 <div className="chart">
-                  <Doughnut
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      fontWeight: "bold",
-                      display: "flex",
-                      //alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      height: "100%",
-                      textAlign: "center",
-                      zIndex:"100",
-                      border: "solid red 1px",
-                      position:'relative',
-                      top:'-350px'
-                    }}
-                  >
-                    5{/*      //aca va el total de completed */}
-                    
-                  </div>
+                  {loading ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <Spinner className="spinner" />
+                    </div>
+                  ) : (
+                    <>
+                      <Doughnut data={graphicData} options={options} />
+                      {/*aca va el total de completed */}
+                      <div
+                        style={{
+                          fontSize: "24px",
+                          fontWeight: "bold",
+                          display: "flex",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                          height: "100%",
+                          textAlign: "center",
+                          zIndex: "100",
+                          position: "relative",
+                          top: "-350px",
+                        }}
+                      >
+                        {allData?.completedShipsState}
+                      </div>
+                    </>
+                  )}
                 </div>
               </CardBody>
             </Card>

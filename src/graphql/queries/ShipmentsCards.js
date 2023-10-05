@@ -205,7 +205,7 @@ export const useShipments = () => {
       updatedShipError
     );
 
-   
+  
   return [inTransitShipsState,loading, allData, handlerInitialFilter,prevData,initialFilter]
       
 }

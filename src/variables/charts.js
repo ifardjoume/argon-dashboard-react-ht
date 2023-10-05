@@ -1,25 +1,5 @@
-/*!
 
-=========================================================
-* Argon Dashboard React - v1.2.3
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 const Chart = require("chart.js");
-//
-// Chart extension for making the bars rounded
-// Code from: https://codepen.io/jedtrow/full/ygRYgo
-//
 
 Chart.elements.Rectangle.prototype.draw = function () {
   var ctx = this._chart.ctx;
@@ -367,15 +347,16 @@ let chartExample1 = {
   },
 };
 
-// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
+// Example 2 of Chart inside src/views/Index.js (Total orders - Card) donougth
+
 const data = {
-  labels: ["Red", "Blue", "Yellow"],
+  labels: ["Red", "green", "Yellow"],
   datasets: [
     {
       label: "My First Dataset",
       data: [300, 50, 100],
-      backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-      hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+      backgroundColor: ["Red", "green", "Yellow"],
+      hoverBackgroundColor: ["Red", "green", "Yellow"],
     },
   ],
 };

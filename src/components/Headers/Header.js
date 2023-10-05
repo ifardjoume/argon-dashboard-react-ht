@@ -19,15 +19,14 @@ import succededIcon from '../../assets/img/icons/common/oldIcons/viajesConformes
 import uncertainIcon from '../../assets/img/icons/common/oldIcons/viajesParaRevision.png';
 import failedIcon from '../../assets/img/icons/common/oldIcons/viajesConformes.png';
 import '../../assets/myCss/global.css'
-const Header = () => {
-  const [
-    inTransitShipsState,
-    loading,
-    allData,
-    handlerInitialFilter,
-    prevData,
-    initialFilter,
-  ] = useShipments();
+const Header = ( 
+  {inTransitShipsState,
+  loading,
+  allData,
+  handlerInitialFilter,
+  prevData,
+  initialFilter}) => {
+ 
 
   //obtengo la diferencia porcentual entre envios de hoy y dia/mes anterior
   const percentageChange_completed = getPercentageChange(
@@ -206,7 +205,6 @@ const Header = () => {
                             <div>
                               <span className="text-warning mr-2">
                                 {" "}
-                               
                               </span>{" "}
                             </div>
 
