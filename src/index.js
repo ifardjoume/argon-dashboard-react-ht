@@ -47,5 +47,5 @@ root.render(
       <Route path="/" element={<IndexView />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
-  </BrowserRouter>
+  </BrowserRouter>//comentario de prueba
 );
