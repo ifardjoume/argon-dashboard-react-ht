@@ -43,6 +43,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { logOut } from "helpers";
 
 function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
   // function that on mobile devices makes the search open
@@ -441,7 +442,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                   <DropdownItem divider />
                   <DropdownItem
                     href="#pablo"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={logOut}
                   >
                     <i className="ni ni-user-run" />
                     <span>Logout</span>
