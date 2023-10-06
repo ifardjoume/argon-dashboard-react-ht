@@ -1,63 +1,51 @@
+/*!
+
+=========================================================
+* Argon Dashboard PRO React - v1.2.4
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
+* Copyright 2023 Creative Tim (https://www.creative-tim.com)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
 import React from "react";
 import ReactDOM from "react-dom/client";
+// react library for routing
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import "assets/plugins/nucleo/css/nucleo.css";
+
+// plugins styles from node_modules
+import "react-notification-alert/dist/animate.css";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import "sweetalert2/dist/sweetalert2.min.css";
+import "select2/dist/css/select2.min.css";
+import "quill/dist/quill.core.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "assets/scss/argon-dashboard-react.scss";
-import AuthLayout from "layouts/Auth.js";
+// plugins styles downloaded
+import "assets/vendor/nucleo/css/nucleo.css";
+// core styles
+import "assets/scss/argon-dashboard-pro-react.scss?v1.2.1";
+
 import AdminLayout from "layouts/Admin.js";
-import { ApolloProvider } from "@apollo/client";
-import { client } from "./apolloClient";
-import { parseJwt } from "./helpers";
-import mapboxgl from "mapbox-gl";
-import { ContextFilterDayMonth } from "context/filterDayMonth";
+import RTLLayout from "layouts/RTL.js";
+import AuthLayout from "layouts/Auth.js";
+import IndexView from "views/Index.js";
 
-
-const mpt = localStorage.getItem("mbt");
-mapboxgl.accessToken = mpt;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-const user_id = localStorage.getItem("token")?.length > 0 && parseJwt(localStorage.getItem("token"))?.user_id;
-
-//creo un espacio para guardar las notificaciones
-
-//creo un espacio para guardar el idioma
-if (user_id && !localStorage.getItem('language')) localStorage.setItem('language', navigator.window.language.split('-')[0]);
-if (user_id && !localStorage.getItem(`notifications`)) localStorage.setItem(`notifications`, '');
-if (user_id && !localStorage.getItem(`notificationsENG`)) localStorage.setItem(`notificationsENG`, '');
-if (user_id && !localStorage.getItem(`numberNoti`)) localStorage.setItem(`numberNoti`, '0');
-
-
-if (
-  !user_id || // Si no hay token
-  (localStorage.getItem("token") && parseInt(localStorage.getItem("expiration")) < Date.now())
-) {
-  
-  root.render(
-    <ApolloProvider client={client}>
-     
-      <BrowserRouter>
-        <Routes>
-          <Route path="/auth/*" element={<AuthLayout />} />
-          <Route path="*" element={<Navigate to="/auth/login" replace />} /> {/* Redirige al inicio de sesión */}
-        </Routes>
-      </BrowserRouter>
-    </ApolloProvider>
-  );
-} else {
-  
-  // Obtener un token válido, por lo que muestra la pantalla de administrador
-  root.render(
-    <ApolloProvider client={client}>
-       <ContextFilterDayMonth>
-         <BrowserRouter>
-        <Routes>
-          <Route path="/admin/*" element={<AdminLayout />} />
-          <Route path="*" element={<Navigate to="/admin/index" replace />} />
-        </Routes>
-      </BrowserRouter>
-        </ContextFilterDayMonth>
-     
-    </ApolloProvider>
-  );
-}
+root.render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/admin/*" element={<AdminLayout />} />
+      <Route path="/rtl/*" element={<RTLLayout />} />
+      <Route path="/auth/*" element={<AuthLayout />} />
+      <Route path="/" element={<IndexView />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  </BrowserRouter>
+);

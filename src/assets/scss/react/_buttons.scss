@@ -1,8 +1,14 @@
-.btn{
-  .btn-inner--icon{
-    margin-right: 4px;
-  }
-}
 .btn + .btn {
   margin-left: 4px;
+}
+.btn-group + .btn-group {
+  margin-left: 4px;
+}
+.btn.btn-sm.btn-.btn-icon-only.text-light{
+  background-color: transparent;
+}
+.input-group {
+  .btn + .btn {
+    margin-left: -1px;
+  }
 }

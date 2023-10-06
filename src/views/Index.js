@@ -1,553 +1,529 @@
-import { useEffect, useState } from "react";
-// node.js library that concatenates classes (strings)
-import classnames from "classnames";
-// javascipt plugin for creating charts
-import Chart from "chart.js";
-// react plugin used to create charts
-import { Line, Bar, Doughnut } from "react-chartjs-2";
+/*!
 
+=========================================================
+* Argon Dashboard PRO React - v1.2.4
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
+* Copyright 2023 Creative Tim (https://www.creative-tim.com)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+/*eslint-disable*/
+import React from "react";
+// react library for routing
+import { Link } from "react-router-dom";
 // reactstrap components
 import {
+  Badge,
   Button,
   Card,
-  CardHeader,
   CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
   Container,
   Row,
   Col,
-  TabContent,
-  TabPane,
-  Spinner,
+  UncontrolledTooltip,
 } from "reactstrap";
-
 // core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2,
-} from "variables/charts.js";
+import IndexNavbar from "components/Navbars/IndexNavbar.js";
+import IndexHeader from "components/Headers/IndexHeader.js";
+import AuthFooter from "components/Footers/AuthFooter.js";
 
-import Header from "components/Headers/Header.js";
-import useShipmentsTable from "graphql/queries/ShipmentsTable";
-import "./checkpoints.css";
-import { convertirHoraLocal } from "helpers";
-import { useShipments } from "graphql/queries/ShipmentsCards";
-
-const Index = (props) => {
-  const [
-    inTransitShipsState,
-    loading,
-    allData,
-    handlerInitialFilter,
-    prevData,
-    initialFilter,
-  ] = useShipments();
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1"); //borrar
-
-  let graphicData = {};
-  graphicData = {
-    datasets: [
-      {
-        data: [
-          allData?.succShipsState,
-          allData?.uncertShipsState,
-          allData?.failShipsState,
-        ],
-        backgroundColor: ["#33B27F", "#F0EA3F", "#D60707"],
-        borderWidth: 2,
-        cutout: "78%",
-        radius: "80%",
-      },
-    ],
-  };
-  const options = {
-    cutoutPercentage: 80,
-  };
-
-  //traigo data para la tabla
-  const [changeFilter, infoLength, info, company_detail] = useShipmentsTable();
-
-  if (window.Chart) {
-    parseOptions(Chart, chartOptions());
-  }
-
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
-
-  const [activeTab, setActiveTab] = useState("inTransit");
-
-  const toggleTab = (tab) => {
-    if (activeTab !== tab) {
-      setActiveTab(tab);
-    }
-    changeFilter(tab);
-  };
-  // Datos simulados
-  const data = {
-    inTransit: [
-      {
-        ID: 1,
-        ORIGIN: "Origin 1",
-        DEPARTURE: "Departure 1",
-        "LAST CHECKPOINT": "Checkpoint 1",
-        CONTENT: "Content 1",
-        COMMENTS: "Comments 1",
-      },
-      {
-        ID: 2,
-        ORIGIN: "Origin 2",
-        DEPARTURE: "Departure 2",
-        "LAST CHECKPOINT": "Checkpoint 2",
-        CONTENT: "Content 2",
-        COMMENTS: "Comments 2",
-      },
-      // Agrega más datos según sea necesario
-    ],
-    completed: [
-      {
-        ID: 1,
-        ORIGIN: "Origin A",
-        SENT: "Sent A",
-        RECEIVED: "Received A",
-        DESTINATION: "Destination A",
-        ALERTS: "Alerts A",
-        COMMENTS: "Comments A",
-      },
-      {
-        ID: 2,
-        ORIGIN: "Origin B",
-        SENT: "Sent B",
-        RECEIVED: "Received B",
-        DESTINATION: "Destination B",
-        ALERTS: "Alerts B",
-        COMMENTS: "Comments B",
-      },
-      // Agrega más datos según sea necesario
-    ],
-    succeeded: [
-      {
-        ID: 1,
-        ORIGIN: "Origin X",
-        SENT: "Sent X",
-        RECEIVED: "Received X",
-        DESTINATION: "Destination X",
-        ALERTS: "Alerts X",
-        COMMENTS: "Comments X",
-      },
-      {
-        ID: 2,
-        ORIGIN: "Origin Y",
-        SENT: "Sent Y",
-        RECEIVED: "Received Y",
-        DESTINATION: "Destination Y",
-        ALERTS: "Alerts Y",
-        COMMENTS: "Comments Y",
-      },
-      // Agrega más datos según sea necesario
-    ],
-    uncertain: [
-      {
-        ID: 1,
-        ORIGIN: "Origin M",
-        SENT: "Sent M",
-        RECEIVED: "Received M",
-        DESTINATION: "Destination M",
-        ALERTS: "Alerts M",
-        COMMENTS: "Comments M",
-      },
-      {
-        ID: 2,
-        ORIGIN: "Origin N",
-        SENT: "Sent N",
-        RECEIVED: "Received N",
-        DESTINATION: "Destination N",
-        ALERTS: "Alerts N",
-        COMMENTS: "Comments N",
-      },
-      // Agrega más datos según sea necesario
-    ],
-    failed: [
-      {
-        ID: 1,
-        ORIGIN: "Origin F",
-        SENT: "Sent F",
-        RECEIVED: "Received F",
-        DESTINATION: "Destination F",
-        ALERTS: "Alerts F",
-        COMMENTS: "Comments F",
-      },
-      {
-        ID: 2,
-        ORIGIN: "Origin G",
-        SENT: "Sent G",
-        RECEIVED: "Received G",
-        DESTINATION: "Destination G",
-        ALERTS: "Alerts G",
-        COMMENTS: "Comments G",
-      },
-      // Agrega más datos según sea necesario
-    ],
-  };
-
- 
-
-  // const renderTable = (tab) => {
-  //   const columns = Object.keys(data[tab][0]);
-
-  //   const columnMappings = {
-  //     COMMENTS: "mo.coments",
-  //     ALERTS: "mo.Alerts",
-  //     "LAST CHECKPOINT": "mo.Check",
-  //   };
-  //   const handleDivClick = (column) => {
-  //     console.log("clickeando ando en " + column);
-  //   };
-
-  //   return (
-  //     <Table hover>
-  //       <thead>
-  //         <tr>
-  //           {columns.map((column) => (
-  //             <th key={column}>{column}</th>
-  //           ))}
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         {data[tab].map((item, index) => (
-  //           <tr key={index} className="table-row">
-  //             {columns.map((column) => (
-  //               <td key={column}>
-  //                 {column === "COMMENTS" ||
-  //                 column === "ALERTS" ||
-  //                 column === "LAST CHECKPOINT" ? (
-  //                   <div
-  //                     onClick={() => handleDivClick(column)}
-  //                     style={{ cursor: "pointer" }}
-  //                   >
-  //                     {columnMappings[column] || item[column]}
-  //                   </div>
-  //                 ) : (
-  //                   item[column]
-  //                 )}
-  //               </td>
-  //             ))}
-  //           </tr>
-  //         ))}
-  //       </tbody>
-  //     </Table>
-  //   );
-  // };
-  function TablaDatos() {
-    if (!info?.selectedItems || info?.selectedItems?.length === 0) {
-      return <div>No hay datos para mostrar.</div>;
-    }
-
-    return (
-      <>
-        {activeTab === "inTransit" ? (
-          <Table className="align-items-center table-flush" responsive>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>ORIGIN</th>
-                <th>DEPARTURE</th>
-                <th>LAST CHECKPOINT</th>
-                <th>CONTENT</th>
-                <th>COMMENTS</th>
-                {/* Agrega más encabezados según lo que quieras mostrar */}
-              </tr>
-            </thead>
-            <tbody>
-              {info?.selectedItems?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.shipment_id}</td>
-                  <td>
-                    {" "}
-                    {company_detail?.company?.branches?.map(
-                      (b) => b?.branch_id === item?.origin_id && b?.name
-                    )}
-                  </td>
-                  <td>
-                    {convertirHoraLocal(
-                      item?.departure,
-                      company_detail?.company?.gmt
-                    )}
-                  </td>
-                  <td>
-                    {" "}
-                    {item?.checkpoints?.[item?.checkpoints.length - 1] ? (
-                      <button
-
-                      // onClick={() =>
-                      //   handleCheckpointsModal(s.shipment_id)
-                      // }
-                      >
-                        {
-                          // fecha y hora
-                          convertirHoraLocal(
-                            item?.checkpoints[item.checkpoints.length - 1]
-                              .timestamp,
-                            company_detail?.company?.gmt
-                          ) +
-                            "  " +
-                            //ope
-                            item?.checkpoints[item.checkpoints.length - 1]
-                              ?.responsible_name +
-                            " - " +
-                            //branch
-                            item?.checkpoints[item.checkpoints.length - 1]
-                              ?.location
-                        }
-                      </button>
-                    ) : (
-                      " No checkpoints"
-                    )}
-                  </td>
-                  <th>content modal</th>
-                  <th>comments modal</th>
-                  {/* Agrega más celdas según lo que quieras mostrar */}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        ) : (
-          <Table className="align-items-center table-flush" responsive>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>ORIGIN</th>
-                <th>SENT</th>
-                <th>RECEIVED</th>
-                <th>DESTINATION</th>
-                <th>ALERTS</th>
-                <th>COMMENTS</th>
-                {/* Agrega más encabezados según lo que quieras mostrar */}
-              </tr>
-            </thead>
-            <tbody>
-              {info?.selectedItems?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.shipment_id}</td>
-                  <td>{item.origin_id}</td>
-                  <td>{item.origin_op_id}</td>
-                  <td>{item.destination_op_id}</td>
-                  <td>{item.destination_id}</td>
-                  <td>alert modal</td>
-                  <th>comments modal</th>
-                  {/* Agrega más celdas según lo que quieras mostrar */}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        )}
-      </>
-    );
-  }
-  // checkpoints
-
+function Index() {
   return (
     <>
-      <Header
-        inTransitShipsState={inTransitShipsState}
-        loading={loading}
-        allData={allData}
-        handlerInitialFilter={handlerInitialFilter}
-        prevData={prevData}
-        initialFilter={initialFilter}
-      />
-      {/* Page content */}
-      <Container className="mt--7" fluid>
-        {/* ------------grafico de torta completed- --------- */}
-        <Row>
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h2 className="mb-0">COMPLETED</h2>
-                  </div>
+      <IndexNavbar />
+      <div className="main-content">
+        <IndexHeader />
+        <section className="py-6 pb-9 bg-default">
+          <Container fluid>
+            <Row className="justify-content-center text-center">
+              <Col md="6">
+                <h2 className="display-3 text-white">
+                  A complete React solution
+                </h2>
+                <p className="lead text-white">
+                  Argon is a completly new product built on our newest re-built
+                  from scratch framework structure that is meant to make our
+                  products more intuitive, more adaptive and, needless to say,
+                  so much easier to customize. Let Argon amaze you with its cool
+                  features and build tools and get your project to a whole new
+                  level.
+                </p>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        <section className="section section-lg pt-lg-0 mt--7">
+          <Container>
+            <Row className="justify-content-center">
+              <Col lg="12">
+                <Row>
+                  <Col lg="4">
+                    <Card className="card-lift--hover shadow border-0">
+                      <CardBody className="py-5">
+                        <div className="icon icon-shape bg-gradient-info text-white rounded-circle mb-4">
+                          <i className="ni ni-check-bold" />
+                        </div>
+                        <h4 className="h3 text-info text-uppercase">
+                          Based on React and Reactstrap
+                        </h4>
+                        <p className="description mt-3">
+                          Argon is built on top of the most popular open source
+                          toolkit for developing with HTML, CSS, and JS.
+                        </p>
+                        <div>
+                          <Badge color="info" pill>
+                            react
+                          </Badge>
+                          <Badge color="info" pill>
+                            reactstrap
+                          </Badge>
+                          <Badge color="info" pill>
+                            dashboard
+                          </Badge>
+                          <Badge color="info" pill>
+                            template
+                          </Badge>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col lg="4">
+                    <Card className="card-lift--hover shadow border-0">
+                      <CardBody className="py-5">
+                        <div className="icon icon-shape bg-gradient-success text-white rounded-circle mb-4">
+                          <i className="ni ni-istanbul" />
+                        </div>
+                        <h4 className="h3 text-success text-uppercase">
+                          Integrated build tools
+                        </h4>
+                        <p className="description mt-3">
+                          Use Argons's included npm scripts to compile source
+                          code, scss and more with just a few simple commands.
+                        </p>
+                        <div>
+                          <Badge color="success" pill>
+                            npm
+                          </Badge>
+                          <Badge color="success" pill>
+                            build tools
+                          </Badge>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col lg="4">
+                    <Card className="card-lift--hover shadow border-0">
+                      <CardBody className="py-5">
+                        <div className="icon icon-shape bg-gradient-warning text-white rounded-circle mb-4">
+                          <i className="ni ni-planet" />
+                        </div>
+                        <h4 className="h3 text-warning text-uppercase">
+                          Full Sass support
+                        </h4>
+                        <p className="description mt-3">
+                          Argon makes customization easier than ever before. You
+                          get all the tools to make your website building
+                          process a breeze.
+                        </p>
+                        <div>
+                          <Badge color="warning" pill>
+                            sass
+                          </Badge>
+                          <Badge color="warning" pill>
+                            design
+                          </Badge>
+                          <Badge color="warning" pill>
+                            customize
+                          </Badge>
+                        </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
                 </Row>
-              </CardHeader>
-
-              <CardBody>
-                <div className="chart">
-                  {loading ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                      }}
-                    >
-                      <Spinner className="spinner" />
-                    </div>
-                  ) : (
-                    <>
-                      <Doughnut data={graphicData} options={options} />
-                      {/*aca va el total de completed */}
-                      <div
-                        style={{
-                          fontSize: "24px",
-                          fontWeight: "bold",
-                          display: "flex",
-                          justifyContent: "center",
-                          flexDirection: "column",
-                          height: "100%",
-                          textAlign: "center",
-                          zIndex: "100",
-                          position: "relative",
-                          top: "-350px",
-                        }}
-                      >
-                        {allData?.completedShipsState}
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        <section className="py-6">
+          <Container>
+            <Row className="row-grid align-items-center">
+              <Col className="order-md-2" md="6">
+                <img
+                  alt="..."
+                  className="img-fluid"
+                  src={require("assets/img/theme/landing-1.png")}
+                />
+              </Col>
+              <Col className="order-md-1" md="6">
+                <div className="pr-md-5">
+                  <h1>Awesome features</h1>
+                  <p>
+                    The kit comes with three pre-built pages to help you get
+                    started faster. You can change the text and images and
+                    you're good to go.
+                  </p>
+                  <ul className="list-unstyled mt-5">
+                    <li className="py-2">
+                      <div className="d-flex align-items-center">
+                        <div>
+                          <Badge className="badge-circle mr-3" color="success">
+                            <i className="ni ni-settings-gear-65" />
+                          </Badge>
+                        </div>
+                        <div>
+                          <h4 className="mb-0">Carefully crafted components</h4>
+                        </div>
                       </div>
-                    </>
-                  )}
+                    </li>
+                    <li className="py-2">
+                      <div className="d-flex align-items-center">
+                        <div>
+                          <Badge className="badge-circle mr-3" color="success">
+                            <i className="ni ni-html5" />
+                          </Badge>
+                        </div>
+                        <div>
+                          <h4 className="mb-0">Amazing page examples</h4>
+                        </div>
+                      </div>
+                    </li>
+                    <li className="py-2">
+                      <div className="d-flex align-items-center">
+                        <div>
+                          <Badge className="badge-circle mr-3" color="success">
+                            <i className="ni ni-satisfied" />
+                          </Badge>
+                        </div>
+                        <div>
+                          <h4 className="mb-0">Super friendly support team</h4>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </CardBody>
-            </Card>
-          </Col>
-          {/* --failed/uncertain -causes -braanches with more alerts----------------------- */}
-          <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-gradient-default shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
-                    </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
-                  </div>
-                  <div className="col">
-                    <Nav className="justify-content-end" pills>
-                      <NavItem>
-                        <NavLink
-                          className={classnames("py-2 px-3", {
-                            active: activeNav === 1,
-                          })}
-                          href="#pablo"
-                          onClick={(e) => toggleNavs(e, 1)}
-                        >
-                          <span className="d-none d-md-block">Month</span>
-                          <span className="d-md-none">M</span>
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames("py-2 px-3", {
-                            active: activeNav === 2,
-                          })}
-                          data-toggle="tab"
-                          href="#pablo"
-                          onClick={(e) => toggleNavs(e, 2)}
-                        >
-                          <span className="d-none d-md-block">Week</span>
-                          <span className="d-md-none">W</span>
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </div>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Line
-                    data={chartExample1[chartExample1Data]}
-                    options={chartExample1.options}
-                    getDatasetAtEvent={(e) => console.log(e)}
-                  />
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        <section className="py-6">
+          <Container>
+            <Row className="row-grid align-items-center">
+              <Col md="6">
+                <img
+                  alt="..."
+                  className="img-fluid"
+                  src={require("assets/img/theme/landing-2.png")}
+                />
+              </Col>
+              <Col md="6">
+                <div className="pr-md-5">
+                  <h1>Example pages</h1>
+                  <p>
+                    If you want to get inspiration or just show something
+                    directly to your clients, you can jump start your
+                    development with our pre-built example pages.
+                  </p>
+                  <Link
+                    className="font-weight-bold text-warning mt-5"
+                    to="/admin/profile"
+                  >
+                    Explore pages
+                  </Link>
                 </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        <section className="py-6">
+          <Container>
+            <Row className="row-grid align-items-center">
+              <Col className="order-md-2" md="6">
+                <img
+                  alt="..."
+                  className="img-fluid"
+                  src={require("assets/img/theme/landing-3.png")}
+                />
+              </Col>
+              <Col className="order-md-1" md="6">
+                <div className="pr-md-5">
+                  <h1>Lovable widgets and cards</h1>
+                  <p>
+                    We love cards and everybody on the web seems to. We have
+                    gone above and beyond with options for you to organise your
+                    information. From cards designed for content, to pricing
+                    cards or user profiles, you will have many options to choose
+                    from.
+                  </p>
+                  <Link
+                    className="font-weight-bold text-info mt-5"
+                    to="/admin/widgets"
+                  >
+                    Explore widgets
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        <section className="py-7 section-nucleo-icons bg-white overflow-hidden">
+          <Container>
+            <Row className="justify-content-center">
+              <Col className="text-center" lg="8">
+                <h2 className="display-3">Nucleo Icons</h2>
+                <p className="lead">
+                  The official package contains over 21.000 icons which are
+                  looking great in combination with Argon Design System. Make
+                  sure you check all of them and use those that you like the
+                  most.
+                </p>
+                <div className="btn-wrapper">
+                  <Button
+                    color="info"
+                    href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/icons?ref=adpr-index-page"
+                    target="_blank"
+                  >
+                    View demo icons
+                  </Button>
+                  <Button
+                    className="mt-3 mt-md-0"
+                    color="default"
+                    href="https://nucleoapp.com/?ref=1712"
+                    target="_blank"
+                  >
+                    View all icons
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+            <div className="blur--hover">
+              <a
+                href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/icons?ref=adpr-index-page"
+                target="_blank"
+              >
+                <div className="icons-container blur-item mt-5">
+                  <i className="icon ni ni-diamond" />
 
-        {/* -----------tabla---------------- */}
-        <Row className="mt-5" style={{ border: "solid red 1px" }}>
-          <Col>
-            <Card className="shadow">
-              <div>
-                <Nav tabs>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        active: activeTab === "inTransit",
-                      })}
-                      onClick={() => toggleTab("inTransit")}
-                      href="#"
+                  <i className="icon icon-sm ni ni-album-2" />
+                  <i className="icon icon-sm ni ni-app" />
+                  <i className="icon icon-sm ni ni-atom" />
+
+                  <i className="icon ni ni-bag-17" />
+                  <i className="icon ni ni-bell-55" />
+                  <i className="icon ni ni-credit-card" />
+
+                  <i className="icon icon-sm ni ni-briefcase-24" />
+                  <i className="icon icon-sm ni ni-building" />
+                  <i className="icon icon-sm ni ni-button-play" />
+
+                  <i className="icon ni ni-calendar-grid-58" />
+                  <i className="icon ni ni-camera-compact" />
+                  <i className="icon ni ni-chart-bar-32" />
+                </div>
+                <span className="blur-hidden h5 text-success">
+                  Eplore all the 21.000+ Nucleo Icons
+                </span>
+              </a>
+            </div>
+          </Container>
+        </section>
+        <section className="py-7">
+          <Container>
+            <Row className="row-grid justify-content-center">
+              <Col className="text-center" lg="8">
+                <h2 className="display-3">
+                  Do you love this awesome{" "}
+                  <span className="text-success">
+                    Dashboard for Bootstrap 4, React and Reactstrap?
+                  </span>
+                </h2>
+                <p className="lead">
+                  Cause if you do, it can be yours now. Hit the button below to
+                  navigate to get the free version or purchase a license for
+                  your next project. Build a new web app or give an old
+                  Bootstrap project a new look!
+                </p>
+                <div className="btn-wrapper">
+                  <Button
+                    className="btn-neutral mb-3 mb-sm-0"
+                    color="default"
+                    href="https://www.creative-tim.com/product/argon-dashboard-react?ref=adpr-index-page"
+                    target="_blank"
+                  >
+                    <span className="btn-inner--text">Get FREE version</span>
+                  </Button>
+                  <Button
+                    className="btn-icon mb-3 mb-sm-0"
+                    color="info"
+                    href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adpr-index-page"
+                    target="_blank"
+                  >
+                    <span className="btn-inner--icon">
+                      <i className="ni ni-basket" />
+                    </span>
+                    <span className="btn-inner--text">Purchase now</span>
+                    <Badge
+                      className="badge-md badge-floating border-white"
+                      color="danger"
+                      pill
                     >
-                      In Transit
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        active: activeTab === "completed",
-                      })}
-                      onClick={() => toggleTab("completed")}
-                      href="#"
-                    >
-                      Completed
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        active: activeTab === "succeeded",
-                      })}
-                      onClick={() => toggleTab("succeeded")}
-                      href="#"
-                    >
-                      Succeeded
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({
-                        active: activeTab === "uncertain",
-                      })}
-                      onClick={() => toggleTab("uncertain")}
-                      href="#"
-                    >
-                      Uncertain
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames({ active: activeTab === "failed" })}
-                      onClick={() => toggleTab("failed")}
-                      href="#"
-                    >
-                      Failed
-                    </NavLink>
-                  </NavItem>
-                </Nav>
-                <TabContent activeTab={activeTab}>
-                  <TabPane tabId="inTransit">{TablaDatos("inTransit")}</TabPane>
-                  <TabPane tabId="completed">{TablaDatos("completed")}</TabPane>
-                  <TabPane tabId="succeeded">{TablaDatos("succeeded")}</TabPane>
-                  <TabPane tabId="uncertain">{TablaDatos("uncertain")}</TabPane>
-                  <TabPane tabId="failed">{TablaDatos("failed")}</TabPane>
-                </TabContent>
-              </div>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                      $89
+                    </Badge>
+                  </Button>
+                </div>
+                <div className="text-center">
+                  <h4 className="display-4 mb-5 mt-5">
+                    Available on these technologies
+                  </h4>
+                  <Row className="justify-content-center">
+                    <Col className="my-2" md="2" xs="3">
+                      <a
+                        href="https://www.creative-tim.com/product/argon-dashboard-pro?ref=adpr-index-page"
+                        id="tooltip170669606"
+                        target="_blank"
+                      >
+                        <img
+                          alt="..."
+                          className="img-fluid rounded-circle shadow shadow-lg--hover"
+                          src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/bootstrap.jpg"
+                        />
+                      </a>
+                      <UncontrolledTooltip delay={0} target="tooltip170669606">
+                        Bootstrap 4 - Most popular front-end component library
+                      </UncontrolledTooltip>
+                    </Col>
+                    <Col className="my-2" md="2" xs="3">
+                      <a
+                        href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adpr-index-page"
+                        id="tooltip374813715"
+                        target="_blank"
+                      >
+                        <img
+                          alt="..."
+                          className="img-fluid rounded-circle"
+                          src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/react.jpg"
+                        />
+                      </a>
+                      <UncontrolledTooltip delay={0} target="tooltip374813715">
+                        React - A JavaScript library for building user
+                        interfaces
+                      </UncontrolledTooltip>
+                    </Col>
+                    <Col className="my-2" md="2" xs="3">
+                      <a
+                        href="https://www.creative-tim.com/product/argon-dashboard-pro-nodejs?ref=adpr-index-page"
+                        id="tooltip374813716"
+                        target="_blank"
+                      >
+                        <img
+                          alt="..."
+                          className="img-fluid rounded-circle"
+                          src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/nodejs-logo.jpg"
+                        />
+                      </a>
+                      <UncontrolledTooltip delay={0} target="tooltip374813716">
+                        Node.js - a JavaScript runtime built on Chrome's V8
+                        JavaScript engine
+                      </UncontrolledTooltip>
+                    </Col>
+                    <Col className="my-2" md="2" xs="3">
+                      <a
+                        href="https://www.creative-tim.com/product/argon-dashboard-pro-laravel?ref=adpr-index-page"
+                        id="tooltip374813717"
+                        target="_blank"
+                      >
+                        <img
+                          alt="..."
+                          className="img-fluid rounded-circle"
+                          src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/laravel_logo.png"
+                          style={{ backgroundColor: "white" }}
+                        />
+                      </a>
+                      <UncontrolledTooltip delay={0} target="tooltip374813717">
+                        Laravel - The PHP Framework For Web Artisans
+                      </UncontrolledTooltip>
+                    </Col>
+                    <Col className="my-2" md="2" xs="3">
+                      <a
+                        href="https://www.creative-tim.com/product/vue-argon-dashboard-pro?ref=adpr-index-page"
+                        id="tooltip616015001"
+                        target="_blank"
+                      >
+                        <img
+                          alt="..."
+                          className="img-fluid rounded-circle"
+                          src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/vue.jpg"
+                        />
+                      </a>
+                      <UncontrolledTooltip delay={0} target="tooltip616015001">
+                        Vue.js - The progressive javascript framework
+                      </UncontrolledTooltip>
+                    </Col>
+                    <Col className="my-2" md="2" xs="3">
+                      <a
+                        href="https://www.creative-tim.com/product/argon-dashboard-pro-angular?ref=adpr-index-page"
+                        id="tooltip211254026"
+                        target="_blank"
+                      >
+                        <img
+                          alt="..."
+                          className="img-fluid rounded-circle"
+                          src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/angular.jpg"
+                        />
+                      </a>
+                      <UncontrolledTooltip delay={0} target="tooltip211254026">
+                        Angular - One framework. Mobile & desktop
+                      </UncontrolledTooltip>
+                    </Col>
+                    <Col className="my-2" md="2" xs="3">
+                      <a
+                        href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adpr-index-page"
+                        id="tooltip82987604"
+                        target="_blank"
+                      >
+                        <img
+                          alt="..."
+                          className="img-fluid rounded-circle"
+                          src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/sketch.jpg"
+                        />
+                      </a>
+                      <UncontrolledTooltip delay={0} target="tooltip82987604">
+                        Sketch - Digital design toolkit
+                      </UncontrolledTooltip>
+                    </Col>
+                    <Col className="my-2" md="2" xs="3">
+                      <a
+                        href="https://www.adobe.com/products/photoshop.html?ref=creative-tim"
+                        id="tooltip731835410"
+                        target="_blank"
+                      >
+                        <img
+                          alt="..."
+                          className="img-fluid rounded-circle opacity-3"
+                          src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/logos/ps.jpg"
+                        />
+                      </a>
+                      <UncontrolledTooltip delay={0} target="tooltip731835410">
+                        Adobe Photoshop - Software for digital images
+                        manipulation
+                      </UncontrolledTooltip>
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+      </div>
+      <AuthFooter />
     </>
   );
-};
+}
 
 export default Index;
