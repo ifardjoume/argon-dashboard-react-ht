@@ -346,8 +346,10 @@ function Login() {
                     >
                       Sign in
                     </Button>
+                    
                   </div>
                 </Form>
+               {loginError&& 'Wrong username or password'} 
               </CardBody>
             </Card>
             <Row className="mt-3">

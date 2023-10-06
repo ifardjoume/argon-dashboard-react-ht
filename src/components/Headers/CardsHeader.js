@@ -84,7 +84,7 @@ function CardsHeader({
     left: "-1%",
   };
   const cardsContainer = {
-    //border: "red solid 1px",
+   // border: "red solid 1px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -148,12 +148,13 @@ function CardsHeader({
               {/* card in transit---------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
                 <Card
-                  className="card-stats mb-4 mb-xl-0"
+                   className="card-stats mb-4 mb-xl-0"
                   style={
                     initialFilter === "month"
                       ? expandedCardStyle
                       : commonCardStyle
                   }
+                 
                 >
                   <CardBody>
                     <Row>
@@ -182,44 +183,8 @@ function CardsHeader({
                       </Col>  */}
                     </Row>
                     {/* texto invisible para mantener tamaños */}
-                    {/* <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_completed &&
-                        (percentageChange_completed.includes("-") ? (
-                          <div >
-                            <div >
-                              <span style={{visibility:" hidden"}}>
-                                {initialFilter === "month" && (
-                                  <i className="fa fa-arrow-up" />
-                                )}{" "}
-                                {initialFilter === "month" &&
-                                  percentageChange_completed.slice(1)}
-                              </span>{" "}
-                            </div>
-
-                            <div style={{visibility:" hidden"}}>
-                              {initialFilter === "month" &&
-                                "over the last month"}
-                            </div>
-                          </div>
-                        ) : (
-                          <div>
-                            <div>
-                              <span className="text-warning mr-2">
-                                <i className="fas fa-arrow-down" />{" "}
-                                {initialFilter === "month" &&
-                                  percentageChange_completed}
-                              </span>{" "}
-                            </div>
-
-                            <div style={{visibility:" hidden"}}>
-                              {initialFilter === "month"
-                                ? "  over the last month"
-                                : ""}
-                            </div>
-                          </div>
-                        ))}
-                    </div> */}
-                    <div>
+                    <div className="mt-3 mb-0 text-muted text-sm">
+                     <div>
                       <div>
                         <span className="text-warning mr-2"> </span>{" "}
                       </div>
@@ -230,6 +195,8 @@ function CardsHeader({
                           : ""}
                       </div>
                     </div>
+                    </div>
+                   
                   </CardBody>
                 </Card>
               </Col>
@@ -243,6 +210,7 @@ function CardsHeader({
                       ? expandedCardStyle
                       : commonCardStyle
                   }
+               
                 >
                   <CardBody>
                     <Row>
@@ -269,7 +237,7 @@ function CardsHeader({
                       </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_completed &&
+                      {percentageChange_completed ?
                         (percentageChange_completed.includes("-") ? (
                           <div>
                             <div>
@@ -303,7 +271,21 @@ function CardsHeader({
                                 : ""}
                             </div>
                           </div>
-                        ))}
+                        ))
+                        :
+                              // texto invisible para mantener tamaños
+                              <div>
+                              <div>
+                                <span className="text-warning mr-2"> </span>{" "}
+                              </div>
+        
+                              <div style={{ visibility: " hidden" }}>
+                                {initialFilter === "month"
+                                  ? "  over the last month"
+                                  : ""}
+                              </div>
+                            </div>
+                        }
                     </div>
                   </CardBody>
                 </Card>
@@ -313,11 +295,11 @@ function CardsHeader({
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
                 <Card
                   className="card-stats mb-4 mb-xl-0"
-                  style={
-                    initialFilter === "month"
-                      ? expandedCardStyle
-                      : commonCardStyle
-                  }
+                  // style={
+                  //   initialFilter === "month"
+                  //     ? expandedCardStyle
+                  //     : commonCardStyle
+                  // }
                 >
                   <CardBody>
                     <Row>
@@ -344,7 +326,7 @@ function CardsHeader({
                       </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_succeded &&
+                      {percentageChange_succeded ?
                         (percentageChange_succeded.includes("-") ? (
                           <div>
                             <div>
@@ -378,7 +360,21 @@ function CardsHeader({
                                 : ""}
                             </div>
                           </div>
-                        ))}
+                        ))
+                        :
+                        // texto invisible para mantener tamaños
+                        <div>
+                        <div>
+                          <span className="text-warning mr-2"> </span>{" "}
+                        </div>
+  
+                        <div style={{ visibility: " hidden" }}>
+                          {initialFilter === "month"
+                            ? "  over the last month"
+                            : ""}
+                        </div>
+                      </div>
+                      }
                     </div>
                   </CardBody>
                 </Card>
@@ -387,11 +383,11 @@ function CardsHeader({
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
                 <Card
                   className="card-stats mb-4 mb-xl-0"
-                  style={
-                    initialFilter === "month"
-                      ? expandedCardStyle
-                      : commonCardStyle
-                  }
+                  // style={
+                  //   initialFilter === "month"
+                  //     ? expandedCardStyle
+                  //     : commonCardStyle
+                  // }
                 >
                   <CardBody>
                     <Row>
@@ -418,7 +414,7 @@ function CardsHeader({
                       </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_uncertain &&
+                      {percentageChange_uncertain ?
                         (percentageChange_uncertain.includes("-") ? (
                           <div>
                             <div>
@@ -452,7 +448,21 @@ function CardsHeader({
                                 : ""}
                             </div>
                           </div>
-                        ))}
+                        ))
+                        :
+                         // texto invisible para mantener tamaños
+                         <div>
+                         <div>
+                           <span className="text-warning mr-2"> </span>{" "}
+                         </div>
+   
+                         <div style={{ visibility: " hidden" }}>
+                           {initialFilter === "month"
+                             ? "  over the last month"
+                             : ""}
+                         </div>
+                       </div>
+                        }
                     </div>
                   </CardBody>
                 </Card>
@@ -462,11 +472,11 @@ function CardsHeader({
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
                 <Card
                   className="card-stats mb-4 mb-xl-0"
-                  style={
-                    initialFilter === "month"
-                      ? expandedCardStyle
-                      : commonCardStyle
-                  }
+                  // style={
+                  //   initialFilter === "month"
+                  //     ? expandedCardStyle
+                  //     : commonCardStyle
+                  // }
                 >
                   <CardBody>
                     <Row>
@@ -493,7 +503,7 @@ function CardsHeader({
                       </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_failed &&
+                      {percentageChange_failed ?
                         (percentageChange_failed.includes("-") ? (
                           <div>
                             <div>
@@ -527,7 +537,21 @@ function CardsHeader({
                                 : ""}
                             </div>
                           </div>
-                        ))}
+                        ))
+                        :
+                         // texto invisible para mantener tamaños
+                         <div>
+                         <div>
+                           <span className="text-warning mr-2"> </span>{" "}
+                         </div>
+   
+                         <div style={{ visibility: " hidden" }}>
+                           {initialFilter === "month"
+                             ? "  over the last month"
+                             : ""}
+                         </div>
+                       </div>
+                        }
                     </div>
                     {/* texto invisible para mantener tamaños */}
                     {/* {!percentageChange_failed && 

@@ -82,9 +82,10 @@ if (
         <BrowserRouter>
           <Routes>
             <Route path="/admin/*" element={<AdminLayout />} />
+
             <Route path="/rtl/*" element={<RTLLayout />} />
             
-            <Route path="/" element={<IndexView />} />
+            {/* <Route path="/" element={<IndexView />} /> */}
             <Route path="*" element={<Navigate to="/admin/*" replace />} />
           </Routes>
         </BrowserRouter>
