@@ -16,6 +16,7 @@ import { ContextFilterDayMonth } from "context/filterDayMonth";
 const mpt = localStorage.getItem("mbt");
 mapboxgl.accessToken = mpt;
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 const user_id = localStorage.getItem("token")?.length > 0 && parseJwt(localStorage.getItem("token"))?.user_id;
 
 //creo un espacio para guardar las notificaciones
