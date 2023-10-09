@@ -21,6 +21,7 @@ import classnames from "classnames";
 import Chart from "chart.js";
 // react plugin used to create charts
 import { Line, Bar, Doughnut } from "react-chartjs-2";
+import ProgressBar from "@ramonak/react-progress-bar";
 // reactstrap components
 import {
   Badge,
@@ -49,6 +50,8 @@ import {
   Spinner,
   TabContent,
   TabPane,
+  CardTitle,
+  CardText,
 } from "reactstrap";
 
 // core components
@@ -63,6 +66,7 @@ import {
 import { useShipments } from "graphql/queries/ShipmentsCards";
 import useShipmentsTable from "graphql/queries/ShipmentsTable";
 import { convertirHoraLocal } from "helpers";
+import { useFailedUncertain } from "queries/stats";
 
 function Dashboard() {
   const [
@@ -80,7 +84,7 @@ function Dashboard() {
     setActiveNav(index);
     setChartExample1Data(chartExample1Data === "data1" ? "data2" : "data1");
   };
-  
+  //completyed data
   let graphicData = {};
   graphicData = {
     datasets: [
@@ -101,12 +105,42 @@ function Dashboard() {
     cutoutPercentage: 80,
   };
 
+  //failed/uncertain data
+  let failUncertain = {};
+  failUncertain = {
+    datasets: [
+      {
+        data: [allData?.uncertShipsState, allData?.failShipsState],
+        backgroundColor: ["#F0EA3F", "#D60707"],
+        borderWidth: 2,
+        cutout: "78%",
+        radius: "80%",
+      },
+    ],
+  };
+
+  //causes data
+  let total =
+    allData?.causes?.temperature +
+    allData?.causes?.acceleration +
+    allData?.causes?.intrusion;
+
+  const temperaturePercentage = Math.ceil(
+    (100 * allData?.causes?.temperature) / total
+  );
+  const accelerationPercentage = Math.ceil(
+    (100 * allData?.causes?.acceleration) / total
+  );
+  const intrusionPercentage = Math.ceil(
+    (100 * allData?.causes?.intrusion) / total
+  );
+  //branches with more alerts data
+
   //traigo data para la tabla
   const [changeFilter, infoLength, info, company_detail] = useShipmentsTable();
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
-
 
   const [activeTab, setActiveTab] = useState("inTransit");
 
@@ -116,9 +150,6 @@ function Dashboard() {
     }
     changeFilter(tab);
   };
-
-
- 
 
   // const renderTable = (tab) => {
   //   const columns = Object.keys(data[tab][0]);
@@ -273,7 +304,9 @@ function Dashboard() {
   }
   return (
     <>
-      <CardsHeader name="Default" parentName="Dashboards"
+      <CardsHeader
+        name="Default"
+        parentName="Dashboards"
         inTransitShipsState={inTransitShipsState}
         loading={loading}
         allData={allData}
@@ -282,7 +315,7 @@ function Dashboard() {
         initialFilter={initialFilter}
       />
 
-       {/* Page content */}
+      {/* Page content */}
       <Container className="mt--7" fluid>
         {/* ------------grafico de torta completed- --------- */}
         <Row>
@@ -337,57 +370,163 @@ function Dashboard() {
           </Col>
           {/* --failed/uncertain -causes -braanches with more alerts----------------------- */}
           <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-gradient-default shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
-                    </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
-                  </div>
-                  <div className="col">
-                    <Nav className="justify-content-end" pills>
-                      <NavItem>
-                        <NavLink
-                          className={classnames("py-2 px-3", {
-                            active: activeNav === 1,
-                          })}
-                          href="#pablo"
-                          onClick={(e) => toggleNavs(e, 1)}
+            <div
+              style={{
+                height: "95%",
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+              }}
+            >
+              {/* FAILED/UNCERTAIN */}
+              <Card
+                style={{
+                  width: "33%",
+                  paddingBottom: "20px",
+                  paddingTop: "20px",
+                }}
+              >
+                <h2 className="mb-0">FAILED/UNCERTAIN</h2>
+
+                <CardBody style={{ height: "80%" }}>
+                  {loading ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <Spinner className="spinner" />
+                    </div>
+                  ) : (
+                    <>
+                      <div style={{ height: "100%" }}>
+                        <Doughnut data={failUncertain} options={options} />
+                        <div
+                          style={{
+                            position: "absolute",
+                            width: "100%",
+                            top: "55%",
+                            left: "0.5%",
+                            textAlign: "center",
+                            marginTop: "-6%",
+                            lineHeight: "1vw",
+                            fontSize: "24px",
+                            fontWeight: "bold",
+                          }}
                         >
-                          <span className="d-none d-md-block">Month</span>
-                          <span className="d-md-none">M</span>
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames("py-2 px-3", {
-                            active: activeNav === 2,
-                          })}
-                          data-toggle="tab"
-                          href="#pablo"
-                          onClick={(e) => toggleNavs(e, 2)}
+                          {allData?.uncertShipsState + allData?.failShipsState >
+                          0
+                            ? allData?.uncertShipsState +
+                              allData?.failShipsState
+                            : 0}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </CardBody>
+              </Card>
+
+              {/* CAUSES */}
+              <Card
+                style={{
+                  width: "33%",
+                  paddingBottom: "20px",
+                  paddingTop: "20px",
+                }}
+              >
+                <h2 className="mb-0">CAUSES</h2>
+
+                <CardBody style={{ height: "80%" }}>
+                  {!loading ? (
+                    <>
+                      {total ? (
+                        <>
+                          <div
+                            style={{ border: "solid red 1px", height: "100%" }}
+                          >
+                            <span>{temperaturePercentage}% - Temperature</span>
+                            
+                            <ProgressBar
+                                completed={Math.floor((100 * allData?.causes?.temperature) / total)}
+                                width='100%'
+                                height={window.screen.width > 800 ? '1.2vw' : '2vw'}
+                                baseBgColor={null}
+                                isLabelVisible={false}
+                                bgColor={'#D60707'}
+                               // className={styles.bar}
+                            />
+
+                            <span>
+                              {accelerationPercentage}% - Acceleration
+                            </span>
+                            <ProgressBar
+                                completed={Math.floor((100 * allData?.causes?.intrusion) / total)}
+                                width='100%'
+                                height={window.screen.width > 800 ? '1.2vw' : '2vw'}
+                                baseBgColor={null}
+                                isLabelVisible={false}
+                                bgColor={'#F0EA3F'}
+                               // className={styles.bar}
+                            />
+                            <span>{intrusionPercentage}% - Intrusion</span>
+                            <ProgressBar
+                                completed={Math.floor((100 * allData?.causes?.acceleration) / total)}
+                                width='100%'
+                                height={window.screen.width > 800 ? '1.2vw' : '2vw'}
+                                baseBgColor={null}
+                                isLabelVisible={false}
+                                bgColor={'#D60707'}
+                               // className={styles.bar}
+                            />
+                          </div>
+                        </>
+                      ) : (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: "100%",
+                          }}
                         >
-                          <span className="d-none d-md-block">Week</span>
-                          <span className="d-md-none">W</span>
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
+                          No data to show
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <Spinner className="spinner" />
+                    </div>
+                  )}
+                </CardBody>
+              </Card>
+
+              {/* BRANCHES WITH MORE ALERTS */}
+              <Card
+                style={{
+                  width: "33%",
+                  paddingBottom: "20px",
+                  paddingTop: "20px",
+                }}
+              >
+                <h2>BRANCHES WITH MORE ALERTS</h2>
+                <CardBody style={{ height: "80%" }}>
+                  <div style={{ border: "solid red 1px", height: "100%" }}>
+                    estadistica 3
                   </div>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Line
-                    data={chartExample1[chartExample1Data]}
-                    options={chartExample1.options}
-                    getDatasetAtEvent={(e) => console.log(e)}
-                  />
-                </div>
-              </CardBody>
-            </Card>
+                </CardBody>
+              </Card>
+            </div>
           </Col>
         </Row>
 
