@@ -20,7 +20,7 @@ import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar, Doughnut } from "react-chartjs-2";
+import { Line, Bar, Doughnut, Pie } from "react-chartjs-2";
 import ProgressBar from "@ramonak/react-progress-bar";
 // reactstrap components
 import {
@@ -61,7 +61,7 @@ import {
   chartOptions,
   parseOptions,
   chartExample1,
-  chartExample2,
+  chartExample6,
 } from "variables/charts.js";
 import { useShipments } from "graphql/queries/ShipmentsCards";
 import useShipmentsTable from "graphql/queries/ShipmentsTable";
@@ -85,8 +85,7 @@ function Dashboard() {
     setChartExample1Data(chartExample1Data === "data1" ? "data2" : "data1");
   };
   //completyed data
-  let graphicData = {};
-  graphicData = {
+  const graphicData = {
     datasets: [
       {
         data: [
@@ -94,24 +93,21 @@ function Dashboard() {
           allData?.uncertShipsState,
           allData?.failShipsState,
         ],
-        backgroundColor: ["#33B27F", "#F0EA3F", "#D60707"],
-        borderWidth: 2,
-        cutout: "78%",
-        radius: "80%",
+        backgroundColor: ["#2dce89", "#fb6340", "#f5365c"],
+        labels: ["Success", "Uncertain", "Failed"],
       },
     ],
   };
   const options = {
-    cutoutPercentage: 80,
+    tooltips: false,
   };
-
   //failed/uncertain data
   let failUncertain = {};
   failUncertain = {
     datasets: [
       {
         data: [allData?.uncertShipsState, allData?.failShipsState],
-        backgroundColor: ["#F0EA3F", "#D60707"],
+        backgroundColor: ["#fb6340", "#f5365c"],
         borderWidth: 2,
         cutout: "78%",
         radius: "80%",
@@ -319,12 +315,14 @@ function Dashboard() {
       {/* Page content */}
       <Container className="mt--7" fluid>
         {/* ------------grafico de torta completed- --------- */}
-        <div style={{ display:"flex"}}>
-          <Col xl="4" >
-            <Card  style={{height:"20vw"}}  >
-              
-              <h2 style={{marginTop:"1vw", marginLeft:"1vw"}}>COMPLETED</h2>
-              <CardBody >
+
+        <Row style={{ display: "flex", border: "solid red 1px" }}>
+          <Col xl="4" style={{ border: "solid blue 1px" }}>
+            <Card>
+              <h2 style={{ marginTop: "1vw", marginLeft: "1vw" }}>
+                COMPLETED: {allData?.completedShipsState}
+              </h2>
+              <CardBody>
                 <div className="chart">
                   {loading ? (
                     <div
@@ -339,168 +337,31 @@ function Dashboard() {
                     </div>
                   ) : (
                     <>
-                    <div style={{ height:"80%"}}>
-                           <Doughnut data={graphicData} options={options} />
-                    </div>
-                 
-                      {/*aca va el total de completed */}
-                      <div
-                        style={{
-                          fontSize: "24px",
-                          fontWeight: "bold",
-                          display: "flex",
-                          justifyContent: "center",
-                          flexDirection: "column",
-                          height: "100%",
-                          textAlign: "center",
-                          zIndex: "100",
-                          position: "relative",
-                          top: "-320px",
-                        }}
-                      >
-                        {allData?.completedShipsState}
-                      </div>
+                      <Card>
+                        {/* <Doughnut data={graphicData} options={options} /> */}
+                        <Pie data={graphicData} options={options} />
+                      </Card>
                     </>
                   )}
                 </div>
               </CardBody>
             </Card>
           </Col>
-          {/* --failed/uncertain -causes -braanches with more alerts----------------------- */}
-          <Col className="mb-5 mb-xl-0" xl="8" /* style={{height:"5%",position:"relative",top:"50px"}} */>
-            <div
-              style={{
-                height: "85%",
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
-              
-              }}
-            >
-              {/* FAILED/UNCERTAIN */}
-              <Card
-                style={{
-                  width: "33%",
-                  paddingBottom: "20px",
-                  paddingTop: "20px",
-                  height: "20vw",
-                }}
-              >
-                <h2 className="statsTitle">FAILED/UNCERTAIN</h2>
+          <Col xl="8">
+            <Row>
+              {/* ------------grafico de torta failed/uncertain- --------- */}
+              <div style={{ height: "400px" }}>
+                <Col style={{ height: "100%" }}>
+                  <Card style={{ height: "100%" }}>
+                    <h2 className="statsTitle">
+                      FAILED/UNCERTAIN:{" "}
+                      {allData?.uncertShipsState + allData?.failShipsState > 0
+                        ? allData?.uncertShipsState + allData?.failShipsState
+                        : 0}
+                    </h2>
 
-                <CardBody style={{ height: "80%" }}>
-                  {loading ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                      }}
-                    >
-                      <Spinner className="spinner" />
-                    </div>
-                  ) : (
-                    <>
-                      <div style={{ height: "100%" }}>
-                        <Doughnut data={failUncertain} options={options} />
-                        <div
-                          style={{
-                            position: "absolute",
-                            width: "100%",
-                            top: "55%",
-                            left: "0.5%",
-                            textAlign: "center",
-                            marginTop: "-5%",
-                            lineHeight: "1vw",
-                            fontSize: "24px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {allData?.uncertShipsState + allData?.failShipsState >
-                          0
-                            ? allData?.uncertShipsState +
-                              allData?.failShipsState
-                            : 0}
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </CardBody>
-              </Card>
-              {/* PROGRESS BAR */}
-              {/* CAUSES */}
-              <Card
-                style={{
-                  width: "33%",
-                  paddingBottom: "20px",
-                  paddingTop: "20px",
-                  height: "20vw",
-                }}
-              >
-                <h2 className="statsTitle">CAUSES</h2>
-                <CardBody style={{ height: "80%" }}>
-                  {!loading ? (
-                    <>
-                      {total ? (
-                        <>
-                          <div className="progressBarContainer">
-                            <div className="progressBar">
-                              <span>
-                                {temperaturePercentage}% - Temperature
-                              </span>
-                              <ProgressBar
-                                completed={Math.floor(
-                                  (100 * allData?.causes?.temperature) / total
-                                )}
-                                width="100%"
-                                // height={
-                                //   window.screen.width > 800 ? "1.2vw" : "2vw"
-                                // }
-                                baseBgColor={null}
-                                isLabelVisible={false}
-                                bgColor={"#D60707"}
-                                // className={styles.bar}
-                              />
-                            </div>
-
-                            <div className="progressBar">
-                              <span>{intrusionPercentage}% - Intrusion</span>
-                              <ProgressBar
-                                completed={Math.floor(
-                                  (100 * allData?.causes?.intrusion) / total
-                                )}
-                                width="100%"
-                                height={
-                                  window.screen.width > 800 ? "1.2vw" : "2vw"
-                                }
-                                baseBgColor={null}
-                                isLabelVisible={false}
-                                bgColor={"#F0EA3F"}
-                                // className={styles.bar}
-                              />
-                            </div>
-                            <div className="progressBar">
-                              <span>
-                                {accelerationPercentage}% - Acceleration
-                              </span>
-                              <ProgressBar
-                                completed={Math.floor(
-                                  (100 * allData?.causes?.acceleration) / total
-                                )}
-                                width="100%"
-                                height={
-                                  window.screen.width > 800 ? "1.2vw" : "2vw"
-                                }
-                                baseBgColor={null}
-                                isLabelVisible={false}
-                                bgColor={"#F0EA3F"}
-                                // className={styles.bar}
-                              />
-                            </div>
-                          </div>
-                        </>
-                      ) : (
+                    <CardBody>
+                      {loading ? (
                         <div
                           style={{
                             display: "flex",
@@ -509,97 +370,93 @@ function Dashboard() {
                             height: "100%",
                           }}
                         >
-                          No data to show
+                          <Spinner className="spinner" />
                         </div>
+                      ) : (
+                        <>
+                          <div style={{ height: "100%" }}>
+                            {/* <Doughnut data={failUncertain} options={options} /> */}
+                            <Pie data={failUncertain} />
+                          </div>
+                        </>
                       )}
-                    </>
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                      }}
-                    >
-                      <Spinner className="spinner" />
-                    </div>
-                  )}
-                </CardBody>
-              </Card>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </div>
 
-              {/* BRANCHES WITH MORE ALERTS */}
-              <Card
-                style={{
-                  width: "33%",
-                  paddingBottom: "20px",
-                  paddingTop: "20px",
-                  height: "20vw",
-                }}
-              >
-                <h2 className="statsTitle">BRANCHES WITH MORE ALERTS</h2>
-                <CardBody style={{ height: "80%" }}>
-                  <div style={{ height: "100%" }}>
-                    {!loading ? (
-                      <div>
-                        {branchesData?.[0] ? (
-                          <div>
-                            {branchesData.map((b) => (
-                              <div
-                                key={
-                                  b.branch
-                                } 
-                              >
-                                <span className="spanProgressBar">
-                                  {company_detail?.company?.branches?.map(
-                                    (br) => br.branch_id === b.branch && br.name
-                                  )}
-                                </span>
-                                <div className="progressBar">
-                                <ProgressBar
-                                  completed={Math.ceil(
-                                    (100 * b.failed) / b.total
-                                  )}
-                                  maxCompleted={Math.ceil(
-                                    (100 * b.total) / b.total
-                                  )}
-                                  width={
-                                    window.screen.width > 800 ? "100%" : "80%"
-                                  }
-                                  height={
-                                    window.screen.width > 800 ? "1.2vw" : "2vw"
-                                  }
-                                  baseBgColor={"#F0EA3F"}
-                                  isLabelVisible={false}
-                                  bgColor={"#D60707"}
-                                  
-                                />
-                                </div>
-                              </div>
-                            ))}
+              <div style={{ height: "400px" }}>
+                <Col style={{ height: "100%" }}>
+                  <Card style={{ height: "100%" }}>
+                    <h2 className="statsTitle">
+                      FAILED/UNCERTAIN:{" "}
+                      {allData?.uncertShipsState + allData?.failShipsState > 0
+                        ? allData?.uncertShipsState + allData?.failShipsState
+                        : 0}
+                    </h2>
+
+                    <CardBody>
+                      {loading ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: "100%",
+                          }}
+                        >
+                          <Spinner className="spinner" />
+                        </div>
+                      ) : (
+                        <>
+                          <div style={{ height: "100%" }}>
+                            {/* <Doughnut data={failUncertain} options={options} /> */}
+                            <Pie data={failUncertain} />
                           </div>
-                        ) : (
-                          <div >
-                           no alerts
+                        </>
+                      )}
+                    </CardBody>
+                  </Card>
+                </Col>
+              </div>
+
+              <div style={{ height: "400px" }}>
+                <Col style={{ height: "100%" }}>
+                  <Card style={{ height: "100%" }}>
+                    <h2 className="statsTitle">
+                      FAILED/UNCERTAIN:{" "}
+                      {allData?.uncertShipsState + allData?.failShipsState > 0
+                        ? allData?.uncertShipsState + allData?.failShipsState
+                        : 0}
+                    </h2>
+
+                    <CardBody>
+                      {loading ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: "100%",
+                          }}
+                        >
+                          <Spinner className="spinner" />
+                        </div>
+                      ) : (
+                        <>
+                          <div style={{ height: "100%" }}>
+                            {/* <Doughnut data={failUncertain} options={options} /> */}
+                            <Pie data={failUncertain} />
                           </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                      }} >
-                        <Spinner className="spinner" />
-                      </div>
-                    )}
-                  </div>
-                </CardBody>
-              </Card>
-            </div>
+                        </>
+                      )}
+                    </CardBody>
+                  </Card>
+                </Col>
+              </div>
+            </Row>
           </Col>
-        </div>
+        </Row>
 
         {/* -----------tabla---------------- */}
         <Row className="mt-5" style={{ border: "solid red 1px" }}>
@@ -678,3 +535,164 @@ function Dashboard() {
 }
 
 export default Dashboard;
+// {/* --failed/uncertain -causes -braanches with more alerts----------------------- */}
+//         <Col xl="4">
+//           {/* FAILED/UNCERTAIN */}
+// <Card>
+//   <h2 className="statsTitle">
+//     FAILED/UNCERTAIN:{" "}
+//     {allData?.uncertShipsState + allData?.failShipsState > 0
+//       ? allData?.uncertShipsState + allData?.failShipsState
+//       : 0}
+//   </h2>
+
+//   <CardBody>
+//     {loading ? (
+//       <div
+//         style={{
+//           display: "flex",
+//           alignItems: "center",
+//           justifyContent: "center",
+//           height: "100%",
+//         }}
+//       >
+//         <Spinner className="spinner" />
+//       </div>
+//     ) : (
+//       <>
+//         <div style={{ height: "100%" }}>
+//           {/* <Doughnut data={failUncertain} options={options} /> */}
+//           <Pie data={failUncertain} />
+//         </div>
+//       </>
+//     )}
+//   </CardBody>
+// </Card>
+//         </Col>
+
+//         <Col xl="4">
+//           {/* PROGRESS BAR */}
+//           {/* CAUSES */}
+//           <Card>
+//             <h2 className="statsTitle">CAUSES</h2>
+//             <CardBody>
+//               {!loading ? (
+//                 <>
+//                   {total ? (
+//                     <>
+//                       <div className="progressBarContainer">
+//                         <div className="progressBar">
+//                           <span>{temperaturePercentage}% - Temperature</span>
+
+//                           <Progress
+//                             max="100"
+//                             value={Math.floor(
+//                               (100 * allData?.causes?.temperature) / total
+//                             )}
+//                             color="danger"
+//                           />
+//                         </div>
+
+//                         <div className="progressBar">
+//                           <span>{intrusionPercentage}% - Intrusion</span>
+
+//                           <Progress
+//                             value={Math.floor(
+//                               (100 * allData?.causes?.intrusion) / total
+//                             )}
+//                             max="100"
+//                             color="warning"
+//                           />
+//                         </div>
+//                         <div className="progressBar">
+//                           <span>
+//                             {accelerationPercentage}% - Acceleration
+//                           </span>
+
+//                           <Progress
+//                             max="100"
+//                             value={Math.floor(
+//                               (100 * allData?.causes?.acceleration) / total
+//                             )}
+//                             color="default"
+//                           />
+//                         </div>
+//                       </div>
+//                     </>
+//                   ) : (
+//                     <div
+//                       style={{
+//                         display: "flex",
+//                         alignItems: "center",
+//                         justifyContent: "center",
+//                         height: "100%",
+//                       }}
+//                     >
+//                       No data to show
+//                     </div>
+//                   )}
+//                 </>
+//               ) : (
+//                 <div
+//                   style={{
+//                     display: "flex",
+//                     alignItems: "center",
+//                     justifyContent: "center",
+//                     height: "100%",
+//                   }}
+//                 >
+//                   <Spinner className="spinner" />
+//                 </div>
+//               )}
+//             </CardBody>
+//           </Card>
+//         </Col>
+
+//         <Col xl="4">
+//           {/* BRANCHES WITH MORE ALERTS */}
+//           <Card>
+//             <h2 className="statsTitle">BRANCHES WITH MORE ALERTS</h2>
+//             <CardBody style={{ height: "80%" }}>
+//               <div style={{ height: "100%" }}>
+//                 {!loading ? (
+//                   <div>
+//                     {branchesData?.[0] ? (
+//                       <div>
+//                         {branchesData.map((b) => (
+//                           <div key={b.branch}>
+//                             <span className="spanProgressBar">
+//                               {company_detail?.company?.branches?.map(
+//                                 (br) => br.branch_id === b.branch && br.name
+//                               )}
+//                             </span>
+//                             <div className="progressBar">
+//                               <Progress
+//                                 value={Math.ceil((100 * b.failed) / b.total)}
+//                                 max={Math.ceil((100 * b.total) / b.total)}
+//                                 color="danger"
+//                                 className="barra-fondo-warning"
+//                               />
+//                             </div>
+//                           </div>
+//                         ))}
+//                       </div>
+//                     ) : (
+//                       <div>no alerts</div>
+//                     )}
+//                   </div>
+//                 ) : (
+//                   <div
+//                     style={{
+//                       display: "flex",
+//                       alignItems: "center",
+//                       justifyContent: "center",
+//                       height: "100%",
+//                     }}
+//                   >
+//                     <Spinner className="spinner" />
+//                   </div>
+//                 )}
+//               </div>
+//             </CardBody>
+//           </Card>
+//         </Col>

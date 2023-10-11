@@ -513,32 +513,32 @@ const chartExample5 = {
 // Example 6 of Chart inside src/views/pages/Charts.js
 const chartExample6 = {
   data: {
-    labels: ["Danger", "Warning", "Success", "Primary", "Info"],
+   // labels: ["Danger", "Warning", "Success", "Primary", "Info"],
     datasets: [
       {
-        data: [
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-        ],
-        backgroundColor: [
-          colors.theme["danger"],
-          colors.theme["warning"],
-          colors.theme["success"],
-          colors.theme["primary"],
-          colors.theme["info"],
-        ],
-        label: "Dataset 1",
+        // data: [
+        //   randomScalingFactor(),
+        //   randomScalingFactor(),
+        //   randomScalingFactor(),
+        //   randomScalingFactor(),
+        //   randomScalingFactor(),
+        // ],
+        // backgroundColor: [
+        //   colors.theme["danger"],
+        //   colors.theme["warning"],
+        //   colors.theme["success"],
+        //   colors.theme["primary"],
+        //   colors.theme["info"],
+        // ],
+      //  label: "Dataset 1",
       },
     ],
   },
   options: {
     responsive: true,
-    legend: {
-      position: "top",
-    },
+    // legend: {
+    //   position: "top",
+    // },
     animation: {
       animateScale: true,
       animateRotate: true,
