@@ -155,54 +155,10 @@ let initialFilter=initialDayMonth
   ] = useLazyQuery(GET_SHIPMENT_DETAIL);
 
   //   // USE EFFECT ----------------------------------------------------------------------------------------------------
-  //   useEffect(() => {
-  //     console.log('initial month')
-  //     console.log(initialMonth)
-  //     console.log('initial day')
-  //     console.log(initialDay)
-  //     console.log('final date')
-  //     console.log(finalDate)
-  //     const fetch = async () => {
-  //       let result = await lazyGetShipmentsPag({
-  //         variables: {
-  //           company_id,
-  //           in_transit: selectedFilter === "TRANSIT" ? true : false,
-  //           status: selectedFilter !== "TRANSIT" ? selectedFilter : null,
-  //           from_date:
-  //             initialFilter === "month"
-  //               ? initialMonth.toISOString()
-  //               : initialDay.toISOString(),
-  //           to_date: finalDate.toISOString(),
-  //           page,
-  //           per_page: rowsPerPage,
-  //         },
-  //       });
-  //       console.log("fetch result");
-  //       console.log(result?.data);
-  //       infoLength = result?.data?.shipments?.total;
-  //       info = result?.data?.shipments?.selectedItems;
-  //       console.log('info')
-  //       console.log(info)
-  //     };
-  //     fetch();
-  //     // await lazyGetShipmentsPag({
-  //     //   variables: {
-  //     //     company_id,
-  //     //     in_transit: selectedFilter === "TRANSIT" ? true : false,
-  //     //     status: selectedFilter !== "TRANSIT" ? selectedFilter : null,
-  //     //     from_date:
-  //     //       initialFilter === "month"
-  //     //         ? initialMonth.toISOString()
-  //     //         : initialDay.toISOString(),
-  //     //     to_date: finalDate.toISOString(),
-  //     //     page,
-  //     //     per_page: rowsPerPage,
-  //     //   },
-  //     // });
-  //     // infoLength = lazyPaginatedData?.shipments?.total;
-  //     // info = lazyPaginatedData?.shipments?.selectedItems;
+    useEffect(() => {
+    console.log('cambio la pagina y el numero es: ', page);
 
-  //   }, [updatedShipData, createdShipData, initialFilter, selectedFilter, lazyPaginatedData]);
+    }, [page]);
 
   //SI SE CREA/CIERRA UN ENVIO O HAY UN CHECKPOINT SE ACTUALIZA EL COMPONENTE
   if (updatedCheckpointsData || updatedShipData || createdShipData) {
@@ -296,5 +252,5 @@ let initialFilter=initialDayMonth
     console.log("error en la query de branches", branchesError);
   if (contentError)
     console.log("error en el contenido de viajes en transito", contentError);
-  return [changeFilter,infoLength,info, company_detail];
+  return [changeFilter,infoLength,info, company_detail,setPage, page, lazyPaginatedDataLoading, paginatedDataLoading];
 }

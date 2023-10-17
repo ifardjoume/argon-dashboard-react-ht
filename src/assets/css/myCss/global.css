@@ -27,3 +27,9 @@
     background-color: #fb6340;
     
 }
+.nav {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 3%;
+    padding-right: 3%;
+  }

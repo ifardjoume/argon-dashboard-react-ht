@@ -52,6 +52,9 @@ import {
   TabPane,
   CardTitle,
   CardText,
+  PaginationItem,
+  PaginationLink,
+  Pagination,
 } from "reactstrap";
 
 // core components
@@ -62,12 +65,14 @@ import {
   parseOptions,
   chartExample1,
   chartExample6,
+  chartExample7,
 } from "variables/charts.js";
 import { useShipments } from "graphql/queries/ShipmentsCards";
 import useShipmentsTable from "graphql/queries/ShipmentsTable";
 import { convertirHoraLocal } from "helpers";
 import { useFailedUncertain } from "queries/stats";
 import "../../../assets/css/myCss/global.css";
+import { set } from "date-fns";
 function Dashboard() {
   const [
     inTransitShipsState,
@@ -79,10 +84,18 @@ function Dashboard() {
   ] = useShipments();
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
+  const [navPills, setNavPills] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const toggleNavs = (e, index) => {
     e.preventDefault();
     setActiveNav(index);
     setChartExample1Data(chartExample1Data === "data1" ? "data2" : "data1");
+  };
+
+  const toggleNavs2 = (e, state, index) => {
+    e.preventDefault();
+    setNavPills(index);
   };
   //completyed data
   const graphicData = {
@@ -134,7 +147,17 @@ function Dashboard() {
   const branchesData = allData?.branchesWithMoreAlerts;
 
   //traigo data para la tabla
-  const [changeFilter, infoLength, info, company_detail] = useShipmentsTable();
+  const [
+    changeFilter,
+    infoLength,
+    info,
+    company_detail,
+    setPage,
+    page,
+    ,
+    lazyPaginatedDataLoading,
+    paginatedDataLoading,
+  ] = useShipmentsTable();
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
@@ -195,6 +218,29 @@ function Dashboard() {
   //   );
   // };
   function TablaDatos() {
+    if (lazyPaginatedDataLoading || paginatedDataLoading) {
+      return (
+        <>
+        
+          <div
+            style={{
+              display: "flex",
+              position: "relative",
+
+              alignItems: "center",
+              justifyContent: "center",
+              height: "20vw",
+              //border: "solid red 1px",
+            }}
+          >
+            <Spinner className="spinner" />
+          </div>
+        </>
+      );
+    }
+
+
+
     if (!info?.selectedItems || info?.selectedItems?.length === 0) {
       return <div>No hay datos para mostrar.</div>;
     }
@@ -202,7 +248,7 @@ function Dashboard() {
       <>
         {activeTab === "inTransit" ? (
           <Table className="align-items-center table-flush" responsive>
-            <thead>
+            <thead >
               <tr>
                 <th>ID</th>
                 <th>ORIGIN</th>
@@ -268,6 +314,8 @@ function Dashboard() {
           </Table>
         ) : (
           <Table className="align-items-center table-flush" responsive>
+
+            
             <thead>
               <tr>
                 <th>ID</th>
@@ -294,11 +342,27 @@ function Dashboard() {
                 </tr>
               ))}
             </tbody>
+
           </Table>
         )}
       </>
     );
   }
+  //pagination
+  const changePage = (e, value) => {
+    e.preventDefault();
+    console.log(value);
+    if (value === "prev") {
+      setPage(page);
+      setCurrentPage(page);
+    } else if (value === "next") {
+      setPage(page);
+      setCurrentPage(page);
+    } else {
+      setPage(value);
+      setCurrentPage(page);
+    }
+  };
   return (
     <>
       <CardsHeader
@@ -536,7 +600,6 @@ function Dashboard() {
                         width: "100%",
                       }}
                     >
-                      
                       <CardTitle
                         tag="h3"
                         className="text-uppercase text-muted mb-0"
@@ -598,21 +661,44 @@ function Dashboard() {
           </Col>
         </Row>
 
-        {/* -----------tabla---------------- */}
-        <Row className="mt-5" style={{ border: "solid red 1px" }}>
-          <Col>
+        {/* -----------tabla/grafico de barras---------------- */}
+        <Row className="mt-5" /* style={{ border: "solid red 1px" }} */>
+          {/* grafico de barras */}
+          <Col xl="4">
+            <Card>
+              <CardHeader>
+                <h6 className="surtitle">Overview</h6>
+                <h5 className="h3 mb-0">Product comparison</h5>
+              </CardHeader>
+              <CardBody>
+                <div className="chart">
+                  <Bar
+                    data={chartExample7.data}
+                    options={chartExample7.options}
+                    className="chart-canvas"
+                    id="chart-bar-stacked"
+                  />
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+          {/* tabla */}
+          <Col xl="8">
             <Card className="shadow">
-              <div>
-                <Nav tabs>
-                  <NavItem>
+              <div >
+                <Nav >
+                  <NavItem className="nav">
                     <NavLink
                       className={classnames({
                         active: activeTab === "inTransit",
                       })}
                       onClick={() => toggleTab("inTransit")}
                       href="#"
+                      style={{
+                        color: activeTab === "inTransit" && "#5e72e4",
+                      }}
                     >
-                      In Transit
+                      IN TRANSIT
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -622,8 +708,11 @@ function Dashboard() {
                       })}
                       onClick={() => toggleTab("completed")}
                       href="#"
+                      style={{
+                        color: activeTab === "completed" && "#5e72e4",
+                      }}
                     >
-                      Completed
+                      COMPLETD
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -633,8 +722,11 @@ function Dashboard() {
                       })}
                       onClick={() => toggleTab("succeeded")}
                       href="#"
+                      style={{
+                        color: activeTab === "succeeded" && "#5e72e4",
+                      }}
                     >
-                      Succeeded
+                     SUCCEDED
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -644,8 +736,11 @@ function Dashboard() {
                       })}
                       onClick={() => toggleTab("uncertain")}
                       href="#"
+                      style={{
+                        color: activeTab === "uncertain" && "#5e72e4",
+                      }}
                     >
-                      Uncertain
+                      UNCERTAIN
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -653,12 +748,18 @@ function Dashboard() {
                       className={classnames({ active: activeTab === "failed" })}
                       onClick={() => toggleTab("failed")}
                       href="#"
+                      style={{
+                        color: activeTab === "failed" && "#5e72e4",
+                      }}
                     >
-                      Failed
+                      FAILED
                     </NavLink>
                   </NavItem>
                 </Nav>
-                <TabContent activeTab={activeTab}>
+                <TabContent
+                  activeTab={activeTab}
+                  style={{ /* border: "solid red 1px", */ height: "24vw" }}
+                >
                   <TabPane tabId="inTransit">{TablaDatos("inTransit")}</TabPane>
                   <TabPane tabId="completed">{TablaDatos("completed")}</TabPane>
                   <TabPane tabId="succeeded">{TablaDatos("succeeded")}</TabPane>
@@ -666,8 +767,63 @@ function Dashboard() {
                   <TabPane tabId="failed">{TablaDatos("failed")}</TabPane>
                 </TabContent>
               </div>
+{/* pagination */}
+<nav aria-label="Page navigation example" className="ml-auto">
+                <Pagination >
+                  <PaginationItem >
+                    <PaginationLink
+                      aria-label="Previous"
+                      href="#pablo"
+                      onClick={(e) => changePage(e, "prev")}
+                    >
+                      <i className="fa fa-angle-left" />
+                      <span className="sr-only">Previous</span>
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem  className={page === 1 ? "active" : ""}>
+                    <PaginationLink
+                      href="#pablo"
+                      onClick={(e) => changePage(e, 1)}
+                     
+                    >
+                      1
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem  className={page === 2 ? "active" : ""}>
+                    <PaginationLink
+                      href="#pablo"
+                      onClick={(e) => changePage(e, 2)}
+                     
+                    >
+                      2
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem className={page === 3 ? "active" : ""}>
+                    <PaginationLink
+                      href="#pablo"
+                      onClick={(e) => changePage(e, 3)}
+                      value={3}
+                      
+                    >
+                      3
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink
+                      aria-label="Next"
+                      href="#pablo"
+                      onClick={(e) => changePage(e, "next")}
+                      name="next"
+                    >
+                      <i className="fa fa-angle-right" />
+                      <span className="sr-only">Next</span>
+                    </PaginationLink>
+                  </PaginationItem>
+                </Pagination>
+              </nav>
             </Card>
           </Col>
+          
         </Row>
       </Container>
     </>
