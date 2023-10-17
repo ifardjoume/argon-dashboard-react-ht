@@ -27,9 +27,31 @@
     background-color: #fb6340;
     
 }
-.nav {
+.nav{
     display: flex;
     justify-content: space-between;
-    padding-left: 3%;
-    padding-right: 3%;
+    /* border:solid rgb(34, 0, 255) 1px; */
+    align-items: center;
+    padding: 0.5%;
+    padding-left: 1%;
+    padding-right: 1%;
+   
+}
+.navText {
+    display: flex;
+    justify-content: space-between;
+   
+    /* border:solid red 1px; */
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-last-checkpoint{
+    border: none;
+    background-color: transparent;
+
+  }
+  .btn-last-checkpoint:hover {
+    color: #5e72e4;
+    text-decoration: underline;
   }

@@ -55,6 +55,11 @@ import {
   PaginationItem,
   PaginationLink,
   Pagination,
+  ModalHeader,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  CardFooter,
 } from "reactstrap";
 
 // core components
@@ -71,8 +76,14 @@ import { useShipments } from "graphql/queries/ShipmentsCards";
 import useShipmentsTable from "graphql/queries/ShipmentsTable";
 import { convertirHoraLocal } from "helpers";
 import { useFailedUncertain } from "queries/stats";
+import inTransitIcon from "../../../assets/img/icons/common/oldIcons/viajesEnCurso.png";
+import completedIcon from "../../../assets/img/icons/common/oldIcons/viajesHechos.png";
+import succededIcon from "../../../assets/img/icons/common/oldIcons/viajesConformes.png";
+import uncertainIcon from "../../../assets/img/icons/common/oldIcons/viajesParaRevision.png";
+import failedIcon from "../../../assets/img/icons/common/oldIcons/viajesConformes.png";
 import "../../../assets/css/myCss/global.css";
 import { set } from "date-fns";
+
 function Dashboard() {
   const [
     inTransitShipsState,
@@ -86,17 +97,33 @@ function Dashboard() {
   const [chartExample1Data, setChartExample1Data] = useState("data1");
   const [navPills, setNavPills] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalCheckpoints, setModalCheckpoints] = useState(false);
+  const [modalContents, setModalContents] = useState(false);
+  const [modalComments, setModalComments] = useState(false);
+  const [modalAlerts, setModalAlerts] = useState(false);
 
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setActiveNav(index);
-    setChartExample1Data(chartExample1Data === "data1" ? "data2" : "data1");
+  const toggleModalCheckpoints = () => {
+    setModalCheckpoints(!modalCheckpoints);
   };
+  const toggleModalContents = () => {
+    setModalContents(!modalContents);
+  };
+  const toggleModalComments = () => {
+    setModalComments(!modalComments);
+  };
+  const toggleModalAlerts = () => {
+    setModalAlerts(!modalAlerts);
+  };
+  // const toggleNavs = (e, index) => {
+  //   e.preventDefault();
+  //   setActiveNav(index);
+  //   setChartExample1Data(chartExample1Data === "data1" ? "data2" : "data1");
+  // };
 
-  const toggleNavs2 = (e, state, index) => {
-    e.preventDefault();
-    setNavPills(index);
-  };
+  // const toggleNavs2 = (e, state, index) => {
+  //   e.preventDefault();
+  //   setNavPills(index);
+  // };
   //completyed data
   const graphicData = {
     datasets: [
@@ -221,7 +248,6 @@ function Dashboard() {
     if (lazyPaginatedDataLoading || paginatedDataLoading) {
       return (
         <>
-        
           <div
             style={{
               display: "flex",
@@ -239,50 +265,62 @@ function Dashboard() {
       );
     }
 
-
-
     if (!info?.selectedItems || info?.selectedItems?.length === 0) {
-      return <div>No hay datos para mostrar.</div>;
+      return (
+        <div
+          style={{
+            display: "flex",
+            position: "relative",
+
+            alignItems: "center",
+            justifyContent: "center",
+            height: "20vw",
+            //border: "solid red 1px",
+          }}
+        >
+          No data to show
+        </div>
+      );
     }
     return (
       <>
         {activeTab === "inTransit" ? (
           <Table className="align-items-center table-flush" responsive>
-            <thead >
+            <thead>
               <tr>
-                <th>ID</th>
-                <th>ORIGIN</th>
-                <th>DEPARTURE</th>
-                <th>LAST CHECKPOINT</th>
-                <th>CONTENT</th>
-                <th>COMMENTS</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ID</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>QR</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ORIGIN</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>DEPARTURE</th>
+                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>LAST CHECKPOINT</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>CONTENT</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>COMMENTS</th>
                 {/* Agrega más encabezados según lo que quieras mostrar */}
               </tr>
             </thead>
             <tbody>
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.shipment_id}</td>
-                  <td>
+                  <td style={{ textAlign: "center" }}>{item.shipment_id}</td>
+                  <td style={{ textAlign: "center" }}>{item.qr}</td>
+                  <td style={{ textAlign: "center" }}>
                     {" "}
                     {company_detail?.company?.branches?.map(
                       (b) => b?.branch_id === item?.origin_id && b?.name
                     )}
                   </td>
-                  <td>
+                  <td style={{ textAlign: "center" }}>
                     {convertirHoraLocal(
                       item?.departure,
                       company_detail?.company?.gmt
                     )}
                   </td>
-                  <td>
+                  <td style={{ textAlign: "center" }}>
                     {" "}
                     {item?.checkpoints?.[item?.checkpoints.length - 1] ? (
                       <button
-
-                      // onClick={() =>
-                      //   handleCheckpointsModal(s.shipment_id)
-                      // }
+                        className="btn-last-checkpoint"
+                        onClick={toggleModalCheckpoints}
                       >
                         {
                           // fecha y hora
@@ -305,8 +343,22 @@ function Dashboard() {
                       " No checkpoints"
                     )}
                   </td>
-                  <th>content modal</th>
-                  <th>comments modal</th>
+                  <th style={{ textAlign: "center" }}>
+                    <button
+                      className="btn-last-checkpoint"
+                      onClick={toggleModalContents}
+                    >
+                    OPEN
+                    </button>
+                  </th>
+                  <th style={{ textAlign: "center" }}>
+                    <button
+                      className="btn-last-checkpoint"
+                      onClick={toggleModalComments}
+                    >
+                     OPEN
+                    </button>
+                  </th>
                   {/* Agrega más celdas según lo que quieras mostrar */}
                 </tr>
               ))}
@@ -314,35 +366,51 @@ function Dashboard() {
           </Table>
         ) : (
           <Table className="align-items-center table-flush" responsive>
-
-            
             <thead>
               <tr>
-                <th>ID</th>
-                <th>ORIGIN</th>
-                <th>SENT</th>
-                <th>RECEIVED</th>
-                <th>DESTINATION</th>
-                <th>ALERTS</th>
-                <th>COMMENTS</th>
+                <th style={{ textAlign: "center" , fontSize: "0.8vw" }}>ID</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>QR</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ORIGIN</th>
+                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>SENT</th>
+                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>RECEIVED</th>
+                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>DESTINATION</th>
+                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>ALERTS</th>
+                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>COMMENTS</th>
                 {/* Agrega más encabezados según lo que quieras mostrar */}
               </tr>
             </thead>
             <tbody>
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.shipment_id}</td>
-                  <td>{item.origin_id}</td>
-                  <td>{item.origin_op_id}</td>
-                  <td>{item.destination_op_id}</td>
-                  <td>{item.destination_id}</td>
-                  <td>alert modal</td>
-                  <th>comments modal</th>
+                  <td style={{ textAlign: "center" }}>{item.shipment_id}</td>
+                  <td style={{ textAlign: "center" }}>{item.qr}</td>
+                  <td style={{ textAlign: "center" }}>{item.origin_id}</td>
+                  <td style={{ textAlign: "center" }}>{item.origin_op_id}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {item.destination_op_id}
+                  </td>
+                  <td style={{ textAlign: "center" }}>{item.destination_id}</td>
+                  <th style={{ textAlign: "center" }}>
+                    <button
+                      className="btn-last-checkpoint"
+                      onClick={toggleModalAlerts}
+                    >
+                     ALERTS
+                    </button>
+                  </th>
+
+                  <th style={{ textAlign: "center" }}>
+                    <button
+                      className="btn-last-checkpoint"
+                      onClick={toggleModalComments}
+                    >
+                     OPEN
+                    </button>
+                  </th>
                   {/* Agrega más celdas según lo que quieras mostrar */}
                 </tr>
               ))}
             </tbody>
-
           </Table>
         )}
       </>
@@ -353,15 +421,20 @@ function Dashboard() {
     e.preventDefault();
     console.log(value);
     if (value === "prev") {
-      setPage(page);
+      setPage(page - 1);
       setCurrentPage(page);
     } else if (value === "next") {
-      setPage(page);
+      setPage(page + 1);
       setCurrentPage(page);
     } else {
       setPage(value);
       setCurrentPage(page);
     }
+  };
+  const iconCard = {
+    // border: "red solid 1px",
+    width: "2vw",
+    height: "2vw",
   };
   return (
     <>
@@ -662,7 +735,7 @@ function Dashboard() {
         </Row>
 
         {/* -----------tabla/grafico de barras---------------- */}
-        <Row className="mt-5" /* style={{ border: "solid red 1px" }} */>
+        <Row className="mt-5">
           {/* grafico de barras */}
           <Col xl="4">
             <Card>
@@ -685,9 +758,9 @@ function Dashboard() {
           {/* tabla */}
           <Col xl="8">
             <Card className="shadow">
-              <div >
-                <Nav >
-                  <NavItem className="nav">
+              <div>
+                <Nav>
+                  <NavItem className="navText">
                     <NavLink
                       className={classnames({
                         active: activeTab === "inTransit",
@@ -698,7 +771,11 @@ function Dashboard() {
                         color: activeTab === "inTransit" && "#5e72e4",
                       }}
                     >
-                      IN TRANSIT
+                      {activeTab === "inTransit" ? (
+                        "IN TRANSIT"
+                      ) : (
+                        <img style={iconCard} src={inTransitIcon} alt="" />
+                      )}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -712,7 +789,11 @@ function Dashboard() {
                         color: activeTab === "completed" && "#5e72e4",
                       }}
                     >
-                      COMPLETD
+                      {activeTab === "completed" ? (
+                        "COMPLETED"
+                      ) : (
+                        <img style={iconCard} src={completedIcon} alt="" />
+                      )}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -726,7 +807,11 @@ function Dashboard() {
                         color: activeTab === "succeeded" && "#5e72e4",
                       }}
                     >
-                     SUCCEDED
+                      {activeTab === "succeeded" ? (
+                        "SUCCEDED"
+                      ) : (
+                        <img style={iconCard} src={succededIcon} alt="" />
+                      )}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -740,7 +825,11 @@ function Dashboard() {
                         color: activeTab === "uncertain" && "#5e72e4",
                       }}
                     >
-                      UNCERTAIN
+                      {activeTab === "uncertain" ? (
+                        "UNCERTAIN"
+                      ) : (
+                        <img style={iconCard} src={uncertainIcon} alt="" />
+                      )}
                     </NavLink>
                   </NavItem>
                   <NavItem>
@@ -752,13 +841,17 @@ function Dashboard() {
                         color: activeTab === "failed" && "#5e72e4",
                       }}
                     >
-                      FAILED
+                      {activeTab === "failed" ? (
+                        "FAILED"
+                      ) : (
+                        <img style={iconCard} src={failedIcon} alt="" />
+                      )}
                     </NavLink>
                   </NavItem>
                 </Nav>
                 <TabContent
                   activeTab={activeTab}
-                  style={{ /* border: "solid red 1px", */ height: "24vw" }}
+                  style={{ /* border: "solid red 1px", */ minHeight: "22vw" }}
                 >
                   <TabPane tabId="inTransit">{TablaDatos("inTransit")}</TabPane>
                   <TabPane tabId="completed">{TablaDatos("completed")}</TabPane>
@@ -767,64 +860,138 @@ function Dashboard() {
                   <TabPane tabId="failed">{TablaDatos("failed")}</TabPane>
                 </TabContent>
               </div>
-{/* pagination */}
-<nav aria-label="Page navigation example" className="ml-auto">
-                <Pagination >
-                  <PaginationItem >
-                    <PaginationLink
-                      aria-label="Previous"
-                      href="#pablo"
-                      onClick={(e) => changePage(e, "prev")}
-                    >
-                      <i className="fa fa-angle-left" />
-                      <span className="sr-only">Previous</span>
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem  className={page === 1 ? "active" : ""}>
-                    <PaginationLink
-                      href="#pablo"
-                      onClick={(e) => changePage(e, 1)}
-                     
-                    >
-                      1
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem  className={page === 2 ? "active" : ""}>
-                    <PaginationLink
-                      href="#pablo"
-                      onClick={(e) => changePage(e, 2)}
-                     
-                    >
-                      2
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem className={page === 3 ? "active" : ""}>
-                    <PaginationLink
-                      href="#pablo"
-                      onClick={(e) => changePage(e, 3)}
-                      value={3}
-                      
-                    >
-                      3
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink
-                      aria-label="Next"
-                      href="#pablo"
-                      onClick={(e) => changePage(e, "next")}
-                      name="next"
-                    >
-                      <i className="fa fa-angle-right" />
-                      <span className="sr-only">Next</span>
-                    </PaginationLink>
-                  </PaginationItem>
-                </Pagination>
-              </nav>
+
+              {/* pagination */}
+              <CardFooter
+                style={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <nav aria-label="Page navigation example">
+                  <Pagination>
+                    <PaginationItem>
+                      <PaginationLink
+                        aria-label="Previous"
+                        href="#pablo"
+                        onClick={(e) => changePage(e, "prev")}
+                      >
+                        <i className="fa fa-angle-left" />
+                        <span className="sr-only">Previous</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem className={page === 1 ? "active" : ""}>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={(e) => changePage(e, 1)}
+                      >
+                        1
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem className={page === 2 ? "active" : ""}>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={(e) => changePage(e, 2)}
+                      >
+                        2
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem className={page === 3 ? "active" : ""}>
+                      <PaginationLink
+                        href="#pablo"
+                        onClick={(e) => changePage(e, 3)}
+                        value={3}
+                      >
+                        3
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink
+                        aria-label="Next"
+                        href="#pablo"
+                        onClick={(e) => changePage(e, "next")}
+                        name="next"
+                      >
+                        <i className="fa fa-angle-right" />
+                        <span className="sr-only">Next</span>
+                      </PaginationLink>
+                    </PaginationItem>
+                  </Pagination>
+                </nav>
+              </CardFooter>
             </Card>
           </Col>
-          
         </Row>
+        {/* modal Checkpoints */}
+        <Modal
+          className="modal-dialog-centered"
+          isOpen={modalCheckpoints}
+          toggle={toggleModalCheckpoints}
+        >
+          <ModalHeader toggle={toggleModalCheckpoints}>
+            CHECKPOINTS MODAL
+          </ModalHeader>
+          <ModalBody>CONTENIDO DEL MODAL</ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={toggleModalCheckpoints}>
+              Close
+            </Button>
+            {/* <Button color="primary" type="button">
+              Save changes
+            </Button> */}
+          </ModalFooter>
+        </Modal>
+
+        {/* modal Contents */}
+        <Modal
+          className="modal-dialog-centered"
+          isOpen={modalContents}
+          toggle={toggleModalContents}
+        >
+          <ModalHeader toggle={toggleModalContents}>CONTENTS MODAL</ModalHeader>
+          <ModalBody>CONTENIDO DEL MODAL</ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={toggleModalContents}>
+              Close
+            </Button>
+            {/* <Button color="primary" type="button">
+              Save changes
+            </Button> */}
+          </ModalFooter>
+        </Modal>
+
+        {/* modal Comments */}
+        <Modal
+          className="modal-dialog-centered"
+          isOpen={modalComments}
+          toggle={toggleModalComments}
+        >
+          <ModalHeader toggle={toggleModalComments}>COMMENTS MODAL</ModalHeader>
+          <ModalBody>CONTENIDO DEL MODAL</ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={toggleModalComments}>
+              Close
+            </Button>
+            {/* <Button color="primary" type="button">
+              Save changes
+            </Button> */}
+          </ModalFooter>
+        </Modal>
+
+          {/* modal Alerts */}
+          <Modal
+          className="modal-dialog-centered"
+          isOpen={modalAlerts}
+          toggle={toggleModalComments}
+        >
+          <ModalHeader toggle={toggleModalAlerts}>ALERTS MODAL</ModalHeader>
+          <ModalBody>'CONTENIDO DEL MODAL( GRAFICO)'</ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={toggleModalAlerts}>
+              Close
+            </Button>
+            {/* <Button color="primary" type="button">
+              Save changes
+            </Button> */}
+          </ModalFooter>
+        </Modal>
       </Container>
     </>
   );
