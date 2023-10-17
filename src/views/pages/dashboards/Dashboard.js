@@ -551,7 +551,7 @@ function Dashboard() {
                           <>
                             <div style={{ height: "100%" }}>
                               {/* <Doughnut data={failUncertain} options={options} /> */}
-                              <Pie data={failUncertain} />
+                              <Pie data={failUncertain} options={options} />
                             </div>
                           </>
                         )}
