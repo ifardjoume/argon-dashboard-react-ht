@@ -6,7 +6,7 @@ import {
   SHIPMENTS_UPDATED_SUBSCRIPTION,
   SHIPMENTS_CREATED_SUBSCRIPTION,
   SHIPMENTS_CHECKPOINTS_SUBSCRIPTION,
-} from "../queries";
+} from ".";
 import { useQuery, useLazyQuery, useSubscription } from "@apollo/client";
 import { company_id } from "../const";
 import { useShipments } from "./ShipmentsCards";

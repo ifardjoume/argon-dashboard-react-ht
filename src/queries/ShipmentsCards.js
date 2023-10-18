@@ -3,7 +3,7 @@ import { useSubscription } from "@apollo/client";
 import {
   SHIPMENTS_CREATED_SUBSCRIPTION,
   SHIPMENTS_UPDATED_SUBSCRIPTION,
-} from "../queries";
+} from ".";
 import axios from "axios";
 import { company_id, SERVER_URL } from "../const";
 import { logOut, parseJwt } from "../helpers.js";

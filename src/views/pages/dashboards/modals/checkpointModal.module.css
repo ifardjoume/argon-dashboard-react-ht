@@ -1,0 +1,132 @@
+.checkpointsBox {
+    display: flex;
+    margin-top: 0px !important;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    /* border: solid red 1px; */
+    height: 20vw;
+}
+.modalTitleContainer {
+    display: flex;
+    margin-bottom: 5%;
+    color: #1B1464;
+    justify-content: center;
+    font-size: 1.8vw;
+}
+.checksYDatas {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: solid red 1px;
+}
+.checks {
+    width: 37%;
+    height: 100%;
+    border: solid red 1px;
+}
+.eachCheckpoint {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    align-items: center;
+}
+.iconAndLine {
+    display: flex;
+    flex-direction: column;
+    width: 2vw;
+    height: 2.9vw;
+    margin-top: 0.2vw;
+    margin-bottom: -0.4vw;
+
+
+}
+.checkpointsIcon {
+    width: 1vw;
+    height: 0.7vw;
+    color: #00AAC8;
+    margin: 1px auto
+}
+
+.checkpointsIcon2 {
+
+    width: 1vw;
+    height: 0.7vw;
+    color: #1B1464;
+    margin: 3px auto
+}
+.intermediateLine {
+    /*   border-right: 0.3vw solid #00ABC8;  */
+    height: 1.9vw;
+    width: 0.2vw;
+    margin: 1px auto;
+    background-color: #00ABC8;
+    justify-content: center;
+
+}
+.labName {
+    font-size: 1.1vw;
+    margin-left: 0.5vw;
+
+}
+
+.datas {
+    padding-left: 5%;
+    width: 70%;
+    height: 100%;
+}
+.checkDate {
+    display: flex;
+    font-size: 1vw;
+    margin-bottom: 6.4%;
+    width: 100%;
+    margin-right: 5%;
+    padding-left: 2%;
+    text-align: left;
+ /*  justify-content: flex-end; */
+ border: solid red 1px;
+}
+/* 
+//////////////////////////////////////////////// */
+
+.check_data{
+    border: solid rgb(0, 255, 89) 1px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+.check{
+    border: solid rgb(255, 0, 191) 1px;
+   width: 30%; 
+}
+.data{
+    border: solid rgb(115, 0, 255) 1px;
+    width: 70%;
+    ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.lineContainer{
+    
+}
+.line{
+    height: 1.5vw;
+    width:3px;
+    background-color: #00ABC8;
+    position: relative;
+    left:0.3vw
+}
+.lineInvisible{
+    height: 1.5vw;
+    width:3px;
+    
+    position: relative;
+    left:1vw    
+}
+
+

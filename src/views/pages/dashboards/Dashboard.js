@@ -83,8 +83,11 @@ import uncertainIcon from "../../../assets/img/icons/common/oldIcons/viajesParaR
 import failedIcon from "../../../assets/img/icons/common/oldIcons/viajesConformes.png";
 import "../../../assets/css/myCss/global.css";
 import { set } from "date-fns";
+import CheckpointsModal from "./modals/CheckpointsModal";
+
 
 function Dashboard() {
+  //hooks
   const [
     inTransitShipsState,
     loading,
@@ -93,6 +96,8 @@ function Dashboard() {
     prevData,
     initialFilter,
   ] = useShipments();
+
+  //states
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
   const [navPills, setNavPills] = useState(1);
@@ -101,9 +106,11 @@ function Dashboard() {
   const [modalContents, setModalContents] = useState(false);
   const [modalComments, setModalComments] = useState(false);
   const [modalAlerts, setModalAlerts] = useState(false);
+  const [shipment_id,setShipment_id]=useState(null)
 
-  const toggleModalCheckpoints = () => {
+  const toggleModalCheckpoints = (e,shipment_id) => {
     setModalCheckpoints(!modalCheckpoints);
+    setShipment_id(shipment_id)
   };
   const toggleModalContents = () => {
     setModalContents(!modalContents);
@@ -320,7 +327,7 @@ function Dashboard() {
                     {item?.checkpoints?.[item?.checkpoints.length - 1] ? (
                       <button
                         className="btn-last-checkpoint"
-                        onClick={toggleModalCheckpoints}
+                        onClick={(e)=>toggleModalCheckpoints(e,item.shipment_id)}
                       >
                         {
                           // fecha y hora
@@ -921,14 +928,17 @@ function Dashboard() {
         </Row>
         {/* modal Checkpoints */}
         <Modal
-          className="modal-dialog-centered"
+          className="custom-modal" // Agrega una clase CSS personalizada
           isOpen={modalCheckpoints}
           toggle={toggleModalCheckpoints}
+         
         >
           <ModalHeader toggle={toggleModalCheckpoints}>
             CHECKPOINTS MODAL
           </ModalHeader>
-          <ModalBody>CONTENIDO DEL MODAL</ModalBody>
+          <ModalBody>
+            <CheckpointsModal  shipment_id={shipment_id}/>
+          </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={toggleModalCheckpoints}>
               Close
