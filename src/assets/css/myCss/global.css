@@ -55,3 +55,11 @@
     color: #5e72e4;
     text-decoration: underline;
   }
+.custom-modal{
+  /* border: solid red 1px; */
+  height: 50vw;
+}
+.vertical-timeline-element.custom-line {
+  height: 2.5vw; /* Ajusta la altura de la línea según lo necesario */
+  
+}

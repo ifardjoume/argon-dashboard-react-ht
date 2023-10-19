@@ -85,7 +85,6 @@ import "../../../assets/css/myCss/global.css";
 import { set } from "date-fns";
 import CheckpointsModal from "./modals/CheckpointsModal";
 
-
 function Dashboard() {
   //hooks
   const [
@@ -106,11 +105,11 @@ function Dashboard() {
   const [modalContents, setModalContents] = useState(false);
   const [modalComments, setModalComments] = useState(false);
   const [modalAlerts, setModalAlerts] = useState(false);
-  const [shipment_id,setShipment_id]=useState(null)
+  const [shipment_id, setShipment_id] = useState(null);
 
-  const toggleModalCheckpoints = (e,shipment_id) => {
+  const toggleModalCheckpoints = (e, shipment_id) => {
     setModalCheckpoints(!modalCheckpoints);
-    setShipment_id(shipment_id)
+    setShipment_id(shipment_id);
   };
   const toggleModalContents = () => {
     setModalContents(!modalContents);
@@ -297,18 +296,28 @@ function Dashboard() {
               <tr>
                 <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ID</th>
                 <th style={{ textAlign: "center", fontSize: "0.8vw" }}>QR</th>
-                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ORIGIN</th>
-                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>DEPARTURE</th>
-                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>LAST CHECKPOINT</th>
-                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>CONTENT</th>
-                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>COMMENTS</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  ORIGIN
+                </th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  DEPARTURE
+                </th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  LAST CHECKPOINT
+                </th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  CONTENT
+                </th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  COMMENTS
+                </th>
                 {/* Agrega más encabezados según lo que quieras mostrar */}
               </tr>
             </thead>
             <tbody>
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
-                  <td style={{ textAlign: "center" }}>{item.shipment_id}</td>
+                  <td style={{ textAlign: "center" }}>{item.shipment_id.split('-')[1]}</td>
                   <td style={{ textAlign: "center" }}>{item.qr}</td>
                   <td style={{ textAlign: "center" }}>
                     {" "}
@@ -327,7 +336,9 @@ function Dashboard() {
                     {item?.checkpoints?.[item?.checkpoints.length - 1] ? (
                       <button
                         className="btn-last-checkpoint"
-                        onClick={(e)=>toggleModalCheckpoints(e,item.shipment_id)}
+                        onClick={(e) =>
+                          toggleModalCheckpoints(e, item.shipment_id)
+                        }
                       >
                         {
                           // fecha y hora
@@ -355,7 +366,7 @@ function Dashboard() {
                       className="btn-last-checkpoint"
                       onClick={toggleModalContents}
                     >
-                    OPEN
+                      OPEN
                     </button>
                   </th>
                   <th style={{ textAlign: "center" }}>
@@ -363,7 +374,7 @@ function Dashboard() {
                       className="btn-last-checkpoint"
                       onClick={toggleModalComments}
                     >
-                     OPEN
+                      OPEN
                     </button>
                   </th>
                   {/* Agrega más celdas según lo que quieras mostrar */}
@@ -375,34 +386,67 @@ function Dashboard() {
           <Table className="align-items-center table-flush" responsive>
             <thead>
               <tr>
-                <th style={{ textAlign: "center" , fontSize: "0.8vw" }}>ID</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ID</th>
                 <th style={{ textAlign: "center", fontSize: "0.8vw" }}>QR</th>
-                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ORIGIN</th>
-                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>SENT</th>
-                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>RECEIVED</th>
-                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>DESTINATION</th>
-                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>ALERTS</th>
-                <th style={{ textAlign: "center" , fontSize: "0.8vw"}}>COMMENTS</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  ORIGIN
+                </th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>SENT</th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  RECEIVED
+                </th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  DESTINATION
+                </th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  ALERTS
+                </th>
+                <th style={{ textAlign: "center", fontSize: "0.8vw" }}>
+                  COMMENTS
+                </th>
                 {/* Agrega más encabezados según lo que quieras mostrar */}
               </tr>
             </thead>
             <tbody>
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
-                  <td style={{ textAlign: "center" }}>{item.shipment_id}</td>
+                  {/* id */}
+                  <td style={{ textAlign: "center" }}>{item.shipment_id.split('-')[1]}</td>
+                  {/* qr */}
                   <td style={{ textAlign: "center" }}>{item.qr}</td>
-                  <td style={{ textAlign: "center" }}>{item.origin_id}</td>
-                  <td style={{ textAlign: "center" }}>{item.origin_op_id}</td>
+                  {/* origin */}
                   <td style={{ textAlign: "center" }}>
-                    {item.destination_op_id}
+                    {company_detail?.company?.branches?.map(
+                      (b) => b?.branch_id === item?.origin_id && b?.name
+                    )}
                   </td>
-                  <td style={{ textAlign: "center" }}>{item.destination_id}</td>
+                  {/* sent */}
+                  <td style={{ textAlign: "center" }}>
+                    {convertirHoraLocal(
+                      item?.departure,
+                      company_detail?.company?.gmt
+                    )}
+                  </td>
+                  {/* received */}
+                  <td style={{ textAlign: "center" }}>
+                    {convertirHoraLocal(
+                      item?.arrival,
+                      company_detail.company.gmt
+                    )}
+                  </td>
+                  {/* destination */}
+                  <td style={{ textAlign: "center" }}>
+                    {" "}
+                    {company_detail?.company?.branches?.map(
+                      (b) => b.branch_id === item.destination_id && b.name
+                    )}
+                  </td>
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
                       onClick={toggleModalAlerts}
                     >
-                     ALERTS
+                      ALERTS
                     </button>
                   </th>
 
@@ -411,7 +455,7 @@ function Dashboard() {
                       className="btn-last-checkpoint"
                       onClick={toggleModalComments}
                     >
-                     OPEN
+                      OPEN
                     </button>
                   </th>
                   {/* Agrega más celdas según lo que quieras mostrar */}
@@ -931,13 +975,10 @@ function Dashboard() {
           className="custom-modal" // Agrega una clase CSS personalizada
           isOpen={modalCheckpoints}
           toggle={toggleModalCheckpoints}
-         
         >
-          <ModalHeader toggle={toggleModalCheckpoints}>
-            CHECKPOINTS MODAL
-          </ModalHeader>
+          <ModalHeader toggle={toggleModalCheckpoints}>CHECKPOINTS</ModalHeader>
           <ModalBody>
-            <CheckpointsModal  shipment_id={shipment_id}/>
+            <CheckpointsModal shipment_id={shipment_id} />
           </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={toggleModalCheckpoints}>
@@ -985,8 +1026,8 @@ function Dashboard() {
           </ModalFooter>
         </Modal>
 
-          {/* modal Alerts */}
-          <Modal
+        {/* modal Alerts */}
+        <Modal
           className="modal-dialog-centered"
           isOpen={modalAlerts}
           toggle={toggleModalComments}
