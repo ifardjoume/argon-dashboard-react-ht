@@ -1,0 +1,13 @@
+.modalContent {
+    display: flex;
+    height: 20vw;
+    flex-direction: column;
+    overflow-y: auto;
+}
+.modalData {
+    font-size: 2vw;
+    margin-bottom: 0.3vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}

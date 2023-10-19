@@ -60,6 +60,6 @@
   height: 50vw;
 }
 .vertical-timeline-element.custom-line {
-  height: 2.5vw; /* Ajusta la altura de la línea según lo necesario */
+  min-height: 2.5vw; /* Ajusta la altura de la línea según lo necesario */
   
 }

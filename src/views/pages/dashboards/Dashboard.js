@@ -84,6 +84,9 @@ import failedIcon from "../../../assets/img/icons/common/oldIcons/viajesConforme
 import "../../../assets/css/myCss/global.css";
 import { set } from "date-fns";
 import CheckpointsModal from "./modals/CheckpointsModal";
+import ContentsModal from "./modals/ContentsModal";
+
+import Comments from "./modals/Comments";
 
 function Dashboard() {
   //hooks
@@ -106,19 +109,23 @@ function Dashboard() {
   const [modalComments, setModalComments] = useState(false);
   const [modalAlerts, setModalAlerts] = useState(false);
   const [shipment_id, setShipment_id] = useState(null);
+  
 
   const toggleModalCheckpoints = (e, shipment_id) => {
     setModalCheckpoints(!modalCheckpoints);
     setShipment_id(shipment_id);
   };
-  const toggleModalContents = () => {
+  const toggleModalContents = (e, shipment_id) => {
     setModalContents(!modalContents);
+    setShipment_id(shipment_id);
   };
-  const toggleModalComments = () => {
+  const toggleModalComments = (e, shipment_id) => {
     setModalComments(!modalComments);
+    setShipment_id(shipment_id);
   };
-  const toggleModalAlerts = () => {
+  const toggleModalAlerts = (e, shipment_id) => {
     setModalAlerts(!modalAlerts);
+    setShipment_id(shipment_id);
   };
   // const toggleNavs = (e, index) => {
   //   e.preventDefault();
@@ -364,7 +371,7 @@ function Dashboard() {
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
-                      onClick={toggleModalContents}
+                      onClick={(e)=>toggleModalContents(e, item.shipment_id)}
                     >
                       OPEN
                     </button>
@@ -372,7 +379,7 @@ function Dashboard() {
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
-                      onClick={toggleModalComments}
+                      onClick={(e)=>toggleModalComments(e, item.shipment_id)}
                     >
                       OPEN
                     </button>
@@ -487,6 +494,7 @@ function Dashboard() {
     width: "2vw",
     height: "2vw",
   };
+ 
   return (
     <>
       <CardsHeader
@@ -995,9 +1003,13 @@ function Dashboard() {
           className="modal-dialog-centered"
           isOpen={modalContents}
           toggle={toggleModalContents}
+          style={{maxWidth:"80vw"}}
         >
           <ModalHeader toggle={toggleModalContents}>CONTENTS MODAL</ModalHeader>
-          <ModalBody>CONTENIDO DEL MODAL</ModalBody>
+          <ModalBody>
+            <ContentsModal shipment_id={shipment_id}/>
+        
+          </ModalBody>
           <ModalFooter>
             <Button color="secondary" onClick={toggleModalContents}>
               Close
@@ -1014,15 +1026,18 @@ function Dashboard() {
           isOpen={modalComments}
           toggle={toggleModalComments}
         >
-          <ModalHeader toggle={toggleModalComments}>COMMENTS MODAL</ModalHeader>
-          <ModalBody>CONTENIDO DEL MODAL</ModalBody>
+          <ModalHeader toggle={toggleModalComments}>{ `Shipment #${shipment_id?.split("-")[1]}`}</ModalHeader>
+          <ModalBody
+          style={{ maxHeight:"60vh"}}
+          >
+            <Comments shipment_id={shipment_id} shipment_table={true}  />
+
+          </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={toggleModalComments}>
+            {/* <Button color="secondary" onClick={toggleModalComments}>
               Close
-            </Button>
-            {/* <Button color="primary" type="button">
-              Save changes
             </Button> */}
+           
           </ModalFooter>
         </Modal>
 

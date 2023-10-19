@@ -35,12 +35,14 @@ const CheckpointsModal = ({ shipment_id }) => {
   });
 
   useEffect(() => {
+    if (shipment_id) {
     const getShipmentDetail = async () => {
       await getShipment({ variables: { shipment_id } });
     };
     getShipmentDetail();
     console.log("desde el efect");
     console.log(contentData);
+  }
   }, [shipment_id, contentData]);
 
   return (
@@ -51,6 +53,7 @@ const CheckpointsModal = ({ shipment_id }) => {
         //date={convertirHoraLocal(c?.timestamp, company_detail.company.gmt)}
         iconStyle={i==0? {background: "rgb(33, 150, 243)", color:"rgb(33, 150, 243)"}: { background: "rgb(33, 150, 243)", color: "#fff"} }
         icon={<BsCircleFill />}
+        key={c.id}
       >
         <h3 className="vertical-timeline-element-title">{c.location} - {convertirHoraLocal(c?.timestamp, company_detail.company.gmt)}</h3>
         <h4 className="vertical-timeline-element-subtitle">

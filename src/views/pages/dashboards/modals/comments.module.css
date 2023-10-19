@@ -1,0 +1,308 @@
+.container {
+    display: flex;
+
+    flex-direction: column;
+    width: 95%;
+    justify-content: center;
+    /* align-items: center;
+    /* border: solid red 1px; */
+    /* background-color: #12d2e824; */
+    margin: 2% auto;
+}
+
+.fContainer {
+    display: flex;
+    flex-direction: column;
+    /* border: solid rgb(191, 196, 222) 1px; */
+    position: relative;
+    top: -2%;
+    left:-15%;
+    border-radius: 0.5vw;
+    width: 100%;
+    /* background-color: #b30a0a; */
+
+}
+
+.f_commentsAndAddContainer {
+    background-color: #fafafa;
+    /* border: solid red 1px; */
+    /* background-color: rgb(212, 3, 3); */
+}
+
+.f_commentsContainer {
+    width: 100%;
+    height: 10vw;
+    align-items: center;
+    justify-content: center;
+
+    /* background-color: rgb(231, 64, 153); */
+    overflow-y: auto;
+    /* border: solid rgb(0, 51, 255) 1px; */
+}
+
+.f_eachComment {
+    display: flex;
+    flex-direction: row;
+    font-size: 1vw;
+    justify-content: space-between;
+    font-family: 'Quattrocento Sans', sans-serif;
+    /* border: 0.15vw solid #1B1464; */
+    background-color: #00aac82f;
+    color: #1B1464;
+    /* border-radius: 2vw; */
+    padding: 1%;
+    margin-bottom: 1%;
+    height: 3vw;
+    overflow: auto;
+    width: 100%;
+}
+
+.f_addCommentContainer {
+    /* border: solid rgb(115, 255, 0) 1px; */
+    background-color: #fafafa;
+}
+
+.loading {
+    margin-left: 45%;
+    margin-top: 9vw;
+}
+
+.eachComment {
+    display: flex;
+    flex-direction: row;
+    font-size: 1vw;
+    justify-content: space-between;
+    font-family: 'Quattrocento Sans', sans-serif;
+    /* border: 0.15vw solid #1B1464; */
+    background-color: #00aac82f;
+    color: #1B1464;
+    /* border-radius: 2vw; */
+    padding: 1%;
+    margin-bottom: 1%;
+    height: 3vw;
+    overflow: auto;
+
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 2px;
+    background-color: white;
+}
+
+.commentsContainer {
+    width: 50%;
+    height: 10vw;
+    align-items: center;
+    justify-content: center;
+    /* border: solid rgb(212, 255, 0) 1px; */
+    margin-left: 2%;
+    overflow-y: auto;
+}
+
+.commentsAndAddContainer {
+    display: flex;
+    /* border: solid rgb(212, 255, 0) 1px; */
+}
+
+.title {
+    color: #1B1464;
+    font-size: 1.5vw;
+    margin-left: 2%;
+}
+
+.f_title {
+    color: #1B1464;
+    font-size: 1.5vw;
+    margin-left: 2%;
+
+    text-align: left;
+}
+
+.noComments {
+    font-size: 1vw;
+    margin-top: 10%;
+    text-align: center;
+}
+
+.text {
+    width: 70%;
+    height: auto;
+    word-wrap: break-word !important;
+
+    /* line-height: 1.5; */
+}
+
+.author {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    font-size: 0.8vw;
+    color: black;
+    /* border:solid red 1px; */
+}
+
+.addCommentContainer {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+
+    align-items: center;
+    width: 50%;
+    /* border: solid rgb(0, 119, 255) 1px; */
+
+}
+
+.input {
+    height: 3vw;
+    width: 90%;
+    overflow-y: auto;
+    white-space: initial;
+    font-family: 'Quattrocento Sans', sans-serif;
+    font-size: 1vw;
+    border: none;
+    border-bottom: solid 1px #6e6e6e;
+}
+
+.fInput {
+    height: 3vw;
+    width: 99%;
+    /* overflow-y: auto; */
+    /* white-space: initial; */
+    font-family: 'Quattrocento Sans', sans-serif;
+    font-size: 1vw;
+    border: none;
+    /* border: solid red 1px; */
+    border-bottom: solid 1px #6e6e6e;
+    /* margin-top: 5%; */
+}
+
+.buttonsContainer {
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.f_buttonsContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: solid red 1px; */
+}
+
+.button {
+    border: 0.15vw solid #00ABC8;
+    background-color: white;
+    color: #00ABC8;
+    border-radius: 2vw;
+    font-size: 0.8vw;
+    font-weight: bold;
+    width: 40%;
+    cursor: pointer;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    padding: 2%;
+}
+
+.fButton {
+    border: 0.15vw solid #00ABC8;
+    background-color: white;
+    color: #00ABC8;
+    border-radius: 2vw;
+    font-size: 0.8vw;
+    font-weight: bold;
+    width: 40%;
+    cursor: pointer;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    padding: 2%;
+}
+
+.cancelButton {
+    border: 0.15vw solid #D60707;
+    background-color: white;
+    color: #D60707;
+    border-radius: 2vw;
+    font-size: 0.8vw;
+    font-weight: bold;
+    width: 40%;
+    cursor: pointer;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    padding: 2%;
+}
+
+.addCommentbutton {
+    border: 0.15vw solid #00ABC8;
+    background-color: white;
+    color: #00ABC8;
+    border-radius: 2vw;
+    font-size: 0.8vw;
+    font-weight: bold;
+    width: 40%;
+    cursor: pointer;
+    margin-top: 0.5vw;
+    margin-bottom: 1vw;
+    padding: 2%;
+    margin-left: 30%;
+}
+
+/*comentarios de TableViajes */
+
+.table_container {
+    /* border: solid red 1px; */
+    max-height:60vh;
+    /* overflow:auto; */
+
+}
+
+.table_commentsAndAddContainer {
+    /* border: solid green 1px; */
+    max-height: 20vw;
+    overflow-y: auto;
+}
+
+.table_addCommentContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* border: solid blue 1px; */
+    margin-top: 5%
+}
+/* -----------------alerts comments----------------- */
+.alertCommentText_button_container{
+    /* border: solid red 1px; */
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    width: 50%;
+}
+
+.alertCommentText{
+    /* margin-right: 5%; */
+    width: 70%;
+    height: 80%;
+    font-size: 1vw;
+    font-family: 'Quattrocento Sans', sans-serif;
+    border: none;
+    border-bottom: solid 1px #6e6e6e;
+}
+.alertCommentButton{
+    position: relative;
+    right: -15%;
+    top:-5%;
+    border: 0.15vw solid #00ABC8;
+    background-color: white;
+    color: #00ABC8;
+    border-radius: 2vw;
+    font-size: 0.8vw;
+    font-weight: bold;
+    width: 20%;
+    cursor: pointer;
+    padding: 1%;
+    
+   
+}
