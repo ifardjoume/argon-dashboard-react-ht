@@ -265,7 +265,8 @@ export default function Comments({
           ? "El comentario fué agregado con éxito!"
           : "Comment added successfully"
       );
-      refetchAlertComments();
+      if(shipment_id) refetchAlertComments();
+     
       //window.location.reload();
     } catch (error) {
       console.log(error);

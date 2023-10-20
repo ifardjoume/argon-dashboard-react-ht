@@ -46,7 +46,8 @@ const CheckpointsModal = ({ shipment_id }) => {
   }, [shipment_id, contentData]);
 
   return (
-    <VerticalTimeline lineColor="#ddd" layout="one-column">
+    <div style={{overflow:"auto", maxHeight:"60vh"}}>
+       <VerticalTimeline lineColor="#ddd" layout="one-column">
     {contentData?.shipment?.checkpoints?.map((c, i) => (
       <VerticalTimelineElement
         className="vertical-timeline-element--work custom-line" /* Agrega la clase personalizada aquí */
@@ -63,7 +64,10 @@ const CheckpointsModal = ({ shipment_id }) => {
       </VerticalTimelineElement>
     ))}
   </VerticalTimeline>
+   </div>
   );
+   
+   
 };
 
 export default CheckpointsModal;

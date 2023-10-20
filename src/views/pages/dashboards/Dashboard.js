@@ -87,6 +87,7 @@ import CheckpointsModal from "./modals/CheckpointsModal";
 import ContentsModal from "./modals/ContentsModal";
 
 import Comments from "./modals/Comments";
+import Estadisticas from "./grafico de barras/Estadisticas";
 
 function Dashboard() {
   //hooks
@@ -114,6 +115,7 @@ function Dashboard() {
   const toggleModalCheckpoints = (e, shipment_id) => {
     setModalCheckpoints(!modalCheckpoints);
     setShipment_id(shipment_id);
+
   };
   const toggleModalContents = (e, shipment_id) => {
     setModalContents(!modalContents);
@@ -122,6 +124,7 @@ function Dashboard() {
   const toggleModalComments = (e, shipment_id) => {
     setModalComments(!modalComments);
     setShipment_id(shipment_id);
+  
   };
   const toggleModalAlerts = (e, shipment_id) => {
     setModalAlerts(!modalAlerts);
@@ -460,7 +463,7 @@ function Dashboard() {
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
-                      onClick={toggleModalComments}
+                      onClick={(e)=>toggleModalComments(e, item.shipment_id)}
                     >
                       OPEN
                     </button>
@@ -794,29 +797,34 @@ function Dashboard() {
         </Row>
 
         {/* -----------tabla/grafico de barras---------------- */}
-        <Row className="mt-5">
+       
+           <Row >
           {/* grafico de barras */}
-          <Col xl="4">
-            <Card>
-              <CardHeader>
+          <Col xl="4" >
+            <Card style={{border:"solid red 1px",display:"flex", height:"100%"}}>
+              {/* <CardHeader >
                 <h6 className="surtitle">Overview</h6>
                 <h5 className="h3 mb-0">Product comparison</h5>
-              </CardHeader>
-              <CardBody>
+              </CardHeader>  */}
+              <CardBody  >
                 <div className="chart">
-                  <Bar
+                  {/* <Bar
                     data={chartExample7.data}
                     options={chartExample7.options}
                     className="chart-canvas"
                     id="chart-bar-stacked"
-                  />
+                  /> */}
+                
+                      <Estadisticas/>
+                  
+                
                 </div>
               </CardBody>
             </Card>
           </Col>
           {/* tabla */}
           <Col xl="8">
-            <Card className="shadow">
+            <Card className="shadow" >
               <div>
                 <Nav>
                   <NavItem className="navText">
@@ -978,14 +986,18 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
+        </Container>
+       
         {/* modal Checkpoints */}
         <Modal
           className="custom-modal" // Agrega una clase CSS personalizada
           isOpen={modalCheckpoints}
           toggle={toggleModalCheckpoints}
+          
         >
           <ModalHeader toggle={toggleModalCheckpoints}>CHECKPOINTS</ModalHeader>
           <ModalBody>
+         
             <CheckpointsModal shipment_id={shipment_id} />
           </ModalBody>
           <ModalFooter>
@@ -1058,7 +1070,7 @@ function Dashboard() {
             </Button> */}
           </ModalFooter>
         </Modal>
-      </Container>
+  
     </>
   );
 }

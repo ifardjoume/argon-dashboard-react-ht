@@ -1,0 +1,233 @@
+.graphContainer {
+    color: #1b1464 !important;
+  height: 100%;
+    width: 100%;
+    /* border: solid red 1px; */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .textContainer{
+    width: 100%;
+    height: 1.5vw;
+    ;
+   
+  }
+  
+  .text {
+    display: flex;
+    color: #1b1464;
+    font-size: 0.9vw;
+   justify-content: right;
+   margin-right: 1%;
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column;
+    /* border: 0.15vw solid #00ABC8; */
+    border-radius: 2vw;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    margin: 1%;
+    padding-right: 1%;
+  }
+  
+  .title {
+    font-size: 1vw;
+    /* font-weight: bolder; */
+    margin-left: 10%;
+    margin-bottom: 2%;
+    color: #1b1464;
+  }
+  
+  .filterButton1 {
+    /* width: 15%;
+    height: 2vw; */
+    font-size: 0.6vw;
+    font-weight: 600;
+    background-color: #d9f1f5;
+    color: #1b1464;
+    border: 0.15vw solid #d9f1f5;
+    border-radius: 0.5vw;
+    margin-left: 1%;
+    cursor: pointer;
+  }
+  
+  .filterButton1Selected {
+    /* width: 15%;
+    height: 2vw; */
+    font-size: 0.6vw;
+    font-weight: 600;
+    background-color: #d9f1f5;
+    color: #1b1464;
+    border: 0.15vw solid #1b1464;
+    border-radius: 0.5vw;
+    margin-left: 1%;
+  }
+  
+  .filterButton2 {
+    /* width: 15%;
+    height: 2vw; */
+    font-size: 0.6vw;
+    font-weight: 600;
+    background-color: #33b27f;
+    color: #fafafa;
+    border: 0.15vw solid #33b27f;
+    border-radius: 0.5vw;
+    margin-left: 1%;
+    cursor: pointer;
+  }
+  
+  .filterButton2Selected {
+    /* width: 15%;
+    height: 2vw; */
+    font-size: 0.6vw;
+    font-weight: 600;
+    background-color: #33b27f;
+    color: #fafafa;
+    border: 0.15vw solid #1b1464;
+    border-radius: 0.5vw;
+    margin-left: 1%;
+  }
+  .filterButton3 {
+    /* width: 15%;
+    height: 2vw; */
+    font-size: 0.6vw;
+    font-weight: 600;
+    background-color: #f0ea3f;
+    color: #1b1464;
+    border: 0.15vw solid #f0ea3f;
+    border-radius: 0.5vw;
+    margin-left: 1%;
+    cursor: pointer;
+  }
+  
+  .filterButton3Selected {
+    /* width: 15%;
+    height: 2vw; */
+    font-size: 0.6vw;
+    font-weight: 600;
+    background-color: #f0ea3f;
+    color: #1b1464;
+    border: 0.15vw solid #1b1464;
+    border-radius: 0.5vw;
+    margin-left: 1%;
+  }
+  .filterButton4 {
+    /* width: 15%;
+    height: 2vw; */
+    font-size: 0.6vw;
+    font-weight: 600;
+    background-color: #ff001f;
+    color: #fafafa;
+    border: 0.15vw solid #ff001f;
+    border-radius: 0.5vw;
+    margin-left: 1%;
+    cursor: pointer;
+  }
+  
+  .filterButton4Selected {
+    /* width: 15%;
+    height: 2vw; */
+    font-size: 0.6vw;
+    font-weight: 600;
+    background-color: #ff001f;
+    color: #fafafa;
+    border: 0.15vw solid #1b1464;
+    border-radius: 0.5vw;
+    margin-left: 1%;
+  }
+  
+  .buttonsContainer {
+    width: 100%;
+    display: inline-flex;
+    justify-content: flex-end;
+    margin-bottom: 1vw;
+    margin-top: 0.5vw;
+  }
+  
+  .buttonsTitle {
+    margin-left: 90%;
+    font-size: 0.8vw;
+    color: #1b1464;
+  }
+  
+  .loading {
+    margin-left: 20%; 
+    margin-top: 20%;
+  }
+  
+  /* @media (max-width:800px){
+    .card{
+      width: 90%;
+      height: 70vw;
+      margin: 2%;
+    }
+  
+    .graphContainer{
+      height: 50vw;
+    }
+  
+    .title{
+      font-size: 4vw;
+    }
+  
+    .filterButton1{
+      width: 13%;
+      height: auto;
+      font-size: 1.6vw;
+    }
+  
+    .filterButton1Selected{
+      width: 13%;
+      height: auto;
+      font-size: 1.6vw;
+    }
+  
+    .filterButton2{
+      width: 13%;
+      height: auto;
+      font-size: 1.6vw;
+    }
+  
+    .filterButton2Selected{
+      width: 13%;
+      height: auto;
+      font-size: 1.6vw;
+    }
+  
+    .filterButton3{
+      width: 13%;
+      height: auto;
+      font-size: 1.6vw;
+    }
+  
+    .filterButton3Selected{
+      width: 13%;
+      height: auto;
+      font-size: 1.6vw;
+    }
+  
+    .filterButton4{
+      width: 13%;
+      height: auto;
+      font-size: 1.4vw;
+    }
+  
+    .filterButton4Selected{
+      width: 13%;
+      height: 3.5vw;
+      height: auto;
+      font-size: 1.4vw;
+    }
+  
+    .buttonsTitle{
+      font-size: 2vw;
+    }
+  
+    .text{
+      font-size: 2vw;
+    }
+  } */
