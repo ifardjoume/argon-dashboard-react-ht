@@ -11,13 +11,14 @@
     width: 100%;
     height: 1.5vw;
     ;
+    /* border: solid red 1px; */
    
   }
   
   .text {
     display: flex;
     color: #1b1464;
-    font-size: 0.9vw;
+    font-size: 0.7vw;
    justify-content: right;
    margin-right: 1%;
   }
@@ -72,9 +73,9 @@
     height: 2vw; */
     font-size: 0.6vw;
     font-weight: 600;
-    background-color: #33b27f;
+    background-color: #2dce89;
     color: #fafafa;
-    border: 0.15vw solid #33b27f;
+    border: 0.15vw solid#2dce89;
     border-radius: 0.5vw;
     margin-left: 1%;
     cursor: pointer;
@@ -85,7 +86,7 @@
     height: 2vw; */
     font-size: 0.6vw;
     font-weight: 600;
-    background-color: #33b27f;
+    background-color: #2dce89;
     color: #fafafa;
     border: 0.15vw solid #1b1464;
     border-radius: 0.5vw;
@@ -96,9 +97,9 @@
     height: 2vw; */
     font-size: 0.6vw;
     font-weight: 600;
-    background-color: #f0ea3f;
-    color: #1b1464;
-    border: 0.15vw solid #f0ea3f;
+    background-color: #fb6340;
+    color: #fafafa;
+    border: 0.15vw solid #fb6340;
     border-radius: 0.5vw;
     margin-left: 1%;
     cursor: pointer;
@@ -109,8 +110,8 @@
     height: 2vw; */
     font-size: 0.6vw;
     font-weight: 600;
-    background-color: #f0ea3f;
-    color: #1b1464;
+    background-color: #fb6340;
+    color: #fafafa;
     border: 0.15vw solid #1b1464;
     border-radius: 0.5vw;
     margin-left: 1%;
@@ -120,9 +121,9 @@
     height: 2vw; */
     font-size: 0.6vw;
     font-weight: 600;
-    background-color: #ff001f;
+    background-color: #f5365c;
     color: #fafafa;
-    border: 0.15vw solid #ff001f;
+    border: 0.15vw solid #f5365c;
     border-radius: 0.5vw;
     margin-left: 1%;
     cursor: pointer;
@@ -133,7 +134,7 @@
     height: 2vw; */
     font-size: 0.6vw;
     font-weight: 600;
-    background-color: #ff001f;
+    background-color: #f5365c;
     color: #fafafa;
     border: 0.15vw solid #1b1464;
     border-radius: 0.5vw;

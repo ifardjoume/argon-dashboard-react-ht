@@ -258,7 +258,15 @@ try {
       <h2 className={styles.title}>
         {initialDayMonth === "day" && "Weekly stadistics"}
         {initialDayMonth === "month" && " Annual stadistics"}
+        <div className={styles.textContainer}>
+        {initialDayMonth === "month" ? (
+          <span className={styles.text}>*Last 12 months</span>
+        ) : (
+          <span className={styles.text}>*Last 7 days</span>
+        )}
+      </div>
       </h2>
+   
       {/* Filtros por estado */}
       <span className={styles.buttonsTitle}> Filter</span>
       <div className={styles.buttonsContainer}>
@@ -310,22 +318,24 @@ try {
       {/* Grafico  */}
       <div className={styles.graphContainer}>
         {console.log("info", weekData)}
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%" >
         <BarChart
           data={initialDayMonth === "month" ? yearData : weekData}
-          barSize={15}
+          barSize={10}
           stackOffset={"none"}
           className={styles.stadisticGraph}
+        style={{  left:"-10px" }}
         >
           <CartesianGrid horizontal={false} vertical={false} />
           <XAxis
             dataKey="name"
-            padding={{ left: window.screen.width <= 450 ? 0 : 8 }}
+           /*  padding={{ left: window.screen.width <= 450 ? 0 : 8 }} */
             tickLine={false}
             tick={{
               fontSize: window.screen.width > 800 ? "0.8vw" : "2vw",
               color: "#1B1464",
             }}
+          
           />
           <YAxis
             type="number"
@@ -338,30 +348,25 @@ try {
           <Bar
             dataKey="x"
             stackId="a"
-            fill="#33B27F"
+            fill="#2dce89"//verde
             radius={[12, 10, 10, 12]}
           />
           <Bar
             dataKey="y"
             stackId="a"
-            fill="#F0EA3F"
+            fill="#fb6340"//amarillo
             radius={[12, 10, 10, 12]}
           />
           <Bar
             dataKey="z"
             stackId="a"
-            fill="#D60707"
+            fill="#f5365c"//rojo
             radius={[12, 10, 10, 12]}
           />
         </BarChart>
         </ResponsiveContainer>
-        <div className={styles.textContainer}>
-        {initialDayMonth === "month" ? (
-          <span className={styles.text}>*Last 12 months</span>
-        ) : (
-          <span className={styles.text}>*Last 7 days</span>
-        )}
-      </div>
+       
+      
       </div>
      
     

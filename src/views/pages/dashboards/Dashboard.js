@@ -801,13 +801,13 @@ function Dashboard() {
            <Row >
           {/* grafico de barras */}
           <Col xl="4" >
-            <Card style={{border:"solid red 1px",display:"flex", height:"100%"}}>
+            <Card style={{display:"flex", height:"90%"}}>
               {/* <CardHeader >
                 <h6 className="surtitle">Overview</h6>
                 <h5 className="h3 mb-0">Product comparison</h5>
               </CardHeader>  */}
               <CardBody  >
-                <div className="chart">
+              
                   {/* <Bar
                     data={chartExample7.data}
                     options={chartExample7.options}
@@ -815,15 +815,15 @@ function Dashboard() {
                     id="chart-bar-stacked"
                   /> */}
                 
-                      <Estadisticas/>
+                  <Estadisticas/>
                   
                 
-                </div>
+              
               </CardBody>
             </Card>
           </Col>
           {/* tabla */}
-          <Col xl="8">
+          <Col xl="8" >
             <Card className="shadow" >
               <div>
                 <Nav>
