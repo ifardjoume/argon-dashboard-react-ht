@@ -354,7 +354,7 @@ try {
           <Bar
             dataKey="y"
             stackId="a"
-            fill="#fb6340"//amarillo
+            fill="#5e72e4"//amarillo
             radius={[12, 10, 10, 12]}
           />
           <Bar
