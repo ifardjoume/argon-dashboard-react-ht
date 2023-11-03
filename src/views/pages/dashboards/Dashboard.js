@@ -46,7 +46,6 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip,
   Spinner,
   TabContent,
   TabPane,
@@ -60,6 +59,7 @@ import {
   ModalBody,
   ModalFooter,
   CardFooter,
+  UncontrolledTooltip,
 } from "reactstrap";
 
 // core components
@@ -110,12 +110,10 @@ function Dashboard() {
   const [modalComments, setModalComments] = useState(false);
   const [modalAlerts, setModalAlerts] = useState(false);
   const [shipment_id, setShipment_id] = useState(null);
-  
 
   const toggleModalCheckpoints = (e, shipment_id) => {
     setModalCheckpoints(!modalCheckpoints);
     setShipment_id(shipment_id);
-
   };
   const toggleModalContents = (e, shipment_id) => {
     setModalContents(!modalContents);
@@ -124,7 +122,6 @@ function Dashboard() {
   const toggleModalComments = (e, shipment_id) => {
     setModalComments(!modalComments);
     setShipment_id(shipment_id);
-  
   };
   const toggleModalAlerts = (e, shipment_id) => {
     setModalAlerts(!modalAlerts);
@@ -149,7 +146,7 @@ function Dashboard() {
           allData?.uncertShipsState,
           allData?.failShipsState,
         ],
-        backgroundColor: ["#2dce89", "#fb6340", "#f5365c"],
+        backgroundColor: ["#2dce89", "#5e72e4", "#f5365c"],
         labels: ["Success", "Uncertain", "Failed"],
       },
     ],
@@ -163,7 +160,7 @@ function Dashboard() {
     datasets: [
       {
         data: [allData?.uncertShipsState, allData?.failShipsState],
-        backgroundColor: ["#fb6340", "#f5365c"],
+        backgroundColor: ["#5e72e4", "#f5365c"],
         borderWidth: 2,
         cutout: "78%",
         radius: "80%",
@@ -201,6 +198,14 @@ function Dashboard() {
     lazyPaginatedDataLoading,
     paginatedDataLoading,
   ] = useShipmentsTable();
+
+  const itemsPerPage = 8;
+  const totalPages = Math.ceil(info?.total / itemsPerPage);
+  const changePage = (e, page) => {
+    e.preventDefault();
+    setPage(page);
+  };
+
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
@@ -327,7 +332,9 @@ function Dashboard() {
             <tbody>
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
-                  <td style={{ textAlign: "center" }}>{item.shipment_id.split('-')[1]}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {item.shipment_id.split("-")[1]}
+                  </td>
                   <td style={{ textAlign: "center" }}>{item.qr}</td>
                   <td style={{ textAlign: "center" }}>
                     {" "}
@@ -374,7 +381,7 @@ function Dashboard() {
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
-                      onClick={(e)=>toggleModalContents(e, item.shipment_id)}
+                      onClick={(e) => toggleModalContents(e, item.shipment_id)}
                     >
                       OPEN
                     </button>
@@ -382,7 +389,7 @@ function Dashboard() {
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
-                      onClick={(e)=>toggleModalComments(e, item.shipment_id)}
+                      onClick={(e) => toggleModalComments(e, item.shipment_id)}
                     >
                       OPEN
                     </button>
@@ -421,7 +428,9 @@ function Dashboard() {
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
                   {/* id */}
-                  <td style={{ textAlign: "center" }}>{item.shipment_id.split('-')[1]}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {item.shipment_id.split("-")[1]}
+                  </td>
                   {/* qr */}
                   <td style={{ textAlign: "center" }}>{item.qr}</td>
                   {/* origin */}
@@ -463,7 +472,7 @@ function Dashboard() {
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
-                      onClick={(e)=>toggleModalComments(e, item.shipment_id)}
+                      onClick={(e) => toggleModalComments(e, item.shipment_id)}
                     >
                       OPEN
                     </button>
@@ -478,7 +487,7 @@ function Dashboard() {
     );
   }
   //pagination
-  const changePage = (e, value) => {
+  const changePage2 = (e, value) => {
     e.preventDefault();
     console.log(value);
     if (value === "prev") {
@@ -497,7 +506,16 @@ function Dashboard() {
     width: "2vw",
     height: "2vw",
   };
- 
+  const paginationItems = [];
+  for (let i = 1; i <= totalPages; i++) {
+    paginationItems.push(
+      <PaginationItem key={i} className={page === i ? "active" : ""}>
+        <PaginationLink href="#pablo" onClick={(e) => changePage(e, i)}>
+          {i}
+        </PaginationLink>
+      </PaginationItem>
+    );
+  }
   return (
     <>
       <CardsHeader
@@ -673,7 +691,7 @@ function Dashboard() {
                                       (100 * allData?.causes?.intrusion) / total
                                     )}
                                     max="100"
-                                    color="warning"
+                                    color="#5e72e4"
                                   />
                                 </div>
                                 <div className="progressBar">
@@ -797,34 +815,30 @@ function Dashboard() {
         </Row>
 
         {/* -----------tabla/grafico de barras---------------- */}
-       
-           <Row >
+
+        <Row>
           {/* grafico de barras */}
-          <Col xl="4" >
-            <Card style={{display:"flex", height:"90%"}}>
+          <Col xl="4">
+            <Card style={{ display: "flex", height: "90%" }}>
               {/* <CardHeader >
                 <h6 className="surtitle">Overview</h6>
                 <h5 className="h3 mb-0">Product comparison</h5>
               </CardHeader>  */}
-              <CardBody  >
-              
-                  {/* <Bar
+              <CardBody>
+                {/* <Bar
                     data={chartExample7.data}
                     options={chartExample7.options}
                     className="chart-canvas"
                     id="chart-bar-stacked"
                   /> */}
-                
-                  <Estadisticas/>
-                  
-                
-              
+
+                <Estadisticas />
               </CardBody>
             </Card>
           </Col>
           {/* tabla */}
-          <Col xl="8" >
-            <Card className="shadow" >
+          <Col xl="8">
+            <Card className="shadow">
               <div>
                 <Nav>
                   <NavItem className="navText">
@@ -837,11 +851,28 @@ function Dashboard() {
                       style={{
                         color: activeTab === "inTransit" && "#5e72e4",
                       }}
+                      id="tooltipTransit"
                     >
                       {activeTab === "inTransit" ? (
                         "IN TRANSIT"
                       ) : (
                         <img style={iconCard} src={inTransitIcon} alt="" />
+                      )}
+                      {/* tooltip  transit*/}
+                      {activeTab !== "inTransit" && (
+                        <UncontrolledTooltip
+                          delay={0}
+                          placement="top"
+                          target="tooltipTransit"
+                          style={{
+                            fontSize: "1vw",
+                            color: "#5e72e4",
+                            backgroundColor: "#fafafa",
+                            fontFamily: "Open Sans, sans-serif",
+                          }}
+                        >
+                         In transit
+                        </UncontrolledTooltip>
                       )}
                     </NavLink>
                   </NavItem>
@@ -855,14 +886,32 @@ function Dashboard() {
                       style={{
                         color: activeTab === "completed" && "#5e72e4",
                       }}
+                      id="tooltipCompleted"
                     >
                       {activeTab === "completed" ? (
                         "COMPLETED"
                       ) : (
                         <img style={iconCard} src={completedIcon} alt="" />
                       )}
+                         {/* tooltip  transit*/}
+                         {activeTab !== "completed" && (
+                        <UncontrolledTooltip
+                          delay={0}
+                          placement="top"
+                          target="tooltipCompleted"
+                          style={{
+                            fontSize: "1vw",
+                            color: "#5e72e4",
+                            backgroundColor: "#fafafa",
+                            fontFamily: "Open Sans, sans-serif",
+                          }}
+                        >
+                         Completed
+                        </UncontrolledTooltip>
+                      )}
                     </NavLink>
                   </NavItem>
+                  
                   <NavItem>
                     <NavLink
                       className={classnames({
@@ -872,12 +921,29 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "succeeded" && "#5e72e4",
+
                       }}
+                      id="tooltipSucceeded"
                     >
                       {activeTab === "succeeded" ? (
                         "SUCCEDED"
                       ) : (
                         <img style={iconCard} src={succededIcon} alt="" />
+                      )}
+                        {activeTab !== "succeeded" && (
+                        <UncontrolledTooltip
+                          delay={0}
+                          placement="top"
+                          target="tooltipSucceeded"
+                          style={{
+                            fontSize: "1vw",
+                            color: "#5e72e4",
+                            backgroundColor: "#fafafa",
+                            fontFamily: "Open Sans, sans-serif",
+                          }}
+                        >
+                         Succeeded
+                        </UncontrolledTooltip>
                       )}
                     </NavLink>
                   </NavItem>
@@ -891,11 +957,27 @@ function Dashboard() {
                       style={{
                         color: activeTab === "uncertain" && "#5e72e4",
                       }}
+                      id="tooltipUncertain"
                     >
                       {activeTab === "uncertain" ? (
                         "UNCERTAIN"
                       ) : (
                         <img style={iconCard} src={uncertainIcon} alt="" />
+                      )}
+                       {activeTab !== "uncertain" && (
+                        <UncontrolledTooltip
+                          delay={0}
+                          placement="top"
+                          target="tooltipUncertain"
+                          style={{
+                            fontSize: "1vw",
+                            color: "#5e72e4",
+                            backgroundColor: "#fafafa",
+                            fontFamily: "Open Sans, sans-serif",
+                          }}
+                        >
+                         Uncertain
+                        </UncontrolledTooltip>
                       )}
                     </NavLink>
                   </NavItem>
@@ -907,11 +989,27 @@ function Dashboard() {
                       style={{
                         color: activeTab === "failed" && "#5e72e4",
                       }}
+                      id="tooltipFailed"
                     >
                       {activeTab === "failed" ? (
                         "FAILED"
                       ) : (
                         <img style={iconCard} src={failedIcon} alt="" />
+                      )}
+                      {activeTab !== "failed" && (
+                        <UncontrolledTooltip
+                          delay={0}
+                          placement="top"
+                          target="tooltipFailed"
+                          style={{
+                            fontSize: "1vw",
+                            color: "#5e72e4",
+                            backgroundColor: "#fafafa",
+                            fontFamily: "Open Sans, sans-serif",
+                          }}
+                        >
+                        Failed
+                        </UncontrolledTooltip>
                       )}
                     </NavLink>
                   </NavItem>
@@ -934,47 +1032,24 @@ function Dashboard() {
               >
                 <nav aria-label="Page navigation example">
                   <Pagination>
-                    <PaginationItem>
+                    <PaginationItem disabled={page === 1}>
                       <PaginationLink
                         aria-label="Previous"
                         href="#pablo"
-                        onClick={(e) => changePage(e, "prev")}
+                        onClick={(e) => changePage(e, page - 1)}
                       >
                         <i className="fa fa-angle-left" />
                         <span className="sr-only">Previous</span>
                       </PaginationLink>
                     </PaginationItem>
-                    <PaginationItem className={page === 1 ? "active" : ""}>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => changePage(e, 1)}
-                      >
-                        1
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem className={page === 2 ? "active" : ""}>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => changePage(e, 2)}
-                      >
-                        2
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem className={page === 3 ? "active" : ""}>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => changePage(e, 3)}
-                        value={3}
-                      >
-                        3
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
+
+                    {paginationItems}
+
+                    <PaginationItem disabled={page === totalPages}>
                       <PaginationLink
                         aria-label="Next"
                         href="#pablo"
-                        onClick={(e) => changePage(e, "next")}
-                        name="next"
+                        onClick={(e) => changePage(e, page + 1)}
                       >
                         <i className="fa fa-angle-right" />
                         <span className="sr-only">Next</span>
@@ -986,254 +1061,87 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
-        </Container>
-       
-        {/* modal Checkpoints */}
-        <Modal
-          className="custom-modal" // Agrega una clase CSS personalizada
-          isOpen={modalCheckpoints}
-          toggle={toggleModalCheckpoints}
-          
-        >
-          <ModalHeader toggle={toggleModalCheckpoints}>CHECKPOINTS</ModalHeader>
-          <ModalBody>
-         
-            <CheckpointsModal shipment_id={shipment_id} />
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={toggleModalCheckpoints}>
-              Close
-            </Button>
-            {/* <Button color="primary" type="button">
+      </Container>
+
+      {/* modal Checkpoints */}
+      <Modal
+        className="custom-modal" // Agrega una clase CSS personalizada
+        isOpen={modalCheckpoints}
+        toggle={toggleModalCheckpoints}
+      >
+        <ModalHeader toggle={toggleModalCheckpoints}>CHECKPOINTS</ModalHeader>
+        <ModalBody>
+          <CheckpointsModal shipment_id={shipment_id} />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggleModalCheckpoints}>
+            Close
+          </Button>
+          {/* <Button color="primary" type="button">
               Save changes
             </Button> */}
-          </ModalFooter>
-        </Modal>
+        </ModalFooter>
+      </Modal>
 
-        {/* modal Contents */}
-        <Modal
-          className="modal-dialog-centered"
-          isOpen={modalContents}
-          toggle={toggleModalContents}
-          style={{maxWidth:"80vw"}}
-        >
-          <ModalHeader toggle={toggleModalContents}>CONTENTS MODAL</ModalHeader>
-          <ModalBody>
-            <ContentsModal shipment_id={shipment_id}/>
-        
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={toggleModalContents}>
-              Close
-            </Button>
-            {/* <Button color="primary" type="button">
+      {/* modal Contents */}
+      <Modal
+        className="modal-dialog-centered"
+        isOpen={modalContents}
+        toggle={toggleModalContents}
+        style={{ maxWidth: "80vw" }}
+      >
+        <ModalHeader toggle={toggleModalContents}>CONTENTS MODAL</ModalHeader>
+        <ModalBody>
+          <ContentsModal shipment_id={shipment_id} />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggleModalContents}>
+            Close
+          </Button>
+          {/* <Button color="primary" type="button">
               Save changes
             </Button> */}
-          </ModalFooter>
-        </Modal>
+        </ModalFooter>
+      </Modal>
 
-        {/* modal Comments */}
-        <Modal
-          className="modal-dialog-centered"
-          isOpen={modalComments}
-          toggle={toggleModalComments}
-        >
-          <ModalHeader toggle={toggleModalComments}>{ `Shipment #${shipment_id?.split("-")[1]}`}</ModalHeader>
-          <ModalBody
-          style={{ maxHeight:"60vh"}}
-          >
-            <Comments shipment_id={shipment_id} shipment_table={true}  />
-
-          </ModalBody>
-          <ModalFooter>
-            {/* <Button color="secondary" onClick={toggleModalComments}>
+      {/* modal Comments */}
+      <Modal
+        className="modal-dialog-centered"
+        isOpen={modalComments}
+        toggle={toggleModalComments}
+      >
+        <ModalHeader toggle={toggleModalComments}>{`Shipment #${
+          shipment_id?.split("-")[1]
+        }`}</ModalHeader>
+        <ModalBody style={{ maxHeight: "60vh" }}>
+          <Comments shipment_id={shipment_id} shipment_table={true} />
+        </ModalBody>
+        <ModalFooter>
+          {/* <Button color="secondary" onClick={toggleModalComments}>
               Close
             </Button> */}
-           
-          </ModalFooter>
-        </Modal>
+        </ModalFooter>
+      </Modal>
 
-        {/* modal Alerts */}
-        <Modal
-          className="modal-dialog-centered"
-          isOpen={modalAlerts}
-          toggle={toggleModalComments}
-        >
-          <ModalHeader toggle={toggleModalAlerts}>ALERTS MODAL</ModalHeader>
-          <ModalBody>'CONTENIDO DEL MODAL( GRAFICO)'</ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={toggleModalAlerts}>
-              Close
-            </Button>
-            {/* <Button color="primary" type="button">
+      {/* modal Alerts */}
+      <Modal
+        className="modal-dialog-centered"
+        isOpen={modalAlerts}
+        toggle={toggleModalComments}
+      >
+        <ModalHeader toggle={toggleModalAlerts}>ALERTS MODAL</ModalHeader>
+        <ModalBody>'CONTENIDO DEL MODAL( GRAFICO)'</ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggleModalAlerts}>
+            Close
+          </Button>
+          {/* <Button color="primary" type="button">
               Save changes
             </Button> */}
-          </ModalFooter>
-        </Modal>
-  
+        </ModalFooter>
+      </Modal>
     </>
   );
 }
 
 export default Dashboard;
-// {/* --failed/uncertain -causes -braanches with more alerts----------------------- */}
-//         <Col xl="4">
-//           {/* FAILED/UNCERTAIN */}
-// <Card>
-//   <h2 className="statsTitle">
-//     FAILED/UNCERTAIN:{" "}
-//     {allData?.uncertShipsState + allData?.failShipsState > 0
-//       ? allData?.uncertShipsState + allData?.failShipsState
-//       : 0}
-//   </h2>
-
-//   <CardBody>
-//     {loading ? (
-//       <div
-//         style={{
-//           display: "flex",
-//           alignItems: "center",
-//           justifyContent: "center",
-//           height: "100%",
-//         }}
-//       >
-//         <Spinner className="spinner" />
-//       </div>
-//     ) : (
-//       <>
-//         <div style={{ height: "100%" }}>
-//           {/* <Doughnut data={failUncertain} options={options} /> */}
-//           <Pie data={failUncertain} />
-//         </div>
-//       </>
-//     )}
-//   </CardBody>
-// </Card>
-//         </Col>
-
-//         <Col xl="4">
-//           {/* PROGRESS BAR */}
-//           {/* CAUSES */}
-// <Card>
-//   <h2 className="statsTitle">CAUSES</h2>
-//   <CardBody>
-//     {!loading ? (
-//       <>
-//         {total ? (
-//           <>
-//             <div className="progressBarContainer">
-//               <div className="progressBar">
-//                 <span>{temperaturePercentage}% - Temperature</span>
-
-//                 <Progress
-//                   max="100"
-//                   value={Math.floor(
-//                     (100 * allData?.causes?.temperature) / total
-//                   )}
-//                   color="danger"
-//                 />
-//               </div>
-
-//               <div className="progressBar">
-//                 <span>{intrusionPercentage}% - Intrusion</span>
-
-//                 <Progress
-//                   value={Math.floor(
-//                     (100 * allData?.causes?.intrusion) / total
-//                   )}
-//                   max="100"
-//                   color="warning"
-//                 />
-//               </div>
-//               <div className="progressBar">
-//                 <span>
-//                   {accelerationPercentage}% - Acceleration
-//                 </span>
-
-//                 <Progress
-//                   max="100"
-//                   value={Math.floor(
-//                     (100 * allData?.causes?.acceleration) / total
-//                   )}
-//                   color="default"
-//                 />
-//               </div>
-//             </div>
-//           </>
-//         ) : (
-//           <div
-//             style={{
-//               display: "flex",
-//               alignItems: "center",
-//               justifyContent: "center",
-//               height: "100%",
-//             }}
-//           >
-//             No data to show
-//           </div>
-//         )}
-//       </>
-//     ) : (
-//       <div
-//         style={{
-//           display: "flex",
-//           alignItems: "center",
-//           justifyContent: "center",
-//           height: "100%",
-//         }}
-//       >
-//         <Spinner className="spinner" />
-//       </div>
-//     )}
-//   </CardBody>
-// </Card>
-//         </Col>
-
-//         <Col xl="4">
-//           {/* BRANCHES WITH MORE ALERTS */}
-// <Card>
-//   <h2 className="statsTitle">BRANCHES WITH MORE ALERTS</h2>
-//   <CardBody style={{ height: "80%" }}>
-//     <div style={{ height: "100%" }}>
-//       {!loading ? (
-//         <div>
-//           {branchesData?.[0] ? (
-//             <div>
-//               {branchesData.map((b) => (
-//                 <div key={b.branch}>
-//                   <span className="spanProgressBar">
-//                     {company_detail?.company?.branches?.map(
-//                       (br) => br.branch_id === b.branch && br.name
-//                     )}
-//                   </span>
-//                   <div className="progressBar">
-//                     <Progress
-//                       value={Math.ceil((100 * b.failed) / b.total)}
-//                       max={Math.ceil((100 * b.total) / b.total)}
-//                       color="danger"
-//                       className="barra-fondo-warning"
-//                     />
-//                   </div>
-//                 </div>
-//               ))}
-//             </div>
-//           ) : (
-//             <div>no alerts</div>
-//           )}
-//         </div>
-//       ) : (
-//         <div
-//           style={{
-//             display: "flex",
-//             alignItems: "center",
-//             justifyContent: "center",
-//             height: "100%",
-//           }}
-//         >
-//           <Spinner className="spinner" />
-//         </div>
-//       )}
-//     </div>
-//   </CardBody>
-// </Card>
-//         </Col>

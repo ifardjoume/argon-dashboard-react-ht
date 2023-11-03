@@ -43,14 +43,14 @@ export default function Estadisticas() {
   // CUANDO SE INICIA EL COMPONENTE -------------------------------------------------------------------------
   useEffect(() => {
     // fetchData(initialDayMonth, company_id);
-    console.log("desde grafico");
+    
 try {
  const fetch2 = async () => {
       const request = await axios.get(
         `${SERVER_URL}/getAllValues/${company_id}/${initialDayMonth}`,
         { headers: { authorization: `Bearer ${token}` } }
       );
-      console.log(request.data.values[0]);
+    
       setInfo(request?.data?.values?.[0])
     };
     fetch2()    
@@ -317,7 +317,7 @@ try {
       </div>
       {/* Grafico  */}
       <div className={styles.graphContainer}>
-        {console.log("info", weekData)}
+       
         <ResponsiveContainer width="100%" height="100%" >
         <BarChart
           data={initialDayMonth === "month" ? yearData : weekData}
@@ -354,7 +354,7 @@ try {
           <Bar
             dataKey="y"
             stackId="a"
-            fill="#5e72e4"//amarillo
+            fill="#5e72e4"//azul
             radius={[12, 10, 10, 12]}
           />
           <Bar
