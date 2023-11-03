@@ -88,6 +88,7 @@ import ContentsModal from "./modals/ContentsModal";
 
 import Comments from "./modals/Comments";
 import Estadisticas from "./grafico de barras/Estadisticas";
+import TempIntrusionChart from "./graficoTempIntrusion/TempIntrusionChart";
 
 function Dashboard() {
   //hooks
@@ -126,6 +127,7 @@ function Dashboard() {
   const toggleModalAlerts = (e, shipment_id) => {
     setModalAlerts(!modalAlerts);
     setShipment_id(shipment_id);
+   
   };
   // const toggleNavs = (e, index) => {
   //   e.preventDefault();
@@ -215,6 +217,7 @@ function Dashboard() {
   const toggleTab = (tab) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
+      setPage(1);
     }
     changeFilter(tab);
   };
@@ -463,7 +466,7 @@ function Dashboard() {
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
-                      onClick={toggleModalAlerts}
+                      onClick={(e)=>toggleModalAlerts(e, item.shipment_id)}
                     >
                       ALERTS
                     </button>
@@ -850,6 +853,7 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "inTransit" && "#5e72e4",
+                        textDecoration: activeTab === "inTransit" ? "underline" : "none",
                       }}
                       id="tooltipTransit"
                     >
@@ -885,6 +889,7 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "completed" && "#5e72e4",
+                        textDecoration: activeTab === "completed" ? "underline" : "none",
                       }}
                       id="tooltipCompleted"
                     >
@@ -921,6 +926,7 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "succeeded" && "#5e72e4",
+                        textDecoration: activeTab === "succeeded" ? "underline" : "none",
 
                       }}
                       id="tooltipSucceeded"
@@ -956,6 +962,7 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "uncertain" && "#5e72e4",
+                        textDecoration: activeTab === "uncertain" ? "underline" : "none",
                       }}
                       id="tooltipUncertain"
                     >
@@ -988,6 +995,7 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "failed" && "#5e72e4",
+                        textDecoration: activeTab === "failed" ? "underline" : "none",
                       }}
                       id="tooltipFailed"
                     >
@@ -1006,8 +1014,10 @@ function Dashboard() {
                             color: "#5e72e4",
                             backgroundColor: "#fafafa",
                             fontFamily: "Open Sans, sans-serif",
+                           
                           }}
                         >
+                          
                         Failed
                         </UncontrolledTooltip>
                       )}
@@ -1130,7 +1140,9 @@ function Dashboard() {
         toggle={toggleModalComments}
       >
         <ModalHeader toggle={toggleModalAlerts}>ALERTS MODAL</ModalHeader>
-        <ModalBody>'CONTENIDO DEL MODAL( GRAFICO)'</ModalBody>
+        <ModalBody>
+       <TempIntrusionChart  shipment_id={shipment_id}/>
+        </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={toggleModalAlerts}>
             Close

@@ -10,21 +10,17 @@ import {
 import { useQuery, useLazyQuery, useSubscription } from "@apollo/client";
 import { company_id } from "../../const";
 import { useShipments } from "./ShipmentsCards";
-import {FilterDayMonth} from "context/filterDayMonth";
+import { FilterDayMonth } from "context/filterDayMonth";
 
 export default function useShipmentsTable() {
-const { initialDayMonth, setInitialDayMonth } = useContext(FilterDayMonth);
-let initialFilter=initialDayMonth 
+  const { initialDayMonth, setInitialDayMonth } = useContext(FilterDayMonth);
+  let initialFilter = initialDayMonth;
 
   // ESTADOS LOCALES ------------------------------------------------------------------------------------
   //estado para el filtro segun pestaña en la que este parado
   const [selectedFilter, setSelectedFilter] = useState("TRANSIT");
 
   const changeFilter = (filter) => {
-    console.log("este es el filter");
-    console.log(filter.toUpperCase());
-    console.log(filter);
-
     switch (filter) {
       case "inTransit":
         setSelectedFilter("TRANSIT");
@@ -155,10 +151,9 @@ let initialFilter=initialDayMonth
   ] = useLazyQuery(GET_SHIPMENT_DETAIL);
 
   //   // USE EFFECT ----------------------------------------------------------------------------------------------------
-    useEffect(() => {
-    console.log('cambio la pagina y el numero es: ', page);
+  // useEffect(() => {
 
-    }, [page]);
+  // }, [page]);
 
   //SI SE CREA/CIERRA UN ENVIO O HAY UN CHECKPOINT SE ACTUALIZA EL COMPONENTE
   if (updatedCheckpointsData || updatedShipData || createdShipData) {
@@ -167,9 +162,9 @@ let initialFilter=initialDayMonth
 
   //   // VARIABLES DONDE GUARDO LA DATA -----------------------------------------------------------------
   let infoLength = paginatedData?.shipments?.total;
-  let info = paginatedData?.shipments
-//   console.log(info);
-//   console.log(infoLength);
+  let info = paginatedData?.shipments;
+  //   console.log(info);
+  //   console.log(infoLength);
 
   //   // HANDLERS --------------------------------------------------------------------------------------------
   //   //handler de las solapas
@@ -252,5 +247,14 @@ let initialFilter=initialDayMonth
     console.log("error en la query de branches", branchesError);
   if (contentError)
     console.log("error en el contenido de viajes en transito", contentError);
-  return [changeFilter,infoLength,info, company_detail,setPage, page, lazyPaginatedDataLoading, paginatedDataLoading];
+  return [
+    changeFilter,
+    infoLength,
+    info,
+    company_detail,
+    setPage,
+    page,
+    lazyPaginatedDataLoading,
+    paginatedDataLoading,
+  ];
 }
