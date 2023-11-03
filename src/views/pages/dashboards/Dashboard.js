@@ -841,8 +841,8 @@ function Dashboard() {
           </Col>
           {/* tabla */}
           <Col xl="8">
-            <Card className="shadow">
-              <div>
+            <Card className="shadow" >
+              <div >
                 <Nav>
                   <NavItem className="navText">
                     <NavLink
@@ -1141,7 +1141,7 @@ function Dashboard() {
       >
         <ModalHeader toggle={toggleModalAlerts}>ALERTS MODAL</ModalHeader>
         <ModalBody>
-       <TempIntrusionChart  shipment_id={shipment_id}/>
+       <TempIntrusionChart  shipment_id={shipment_id} />
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={toggleModalAlerts}>

@@ -1,0 +1,89 @@
+.title{
+    width: 42%;
+    font-size: 20px;
+    font-size: 1.3vw;
+    color: #1B1464;
+    margin-left: 25%;
+    margin-bottom: 1.5vw;
+    margin-top: 0.5vw;
+}
+
+.infoBox{
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.imageAndTitle{
+    width: 30%;
+    margin-bottom: 0.8vw;
+}
+
+.firstLine {
+    display: flex;
+}
+
+.graphContainer{
+    margin-top: 0.5vw;
+    width: 100%;
+    height: 38vw;
+}
+
+.infoTitle{
+    color: #00ABC8;
+    font-size: 1vw;
+}
+
+.infoIDTitle{
+    color: #00ABC8;
+    font-size: 1vw;
+}
+
+.eachBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.info{
+    font-size: 1vw;
+    width: 100%;
+    margin-left: 5%;
+    margin-top: 0.2vw;
+    color: #1B1464;
+}
+
+.icon{
+    max-width: 5vw;
+    max-height: 4vw;
+    margin-bottom: -4vw;
+}
+
+.loading{
+    margin-top: 20vw;
+    margin-left: 47%;
+}
+
+.allContainer{
+    width: 100%;
+    height: 40vw;
+    
+}
+
+.graphContainer{
+    position: relative;
+    top:-1vw;
+    width: 98%;
+    height: 30vw;
+   /* border: solid red 1px; */
+}
+
+.noData{
+    margin-top: 2vw;
+    margin-left: 43%;
+    font-size: 2vw;
+    color: #1B1464;
+}
