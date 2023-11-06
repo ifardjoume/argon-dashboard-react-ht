@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_SHIPMENT_DETAIL } from 'queries';
 
 import {
@@ -18,9 +18,24 @@ import {
 
 import styles from "./RegistroTemperaturaIntrusion.module.css";
 import temperatura from "./temperatura.png";
+import { GET_COMPANY_DETAIL } from "queries";
+import { company_id } from "const";
+import { convertirHoraLocal } from "helpers";
+import { Spinner } from "reactstrap";
 // import CircularProgress from "@mui/material/CircularProgress";
 
 const TempIntrusionChart = ({ shipment_id }) => {
+  
+    //query para traerme las branches de la compañia
+    const {
+      // loading: branchesLoading,
+      error: branchesError,
+      data: company_detail,
+    } = useQuery(GET_COMPANY_DETAIL, {
+      variables: {
+        company_id,
+      },
+    });
   // Lazy query para traerme el content de los viajes 
   const [
     getShipment,
@@ -136,9 +151,276 @@ useEffect(() => {
 
   setDataState(data);
 }, [contentData]);
+ //LOADING ---------------------------------------------------------------------------
+
+ while (loading) {
+  setTimeout(() => setLoading(false), 2000);
+  return (
+    <div className={styles.loading}>
+      <Spinner />
+    </div>
+  );
+}
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const tooltipStyle = {
+      background: "#ffffff",
+      padding: "10px",
+      border: "1px solid #ccc",
+    };
+
+    return (
+      <div style={tooltipStyle}>
+        <p>{`Fecha: ${getTimestamp(label)}`}</p>
+        <p style={{ color: "#00ABC8" }}>Temp: {payload[0].value}°C</p>
+        <p style={{ color: "#FF001F" }}>{`Intrusion: ${payload[1].value}`}</p>
+      </div>
+    );
+  }
+
+  return null;
+
+};
+let branch_departure = company_detail?.company?.branches?.map(
+  (b) =>
+    b.branch_id === contentData?.shipment?.origin_id && b.name
+);
+let branch_arrival = company_detail?.company?.branches?.map(
+  (b) =>
+    b.branch_id === contentData?.shipment?.destination_id && b.name
+);
+let ship_temp_range = contentData?.shipment?.temperature_range;
+
+let departure= convertirHoraLocal(
+  contentData?.shipment?.departure,
+  company_detail?.company?.gmt
+);
 
   return (
-    <div>TempIntrusionChart{shipment_id}</div>
+    <div className={styles.allContainer}>
+    <div className={styles.firstLine}>
+      <div className={styles.imageAndTitle}>
+        <img className={styles.icon} src={temperatura} alt="" />
+        <p className={styles.title}>
+          {" "}
+             
+            Temperature/intrusion register
+         
+        </p>
+      </div>
+      <div className={styles.infoBox}>
+        <div className={styles.eachBox}>
+          <div className={styles.infoIDTitle}>ID</div>
+          <div className={styles.info}>{shipment_id}</div>
+        </div>
+        <div className={styles.eachBox}>
+          <div className={styles.infoTitle}>
+          
+              ORIGIN
+          
+          </div>
+          <div className={styles.info}>{branch_departure}</div>
+        </div>
+        <div className={styles.eachBox}>
+          <div className={styles.infoIDTitle}>
+          
+              DEPARTURE
+         
+          </div>
+          <div className={styles.info}>
+            {departure}
+          </div>
+        </div>
+        <div className={styles.eachBox}>
+          <div className={styles.infoTitle}>
+         
+              STATUS
+    
+          </div>
+          {contentData?.shipment?.status === "SUCCESSFUL" && (
+            <div className={styles.info}>
+          
+                Successful
+        
+            </div>
+          )}
+          {contentData?.shipment?.status === "UNCERTAIN" && (
+            <div className={styles.info}>
+        
+                Uncertain
+            
+            </div>
+          )}
+          {contentData?.shipment?.status === "FAILED" && (
+            <div className={styles.info}>
+            Failed
+            </div>
+          )}
+        </div>
+        <div className={styles.eachBox}>
+          <div className={styles.infoTitle}>
+          
+              DESTINATION
+            
+          </div>
+          <div className={styles.info}>{branch_arrival}</div>
+        </div>
+      </div>
+    </div>
+
+    {dataState?.[1] ? (
+      <div className={styles.graphContainer}>
+        {/* GRAFICO  */}
+
+        <ResponsiveContainer width="105%" height="85%">
+          <LineChart
+            width="100%"
+            height="50vw"
+            data={dataState}
+            margin={{
+              top: window.screen.width < 1050 ? 2 : 6,
+              right: window.screen.width < 1050 ? 10 : 30,
+              left: 18,
+              bottom: 25,
+            }}
+          >
+            <CartesianGrid strokeDasharray="1 1" />
+
+            <XAxis
+              dataKey="millisec"
+              type="number"
+              ticks={dataState?.millisec}
+              tick={{
+                color: "#00ABC8",
+                fontSize: "0.7vw",
+                fontFamily: "'Quattrocento Sans', sans-serif",
+              }}
+              tickMargin={6}
+              tickLine={true}
+              tickCount={20}
+              //tickFormatter={(tick) => convertSeconds(tick)}
+              //tickFormatter={getTimestamp}
+              tickFormatter={getTimestamp}
+              domain={["dataMin", "dataMax"]}
+            >
+              {/* <Label
+                value={
+                  localStorage.getItem("language") === "en"
+                    ? "Time (days-hours-minutes-seconds)"
+                    : "Tiempo (días-horas-minutos-segundos)"
+                }
+                offset={-20}
+                position="insideBottom"
+                fontFamily="'Quattrocento Sans', sans-serif"
+                fontSize="0.8vw"
+                stroke="#1B1464"
+                strokeWidth={0.3}
+              /> */}
+            </XAxis>
+            <YAxis
+              yAxisId="left"
+              dataKey="value"
+              type="number"
+              tick={{
+                color: "#00ABC8",
+                fontSize: "0.7vw",
+                fontFamily: "'Quattrocento Sans', sans-serif",
+              }}
+              tickCount={10}
+              tickLine={true}
+              padding={{ top: (window.screen.width * 6.25) / 100 }}
+              domain={[0, "dataMax"]}
+            >
+              <Label
+                value={
+                  localStorage.getItem("language") === "en"
+                    ? "Temperature(°C)"
+                    : "Temperatura(°C)"
+                }
+                angle={-90}
+                position="left"
+                fontFamily="'Quattrocento Sans', sans-serif"
+                fontSize="0.8vw"
+                fill="#00ABC8"
+                fontWeight="lighter"
+              />
+            </YAxis>
+            <YAxis
+              yAxisId="right"
+              dataKey="intrusion"
+              type="category"
+              tick={{
+                color: "#00ABC8",
+                fontSize: "0.7vw",
+                fontFamily: "'Quattrocento Sans', sans-serif",
+              }}
+              tickMargin={6}
+              tickCount={10}
+              tickLine={false}
+              orientation="right"
+              padding={{ bottom: (window.screen.width * 20.8) / 100 }}
+              domain={["0", "1"]}
+            >
+              <Label
+                value={
+                  localStorage.getItem("language") === "en"
+                    ? "Intrusions"
+                    : "Intrusiones"
+                }
+                angle={-90}
+                position="insideRight"
+                fontFamily="'Quattrocento Sans', sans-serif"
+                fontSize="0.8vw"
+                fill="#FF001F"
+                fontWeight="lighter"
+              />
+            </YAxis>
+
+            {/* <Tooltip
+            labelFormatter={(label) => `Fecha: ${getTimestamp(label)}`}
+            formatter={(value)=>`${value}`} 
+            
+          /> */}
+
+            <Tooltip content={<CustomTooltip />} />
+            <Line
+              yAxisId="left"
+              type="monotone"
+              dataKey="value"
+              stroke="#00ABC8"
+              dot={false}
+            />
+            <Line
+              yAxisId="right"
+              type="step"
+              dataKey="intrusion"
+              stroke="#FF001F"
+              dot={false}
+            />
+             <ReferenceLine
+            y={ship_temp_range?.max} // Usamos el valor máximo del primer punto de datos como ejemplo
+            stroke="orange"
+            strokeDasharray="5 5"
+            label={`Max: ${data[0].max}`}
+            yAxisId="left"
+          />
+         
+          <ReferenceLine
+            y={data[0]?.min} // Usamos el valor mínimo del primer punto de datos como ejemplo
+            stroke="orange"
+            strokeDasharray="5 5"
+            label={`Min: ${data[0].min}`}
+            yAxisId="left"
+          />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    ) : (
+      <div className={styles.noData}>
+        No data
+      </div>
+    )}
+  </div>
   );
 };
 

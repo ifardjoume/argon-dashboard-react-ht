@@ -1137,9 +1137,10 @@ function Dashboard() {
       <Modal
         className="modal-dialog-centered"
         isOpen={modalAlerts}
-        toggle={toggleModalComments}
+        toggle={toggleModalAlerts}
+        style={{ minWidth: "75vw" }}
       >
-        <ModalHeader toggle={toggleModalAlerts}>ALERTS MODAL</ModalHeader>
+        <ModalHeader toggle={toggleModalAlerts}> </ModalHeader>
         <ModalBody>
        <TempIntrusionChart  shipment_id={shipment_id} />
         </ModalBody>

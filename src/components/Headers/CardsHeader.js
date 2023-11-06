@@ -68,7 +68,7 @@ function CardsHeader({
 
   //card styles
   const commonCardStyle = {
-    minHeight: "150px",
+    minHeight: "180px",
     // borderColor: "red",
   };
 
@@ -102,10 +102,11 @@ function CardsHeader({
     width: "100%",
   };
   const card_data = {
-     //border: "red solid 1px",
+    // border: "red solid 1px",
     margin: "auto",
-    fontSize: "1.7vw",
+    fontSize: window.innerWidth >= 800 ? "1.7vw" : "45px",
   };
+  
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -153,6 +154,8 @@ function CardsHeader({
                     initialFilter === "month"
                       ? expandedCardStyle
                       : commonCardStyle
+                      
+
                   }
                  
                 >
@@ -295,11 +298,11 @@ function CardsHeader({
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
                 <Card
                   className="card-stats mb-4 mb-xl-0"
-                  // style={
-                  //   initialFilter === "month"
-                  //     ? expandedCardStyle
-                  //     : commonCardStyle
-                  // }
+                  style={
+                    initialFilter === "month"
+                      ? expandedCardStyle
+                      : commonCardStyle
+                  }
                 >
                   <CardBody>
                     <Row>
@@ -383,11 +386,11 @@ function CardsHeader({
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
                 <Card
                   className="card-stats mb-4 mb-xl-0"
-                  // style={
-                  //   initialFilter === "month"
-                  //     ? expandedCardStyle
-                  //     : commonCardStyle
-                  // }
+                  style={
+                    initialFilter === "month"
+                      ? expandedCardStyle
+                      : commonCardStyle
+                  }
                 >
                   <CardBody>
                     <Row>
@@ -472,11 +475,11 @@ function CardsHeader({
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
                 <Card
                   className="card-stats mb-4 mb-xl-0"
-                  // style={
-                  //   initialFilter === "month"
-                  //     ? expandedCardStyle
-                  //     : commonCardStyle
-                  // }
+                  style={
+                    initialFilter === "month"
+                      ? expandedCardStyle
+                      : commonCardStyle
+                  }
                 >
                   <CardBody>
                     <Row>

@@ -63,8 +63,12 @@
 }
 
 .loading{
-    margin-top: 20vw;
-    margin-left: 47%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 85vh;
+    
 }
 
 .allContainer{
