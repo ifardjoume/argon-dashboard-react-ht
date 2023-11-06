@@ -332,7 +332,7 @@ function Dashboard() {
                 {/* Agrega más encabezados según lo que quieras mostrar */}
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
                   <td style={{ textAlign: "center" }}>
@@ -403,7 +403,7 @@ function Dashboard() {
             </tbody>
           </Table>
         ) : (
-          <Table className="align-items-center table-flush" responsive>
+          <Table className="align-items-center table-flush"  responsive>
             <thead>
               <tr>
                 <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ID</th>
@@ -427,7 +427,7 @@ function Dashboard() {
                 {/* Agrega más encabezados según lo que quieras mostrar */}
               </tr>
             </thead>
-            <tbody>
+            <tbody >
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
                   {/* id */}
@@ -1140,7 +1140,7 @@ function Dashboard() {
         toggle={toggleModalAlerts}
         style={{ minWidth: "75vw" }}
       >
-        <ModalHeader toggle={toggleModalAlerts}> </ModalHeader>
+      
         <ModalBody>
        <TempIntrusionChart  shipment_id={shipment_id} />
         </ModalBody>

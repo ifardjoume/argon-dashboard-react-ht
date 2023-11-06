@@ -1,12 +1,4 @@
-.title{
-    width: 42%;
-    font-size: 20px;
-    font-size: 1.3vw;
-    color: #1B1464;
-    margin-left: 25%;
-    margin-bottom: 1.5vw;
-    margin-top: 0.5vw;
-}
+
 
 .infoBox{
     display: inline-flex;
@@ -16,10 +8,25 @@
 }
 
 .imageAndTitle{
+   display:flex;
+    align-items: center;
+    justify-content: center;
+    /* border:solid red 1px; */
     width: 30%;
-    margin-bottom: 0.8vw;
+    margin-bottom: 3vw;
 }
-
+.icon{
+    max-width: 5vw;
+    /* border: solid red 1px; */
+}
+.title{
+    margin:auto;
+    /* border:solid red 1px; */
+    font-size: 20px;
+    font-size: 1.3vw;
+    color: #1B1464;
+  
+}
 .firstLine {
     display: flex;
 }
@@ -28,6 +35,7 @@
     margin-top: 0.5vw;
     width: 100%;
     height: 38vw;
+  
 }
 
 .infoTitle{
@@ -56,11 +64,6 @@
     color: #1B1464;
 }
 
-.icon{
-    max-width: 5vw;
-    max-height: 4vw;
-    margin-bottom: -4vw;
-}
 
 .loading{
   display: flex;
