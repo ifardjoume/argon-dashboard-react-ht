@@ -309,7 +309,7 @@ function Dashboard() {
     return (
       <>
         {activeTab === "inTransit" ? (
-          <Table className="align-items-center table-flush" responsive>
+          <Table  className="align-items-center table-flush" responsive >
             <thead>
               <tr>
                 <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ID</th>
@@ -865,7 +865,7 @@ function Dashboard() {
                       {/* tooltip  transit*/}
                       {activeTab !== "inTransit" && (
                         <UncontrolledTooltip
-                          delay={0}
+                          delay={1}
                           placement="top"
                           target="tooltipTransit"
                           style={{
@@ -873,6 +873,7 @@ function Dashboard() {
                             color: "#5e72e4",
                             backgroundColor: "#fafafa",
                             fontFamily: "Open Sans, sans-serif",
+                       
                           }}
                         >
                          In transit

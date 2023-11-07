@@ -1,0 +1,98 @@
+.form{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    /* border: solid rgb(0, 0, 0) 1px; */
+    padding-left: 2.5%;
+    margin-top: 2%;
+}
+.subContainer{
+    display: flex;
+    justify-content:space-between;
+    /* align-items: center; */
+    /* border: solid rgb(0, 0, 0) 1px; */
+    width: 38.5%;
+    min-width:550px
+
+}
+.label{
+    /* border:solid red 1px; */
+    width: 10vw;
+    min-width: 140px;
+    display: flex;
+    justify-content: center;
+    margin-top:20px
+    
+}
+.origin_destination{
+    display:flex;
+   
+    /* border: solid red 1px; */
+    /* min-width:10vw; */
+    /* flex-direction: column;
+    align-items: center; */
+    /* flex-grow: 1; */
+
+
+}
+.sender_receiver{
+    display:flex;
+    
+    /* border: solid rgb(25, 87, 180) 1px; */
+    /* min-width:10vw; */
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: center; */
+    /* flex-grow: 1; */
+}
+.origin_destination{
+    display:flex;
+    /* border: solid rgb(255, 255, 0) 1px; */
+    /* min-width: 10w; */
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* flex-grow: 1; */
+}
+.from_to{
+    display:flex;
+    /* border: solid rgb(12, 198, 33) 1px; */
+    /* min-width:10vw; */
+    flex-direction: column;
+    /* justify-content: center;
+    align-items: center; */
+    /* flex-grow: 1; */
+}
+.status_barcode_qr{
+    /* border: solid rgb(198, 105, 12) 1px; */
+    display: flex;
+    /* flex-direction: column; */
+    width:60%;
+    min-width: 730px;
+    justify-content: space-between;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    /* flex-grow: 1; */
+}
+.input{
+    width: 10vw;
+    min-width: 140px;
+    /* border: solid rgb(0, 0, 0) 1px; */
+   
+}
+.buttons{
+    display: flex;
+    /* border: solid rgb(198, 105, 12) 1px; */
+    justify-content: center;
+  width: 100%;
+  
+    
+}
+.button{
+    background-color: #1B1464;
+    border: 0.15vw solid #1B1464;
+    color: #fafafa;
+  
+
+
+}

@@ -40,6 +40,8 @@ import Typography from "views/pages/components/Typography.js";
 import Validation from "views/pages/forms/Validation.js";
 import Vector from "views/pages/maps/Vector.js";
 import Widgets from "views/pages/Widgets.js";
+import Shipments from "views/pages/shipments/Shipments";
+
 
 const routes = [
   {
@@ -296,6 +298,13 @@ const routes = [
     name: "Calendar",
     icon: "ni ni-calendar-grid-58 text-red",
     component: <Calendar />,
+    layout: "/admin",
+  },
+  {
+    path: "/reports",
+    name: "Reports",
+    icon: "ni ni-single-copy-04",
+    component: <Shipments />,
     layout: "/admin",
   },
 ];
