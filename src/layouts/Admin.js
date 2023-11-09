@@ -98,7 +98,7 @@ function Admin() {
             element={<Navigate to="/admin/dashboard" replace />}
           />
         </Routes>
-        <AdminFooter />
+        {/* <AdminFooter /> */}
       </div>
       {sidenavOpen ? (
         <div className="backdrop d-xl-none" onClick={toggleSidenav} />

@@ -100,7 +100,7 @@ function RTL() {
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/rtl/rtl-support" replae />} />
         </Routes>
-        <AdminFooter />
+        {/* <AdminFooter /> */}
       </div>
       {sidenavOpen ? (
         <div className="backdrop d-xl-none" onClick={toggleSidenav} />
