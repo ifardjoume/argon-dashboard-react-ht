@@ -9,6 +9,7 @@ import {
   Button,
   Table,
   Collapse,
+  Spinner,
 } from "reactstrap";
 import { AiOutlineDownload } from "react-icons/ai";
 import styles from "./shipments.module.css";
@@ -22,7 +23,10 @@ import { fetchReportFile } from "helpers";
 import { saveAs } from "file-saver";
 import { useCompare } from "hooks/UseCompare";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+//icons
+import rombo_succes from "../../../assets/img/icons/statusIcons/IconoStatus_SUCCESS.png";
+import rombo_uncert from "../../../assets/img/icons/statusIcons/IconoStatus_UNCERTAIN.png";
+import rombo_fail from "../../../assets/img/icons/statusIcons/IconoStatus_FAILED.png";
 const Shipments = () => {
   const { handleCheck, arrayState, clearSelection, errorState, error } =
     useCompare();
@@ -496,13 +500,13 @@ const Shipments = () => {
             onClick={handleFilter}
           >
             <span className="btn-inner--icon">
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <i className="fa-solid fa-magnifying-glass"></i>
             </span>
             <span className="btn-inner--text">Search</span>
           </Button>
 
-          <Button className={styles.button}>Compare</Button>
-          <Button className={styles.button} onClick={clearSelection}>
+          <Button className={styles.button_compare}>Compare</Button>
+          <Button className={styles.button_clear} onClick={clearSelection}>
             Clear
           </Button>
         </div>
@@ -510,14 +514,31 @@ const Shipments = () => {
 
       {/* TABLA */}
       {filtersLoading ? (
-        "  loading.."
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "50%",
+          }}
+        >
+          <Spinner className="spinner" />
+        </div>
       ) : (
         <div>
           {/* Por si no hay filtros puestos */}
           {typeof data === "string" ? (
-            "seleccione parametros"
+            <div className={styles.message1}>Please select search settings</div>
           ) : data?.[0] ? (
-            <div>
+            <div  style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "97%",
+              height: "50%",
+              margin: "auto",
+            }}>
               <Table>
                 <thead>
                   <tr>
@@ -538,27 +559,45 @@ const Shipments = () => {
                   {data?.map((s, index) => (
                     <>
                       {" "}
-                      <tr onClick={(e) => toggleRow(e, s.shipment_id)} className={styles.headerData}>
-
+                      <tr
+                        onClick={(e) => toggleRow(e, s.shipment_id)}
+                        className={styles.headerData}
+                        style={
+                          data.indexOf(s) % 2 === 0
+                            ? { background: "#FAFAFA" }
+                            : { background: "#D9F1F5" }
+                        }
+                      >
                         {/* id */}
-                        <td className={styles.moveDown}>{s?.shipment_id.split("-")[1]}</td>
+                        <td>
+                          <div className={styles.moveDown}>
+                            {" "}
+                            {s?.shipment_id.split("-")[1]}
+                          </div>
+                        </td>
                         {/* qr */}
-                        <td  className={styles.moveDown}> {s?.qr}</td>
+                        <td>
+                          <div className={styles.moveDown}>{s?.qr}</div>
+                        </td>
                         {/* origin */}
-                        <td className={styles.moveDown}>
-                          {company_detail?.company?.branches?.map(
-                            (b) => b?.branch_id === s?.origin_id && b?.name
-                          )}{" "}
+                        <td>
+                          <div className={styles.moveDown}>
+                            {company_detail?.company?.branches?.map(
+                              (b) => b?.branch_id === s?.origin_id && b?.name
+                            )}{" "}
+                          </div>
                         </td>
                         {/* sender */}
-                        <td className={styles.moveDown}>
-                          {company_detail?.company?.operators?.map(
-                            (o) =>
-                              o?.operator_id === s?.origin_op_id &&
-                              `${o.name} (${o.operator_id.split("-")[0]}-${
-                                o.operator_id.split("-")[1]
-                              })`
-                          )}
+                        <td>
+                          <div className={styles.moveDown}>
+                            {company_detail?.company?.operators?.map(
+                              (o) =>
+                                o?.operator_id === s?.origin_op_id &&
+                                `${o.name} (${o.operator_id.split("-")[0]}-${
+                                  o.operator_id.split("-")[1]
+                                })`
+                            )}
+                          </div>
                         </td>
                         {/* departure */}
                         <td className={styles.departure_arrival}>
@@ -577,20 +616,25 @@ const Shipments = () => {
                           }
                         </td>
                         {/* destination */}
-                        <td className={styles.moveDown}>
-                          {company_detail?.company?.branches?.map(
-                            (b) => b.branch_id === s?.destination_id && b.name
-                          )}
+                        <td>
+                          <div className={styles.moveDown}>
+                            {company_detail?.company?.branches?.map(
+                              (b) =>
+                                b?.branch_id === s?.destination_id && b?.name
+                            )}
+                          </div>
                         </td>
                         {/* receiver */}
-                        <td className={styles.moveDown}>
-                          {company_detail?.company?.operators?.map(
-                            (o) =>
-                              o.operator_id === s?.destination_op_id &&
-                              `${o.name} (${o.operator_id.split("-")[0]}-${
-                                o.operator_id.split("-")[1]
-                              })`
-                          )}
+                        <td>
+                          <div className={styles.moveDown}>
+                            {company_detail?.company?.operators?.map(
+                              (o) =>
+                                o.operator_id === s?.destination_op_id &&
+                                `${o.name} (${o.operator_id.split("-")[0]}-${
+                                  o.operator_id.split("-")[1]
+                                })`
+                            )}
+                          </div>
                         </td>
                         {/* arrival */}
                         <td className={styles.departure_arrival}>
@@ -610,41 +654,57 @@ const Shipments = () => {
                         </td>
                         {/* status */}
                         <td>
-                          {s?.status === "SUCCESSFUL" &&
-                            // <img alt="" src={rombo_verde} className={styles.rombo} />
-                            "successful"}
-                          {s?.status === "UNCERTAIN" &&
-                            // <img
-                            //   alt=""
-                            //   src={rombo_amarillo}
-                            //   className={styles.rombo}
-                            // />
-                            "uncertain"}
-                          {s?.status === "FAILED" &&
-                            // <img alt="" src={rombo_rojo} className={styles.rombo} />
-                            "failed"}
+                          {s?.status === "SUCCESSFUL" && (
+                            <img
+                              alt=""
+                              src={rombo_succes}
+                              className={styles.rombo}
+                            />
+                          )}
+                          {s?.status === "UNCERTAIN" && (
+                            <img
+                              alt=""
+                              src={rombo_uncert}
+                              className={styles.rombo}
+                            />
+                          )}
+                          {s?.status === "FAILED" && (
+                            <img
+                              alt=""
+                              src={rombo_fail}
+                              className={styles.rombo}
+                            />
+                          )}
                         </td>
                         {/* reports */}
                         <td>
                           {" "}
                           <button
                             onClick={(e) => handleDownload(e, s?.shipment_id)}
-                            style={{ border: "none", background: "none" }}
+                            style={{
+                              border: "none",
+                              background: "none",
+                              width: "50%",
+                            }}
                           >
-                            <AiOutlineDownload />
+                            <AiOutlineDownload size="2vw" />
                             <br />
                             PDF
                           </button>
                           <button
                             onClick={(e) => downloadCsv2(e, s)}
-                            style={{ border: "none", background: "none" }}
+                            style={{
+                              border: "none",
+                              background: "none",
+                              width: "50%",
+                            }}
                           >
-                            <AiOutlineDownload />
+                            <AiOutlineDownload size="2vw" />
                             <br />
                             CSV
                           </button>
                         </td>
-                        <td className={styles.moveDown}>
+                        <td>
                           <input
                             type="checkbox"
                             name="shipsTocompare"
@@ -653,6 +713,7 @@ const Shipments = () => {
                               e.stopPropagation();
                             }}
                             value={s?.shipment_id}
+                            className={styles.checkBox}
                           />
                         </td>
                       </tr>
@@ -673,7 +734,7 @@ const Shipments = () => {
               </Table>
             </div>
           ) : (
-            "No results found"
+            <div className={styles.message1}>No results found</div>
           )}
         </div>
       )}

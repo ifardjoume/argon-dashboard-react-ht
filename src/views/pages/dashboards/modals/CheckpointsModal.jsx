@@ -52,12 +52,12 @@ const CheckpointsModal = ({ shipment_id }) => {
       <VerticalTimelineElement
         className="vertical-timeline-element--work custom-line" /* Agrega la clase personalizada aquí */
         //date={convertirHoraLocal(c?.timestamp, company_detail.company.gmt)}
-        iconStyle={i==0? {background: "rgb(33, 150, 243)", color:"rgb(33, 150, 243)"}: { background: "rgb(33, 150, 243)", color: "#fff"} }
-        icon={<BsCircleFill />}
+        iconStyle={i==0? {background: "rgb(33, 150, 243)", color:"rgb(33, 150, 243)"  }: { background: "rgb(33, 150, 243)", color: "#fff"} }
+        icon={<BsCircleFill  />}
         key={c.id}
       >
-        <h3 className="vertical-timeline-element-title">{c.location} - {convertirHoraLocal(c?.timestamp, company_detail.company.gmt)}</h3>
-        <h4 className="vertical-timeline-element-subtitle">
+        <h3 className="vertical-timeline-element-title" style={{ fontSize: '20px' }}>{c.location} - {convertirHoraLocal(c?.timestamp, company_detail.company.gmt)}</h3>
+        <h4 className="vertical-timeline-element-subtitle" style={{ fontSize: '15px' }}>
           {c.temperature ? ` (${c?.temperature}°C)` : ""} - {c.responsible_name}
         </h4>
         

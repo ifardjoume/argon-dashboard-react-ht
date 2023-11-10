@@ -36,7 +36,7 @@ import completedIcon from "../../assets/img/icons/common/oldIcons/viajesHechos.p
 import succededIcon from "../../assets/img/icons/common/oldIcons/viajesConformes.png";
 import uncertainIcon from "../../assets/img/icons/common/oldIcons/viajesParaRevision.png";
 import failedIcon from "../../assets/img/icons/common/oldIcons/viajesConformes.png";
-import "../../assets/css/myCss/global.css"
+import "../../assets/css/myCss/global.css";
 function CardsHeader({
   name,
   parentName,
@@ -84,7 +84,7 @@ function CardsHeader({
     left: "-1%",
   };
   const cardsContainer = {
-   // border: "red solid 1px",
+    // border: "red solid 1px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -106,7 +106,7 @@ function CardsHeader({
     margin: "auto",
     fontSize: window.innerWidth >= 800 ? "1.7vw" : "45px",
   };
-  
+
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -149,15 +149,12 @@ function CardsHeader({
               {/* card in transit---------- */}
               <Col xs="12" sm="6" md="4" lg="3" xl="2">
                 <Card
-                   className="card-stats mb-4 mb-xl-0"
+                  className="card-stats mb-4 mb-xl-0"
                   style={
                     initialFilter === "month"
                       ? expandedCardStyle
                       : commonCardStyle
-                      
-
                   }
-                 
                 >
                   <CardBody>
                     <Row>
@@ -174,7 +171,7 @@ function CardsHeader({
 
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner className="spinner" />
+                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
                         ) : (
                           inTransitShipsState
                         )}
@@ -187,19 +184,18 @@ function CardsHeader({
                     </Row>
                     {/* texto invisible para mantener tamaños */}
                     <div className="mt-3 mb-0 text-muted text-sm">
-                     <div>
                       <div>
-                        <span className="text-warning mr-2"> </span>{" "}
-                      </div>
+                        <div>
+                          <span className="text-warning mr-2"> </span>{" "}
+                        </div>
 
-                      <div style={{ visibility: " hidden" }}>
-                        {initialFilter === "month"
-                          ? "  over the last month"
-                          : ""}
+                        <div style={{ visibility: " hidden" }}>
+                          {initialFilter === "month"
+                            ? "  over the last month"
+                            : ""}
+                        </div>
                       </div>
                     </div>
-                    </div>
-                   
                   </CardBody>
                 </Card>
               </Col>
@@ -213,7 +209,6 @@ function CardsHeader({
                       ? expandedCardStyle
                       : commonCardStyle
                   }
-               
                 >
                   <CardBody>
                     <Row>
@@ -228,7 +223,7 @@ function CardsHeader({
                       </div>
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner className="spinner" />
+                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
                         ) : (
                           allData?.completedShipsState
                         )}
@@ -240,8 +235,8 @@ function CardsHeader({
                       </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_completed ?
-                        (percentageChange_completed.includes("-") ? (
+                      {percentageChange_completed ? (
+                        percentageChange_completed.includes("-") ? (
                           <div>
                             <div>
                               <span className="text-success mr-2">
@@ -274,21 +269,21 @@ function CardsHeader({
                                 : ""}
                             </div>
                           </div>
-                        ))
-                        :
-                              // texto invisible para mantener tamaños
-                              <div>
-                              <div>
-                                <span className="text-warning mr-2"> </span>{" "}
-                              </div>
-        
-                              <div style={{ visibility: " hidden" }}>
-                                {initialFilter === "month"
-                                  ? "  over the last month"
-                                  : ""}
-                              </div>
-                            </div>
-                        }
+                        )
+                      ) : (
+                        // texto invisible para mantener tamaños
+                        <div>
+                          <div>
+                            <span className="text-warning mr-2"> </span>{" "}
+                          </div>
+
+                          <div style={{ visibility: " hidden" }}>
+                            {initialFilter === "month"
+                              ? "  over the last month"
+                              : ""}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </CardBody>
                 </Card>
@@ -317,7 +312,7 @@ function CardsHeader({
                       </div>
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner className="spinner" />
+                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
                         ) : (
                           allData?.succShipsState
                         )}
@@ -329,8 +324,8 @@ function CardsHeader({
                       </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_succeded ?
-                        (percentageChange_succeded.includes("-") ? (
+                      {percentageChange_succeded ? (
+                        percentageChange_succeded.includes("-") ? (
                           <div>
                             <div>
                               <span className="text-success mr-2">
@@ -350,7 +345,7 @@ function CardsHeader({
                         ) : (
                           <div>
                             <div>
-                              <span className="text-warning mr-2">
+                              <span className="text-primary mr-2">
                                 <i className="fas fa-arrow-down" />{" "}
                                 {initialFilter === "month" &&
                                   percentageChange_succeded}
@@ -363,21 +358,21 @@ function CardsHeader({
                                 : ""}
                             </div>
                           </div>
-                        ))
-                        :
+                        )
+                      ) : (
                         // texto invisible para mantener tamaños
                         <div>
-                        <div>
-                          <span className="text-warning mr-2"> </span>{" "}
+                          <div>
+                            <span className="text-primary mr-2"> </span>{" "}
+                          </div>
+
+                          <div style={{ visibility: " hidden" }}>
+                            {initialFilter === "month"
+                              ? "  over the last month"
+                              : ""}
+                          </div>
                         </div>
-  
-                        <div style={{ visibility: " hidden" }}>
-                          {initialFilter === "month"
-                            ? "  over the last month"
-                            : ""}
-                        </div>
-                      </div>
-                      }
+                      )}
                     </div>
                   </CardBody>
                 </Card>
@@ -405,7 +400,7 @@ function CardsHeader({
                       </div>
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner className="spinner" />
+                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
                         ) : (
                           allData?.uncertShipsState
                         )}
@@ -417,11 +412,11 @@ function CardsHeader({
                       </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_uncertain ?
-                        (percentageChange_uncertain.includes("-") ? (
+                      {percentageChange_uncertain ? (
+                        percentageChange_uncertain.includes("-") ? (
                           <div>
                             <div>
-                              <span className="text-warning mr-2">
+                              <span className="text-primary mr-2">
                                 {initialFilter === "month" && (
                                   <i className="fa fa-arrow-up" />
                                 )}{" "}
@@ -451,21 +446,21 @@ function CardsHeader({
                                 : ""}
                             </div>
                           </div>
-                        ))
-                        :
-                         // texto invisible para mantener tamaños
-                         <div>
-                         <div>
-                           <span className="text-warning mr-2"> </span>{" "}
-                         </div>
-   
-                         <div style={{ visibility: " hidden" }}>
-                           {initialFilter === "month"
-                             ? "  over the last month"
-                             : ""}
-                         </div>
-                       </div>
-                        }
+                        )
+                      ) : (
+                        // texto invisible para mantener tamaños
+                        <div>
+                          <div>
+                            <span className="text-warning mr-2"> </span>{" "}
+                          </div>
+
+                          <div style={{ visibility: " hidden" }}>
+                            {initialFilter === "month"
+                              ? "  over the last month"
+                              : ""}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </CardBody>
                 </Card>
@@ -494,7 +489,7 @@ function CardsHeader({
                       </div>
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner className="spinner" />
+                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
                         ) : (
                           allData?.failShipsState
                         )}
@@ -506,11 +501,11 @@ function CardsHeader({
                       </Col> */}
                     </Row>
                     <div className="mt-3 mb-0 text-muted text-sm">
-                      {percentageChange_failed ?
-                        (percentageChange_failed.includes("-") ? (
+                      {percentageChange_failed ? (
+                        percentageChange_failed.includes("-") ? (
                           <div>
                             <div>
-                              <span className="text-warning mr-2">
+                              <span className="text-primary mr-2">
                                 {initialFilter === "month" && (
                                   <i className="fa fa-arrow-up" />
                                 )}{" "}
@@ -540,21 +535,21 @@ function CardsHeader({
                                 : ""}
                             </div>
                           </div>
-                        ))
-                        :
-                         // texto invisible para mantener tamaños
-                         <div>
-                         <div>
-                           <span className="text-warning mr-2"> </span>{" "}
-                         </div>
-   
-                         <div style={{ visibility: " hidden" }}>
-                           {initialFilter === "month"
-                             ? "  over the last month"
-                             : ""}
-                         </div>
-                       </div>
-                        }
+                        )
+                      ) : (
+                        // texto invisible para mantener tamaños
+                        <div>
+                          <div>
+                            <span className="text-warning mr-2"> </span>{" "}
+                          </div>
+
+                          <div style={{ visibility: " hidden" }}>
+                            {initialFilter === "month"
+                              ? "  over the last month"
+                              : ""}
+                          </div>
+                        </div>
+                      )}
                     </div>
                     {/* texto invisible para mantener tamaños */}
                     {/* {!percentageChange_failed && 

@@ -89,7 +89,10 @@ import ContentsModal from "./modals/ContentsModal";
 import Comments from "./modals/Comments";
 import Estadisticas from "./grafico de barras/Estadisticas";
 import TempIntrusionChart from "./graficoTempIntrusion/TempIntrusionChart";
-
+//icons
+import successIcon from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 86.png";
+import failedIcon2 from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 87.png";
+import uncertainIcon2 from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 88.png";
 function Dashboard() {
   //hooks
   const [
@@ -468,7 +471,26 @@ function Dashboard() {
                       className="btn-last-checkpoint"
                       onClick={(e)=>toggleModalAlerts(e, item.shipment_id)}
                     >
-                      ALERTS
+                      {item.status === "FAILED" ? (
+                        <img
+                          style={{ width: "1.5vw", height: "1.5vw" }}
+                          src={failedIcon2}
+                          alt=""
+                        />
+                      ) : item.status === "UNCERTAIN" ? (
+                        <img
+                          style={{ width: "1.5vw", height: "1.5vw" }}
+                          src={uncertainIcon2}
+                          alt=""
+                        />
+                      ) : (
+                        <img
+                          style={{ width: "1.5vw", height: "1.5vw" }}
+                          src={successIcon}
+                          alt=""
+                        />
+                      )
+                      }
                     </button>
                   </th>
 
