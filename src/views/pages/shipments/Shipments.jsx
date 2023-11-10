@@ -10,6 +10,10 @@ import {
   Table,
   Collapse,
   Spinner,
+  CardFooter,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
 } from "reactstrap";
 import { AiOutlineDownload } from "react-icons/ai";
 import styles from "./shipments.module.css";
@@ -47,7 +51,6 @@ const Shipments = () => {
   //estados para la paginacion
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(15);
-  const [totalPages, setTotalPages] = useState("");
   //estado para el input de busqueda por id
   const [searchInput, setSearchInput] = useState("");
 
@@ -84,8 +87,8 @@ const Shipments = () => {
   // VARIABLE PARA GUARDAR LA DATA -----------------------------------------------------
   let dataLength = "";
   let data = "";
-  let dataById = "";
-
+  
+ let info = [];
   //CADA VEZ QUE CAMBIO DE PAGINA VUELVO A HACER LA QUERY ------------------------------------------------------------------------
   useEffect(() => {
     if (typeof data !== "string") {
@@ -108,7 +111,10 @@ const Shipments = () => {
         },
       });
     }
-    console.log(filtersResult);
+
+    info = filtersResult?.shipments;
+    console.log('infoooo')
+    console.log(info)
   }, [page]);
 
   //HANDLERS ---------------------------------------------------------------------------------------------
@@ -284,7 +290,69 @@ const Shipments = () => {
     e.stopPropagation();
   };
 
+  const itemsPerPage = 15;
+  const totalPages = Math.ceil(filtersResult?.shipments?.total / itemsPerPage);
+ 
+  const changePage = (e, page) => {
+    e.preventDefault();
+    setPage(page);
+  };
+  const paginationItems = [];
+  for (let i = 1; i <= totalPages; i++) {
+    paginationItems.push(
+      <PaginationItem key={i} className={page === i ? "active" : ""}>
+        <PaginationLink href="#pablo" onClick={(e) => changePage(e, i)}>
+          {i}
+        </PaginationLink>
+      </PaginationItem>
+    );
+  }
   // render
+  const renderPaginationItems = () => {
+    const items = [];
+    const visiblePages = 10; // Número de páginas visibles antes de los puntos suspensivos
+
+    // Calcular el rango de páginas basado en la página actual
+    const startPage = Math.max(1, page - Math.floor(visiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+
+    // Agregar páginas al arreglo
+    for (let i = startPage; i <= endPage; i++) {
+      items.push(
+        <PaginationItem key={i} active={i === page}>
+          <PaginationLink href="#pablo" onClick={(e) => changePage(e, i)}>
+            {i}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    // Agregar los puntos suspensivos si hay más páginas
+    if (totalPages > endPage) {
+      items.push(
+        <PaginationItem disabled key="dots">
+          <PaginationLink href="#pablo" onClick={(e) => e.preventDefault()}>
+            ...
+          </PaginationLink>
+        </PaginationItem>
+      );
+
+      items.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink href="#pablo" onClick={(e) => changePage(e, totalPages)}>
+            {totalPages}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return items;
+  };
+
+
+
+
+
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <h2 className={styles.reportsTitle}>Reports</h2>
@@ -732,12 +800,58 @@ const Shipments = () => {
                   ))}
                 </tbody>
               </Table>
+               
             </div>
           ) : (
             <div className={styles.message1}>No results found</div>
           )}
         </div>
+        
       )}
+        {/* pagination */}
+        {filtersResult?.shipments?.total > 0 && (
+    <CardFooter
+      style={{
+        display: 'flex',
+        justifyContent: 'flex-end',
+        overflowX: 'auto', // Desplazamiento horizontal
+        backgroundColor: 'transparent',
+        border:"none"
+      }}
+    >
+      <nav aria-label="Page navigation example">
+        <Pagination>
+          <PaginationItem disabled={page === 1}>
+            <PaginationLink
+              aria-label="Previous"
+              href="#pablo"
+              onClick={(e) => changePage(e, page - 1)}
+            >
+              <i className="fa fa-angle-left" />
+              <span className="sr-only">Previous</span>
+            </PaginationLink>
+          </PaginationItem>
+
+          {renderPaginationItems()}
+
+          <PaginationItem disabled={page === totalPages}>
+            <PaginationLink
+              aria-label="Next"
+              href="#pablo"
+              onClick={(e) => changePage(e, page + 1)}
+            >
+              <i className="fa fa-angle-right" />
+              <span className="sr-only">Next</span>
+            </PaginationLink>
+          </PaginationItem>
+        </Pagination>
+      </nav>
+    </CardFooter>
+
+        )}
+          
+       
+    
     </div>
   );
 };
