@@ -31,6 +31,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import rombo_succes from "../../../assets/img/icons/statusIcons/IconoStatus_SUCCESS.png";
 import rombo_uncert from "../../../assets/img/icons/statusIcons/IconoStatus_UNCERTAIN.png";
 import rombo_fail from "../../../assets/img/icons/statusIcons/IconoStatus_FAILED.png";
+import DropdownShipments from "./dropdowShipments/DropdownShipments";
 const Shipments = () => {
   const { handleCheck, arrayState, clearSelection, errorState, error } =
     useCompare();
@@ -87,8 +88,8 @@ const Shipments = () => {
   // VARIABLE PARA GUARDAR LA DATA -----------------------------------------------------
   let dataLength = "";
   let data = "";
-  
- let info = [];
+
+  let info = [];
   //CADA VEZ QUE CAMBIO DE PAGINA VUELVO A HACER LA QUERY ------------------------------------------------------------------------
   useEffect(() => {
     if (typeof data !== "string") {
@@ -113,8 +114,8 @@ const Shipments = () => {
     }
 
     info = filtersResult?.shipments;
-    console.log('infoooo')
-    console.log(info)
+    console.log("infoooo");
+    console.log(info);
   }, [page]);
 
   //HANDLERS ---------------------------------------------------------------------------------------------
@@ -166,6 +167,7 @@ const Shipments = () => {
       console.log(error);
     }
   };
+
   //CUANDO ENCUENTRE RESULTADOS LA DATA VA A SER ESTA -------------------------------------------------------------
   if (filtersResult?.shipments?.selectedItems) {
     dataLength = filtersResult?.shipments?.total;
@@ -292,7 +294,7 @@ const Shipments = () => {
 
   const itemsPerPage = 15;
   const totalPages = Math.ceil(filtersResult?.shipments?.total / itemsPerPage);
- 
+
   const changePage = (e, page) => {
     e.preventDefault();
     setPage(page);
@@ -339,7 +341,10 @@ const Shipments = () => {
 
       items.push(
         <PaginationItem key={totalPages}>
-          <PaginationLink href="#pablo" onClick={(e) => changePage(e, totalPages)}>
+          <PaginationLink
+            href="#pablo"
+            onClick={(e) => changePage(e, totalPages)}
+          >
             {totalPages}
           </PaginationLink>
         </PaginationItem>
@@ -349,15 +354,11 @@ const Shipments = () => {
     return items;
   };
 
-
-
-
-
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <h2 className={styles.reportsTitle}>Reports</h2>
       {/* FILTROS */}
-      <Form className={styles.form}>
+      <Form className={styles.form} onSubmit={handleFilter}>
         <div className={styles.subContainer}>
           <FormGroup className={styles.origin_destination}>
             {/* origin */}
@@ -594,19 +595,21 @@ const Shipments = () => {
           <Spinner className="spinner" />
         </div>
       ) : (
-        <div>
+        <div >
           {/* Por si no hay filtros puestos */}
           {typeof data === "string" ? (
             <div className={styles.message1}>Please select search settings</div>
           ) : data?.[0] ? (
-            <div  style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "97%",
-              height: "50%",
-              margin: "auto",
-            }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "97%",
+                height: "50%",
+                margin: "auto",
+              }}
+            >
               <Table>
                 <thead>
                   <tr>
@@ -634,6 +637,7 @@ const Shipments = () => {
                           data.indexOf(s) % 2 === 0
                             ? { background: "#FAFAFA" }
                             : { background: "#D9F1F5" }
+                            
                         }
                       >
                         {/* id */}
@@ -786,13 +790,15 @@ const Shipments = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td colSpan="4" style={{ border: "none" }}>
+                        <td colSpan="11" style={{ border: "none" }}>
                           <Collapse
                             isOpen={selectedRows.includes(s.shipment_id)}
                           >
-                            <div>
-                              <p>Additional details for {s.name}</p>
-                            </div>
+                           <DropdownShipments 
+                          shipment_id={s.shipment_id}
+                          //expanded={expanded}
+                          index={index}
+                          gmt={company_detail.company.gmt}/>
                           </Collapse>
                         </td>
                       </tr>
@@ -800,58 +806,52 @@ const Shipments = () => {
                   ))}
                 </tbody>
               </Table>
-               
             </div>
           ) : (
             <div className={styles.message1}>No results found</div>
           )}
         </div>
-        
       )}
-        {/* pagination */}
-        {filtersResult?.shipments?.total > 0 && (
-    <CardFooter
-      style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        overflowX: 'auto', // Desplazamiento horizontal
-        backgroundColor: 'transparent',
-        border:"none"
-      }}
-    >
-      <nav aria-label="Page navigation example">
-        <Pagination>
-          <PaginationItem disabled={page === 1}>
-            <PaginationLink
-              aria-label="Previous"
-              href="#pablo"
-              onClick={(e) => changePage(e, page - 1)}
-            >
-              <i className="fa fa-angle-left" />
-              <span className="sr-only">Previous</span>
-            </PaginationLink>
-          </PaginationItem>
+      {/* pagination */}
+      {filtersResult?.shipments?.total > 0 && (
+        <CardFooter
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            overflowX: "auto", // Desplazamiento horizontal
+            backgroundColor: "transparent",
+            border: "none",
+          }}
+        >
+          <nav aria-label="Page navigation example">
+            <Pagination>
+              <PaginationItem disabled={page === 1}>
+                <PaginationLink
+                  aria-label="Previous"
+                  href="#pablo"
+                  onClick={(e) => changePage(e, page - 1)}
+                >
+                  <i className="fa fa-angle-left" />
+                  <span className="sr-only">Previous</span>
+                </PaginationLink>
+              </PaginationItem>
 
-          {renderPaginationItems()}
+              {renderPaginationItems()}
 
-          <PaginationItem disabled={page === totalPages}>
-            <PaginationLink
-              aria-label="Next"
-              href="#pablo"
-              onClick={(e) => changePage(e, page + 1)}
-            >
-              <i className="fa fa-angle-right" />
-              <span className="sr-only">Next</span>
-            </PaginationLink>
-          </PaginationItem>
-        </Pagination>
-      </nav>
-    </CardFooter>
-
-        )}
-          
-       
-    
+              <PaginationItem disabled={page === totalPages}>
+                <PaginationLink
+                  aria-label="Next"
+                  href="#pablo"
+                  onClick={(e) => changePage(e, page + 1)}
+                >
+                  <i className="fa fa-angle-right" />
+                  <span className="sr-only">Next</span>
+                </PaginationLink>
+              </PaginationItem>
+            </Pagination>
+          </nav>
+        </CardFooter>
+      )}
     </div>
   );
 };

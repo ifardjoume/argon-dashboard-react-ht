@@ -1,2 +1,315 @@
 
 
+.tableContainer {
+    width: 60%;
+    height: 38vw;
+    border: 0.15vw solid #00ABC8;
+    border-radius: 2vw;
+    margin: 1%;
+    background-color: white;
+
+}
+
+.icon {
+    max-width: 70%;
+    max-height: 2.5vw;
+    object-fit: cover;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+}
+
+
+.alertButton {
+    background-color: transparent;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin: auto;
+    margin-top: 0.1vw;
+    width: "10%";
+    height: 2vw;
+}
+
+.noData {
+    color: #1B1464;
+    font-size: 1.6vw;
+    margin-left: 40%;
+    margin-right: 40%;
+    margin-top: 20%;
+}
+
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30%;
+}
+
+.modalTitleContainer {
+    display: flex;
+    margin-bottom: 5%;
+    color: #1B1464;
+    justify-content: center;
+    font-size: 1.8vw;
+
+
+
+}
+
+.modalLoading {
+    margin-left: 48%;
+    margin-top: 20%;
+}
+
+.contentButton {
+    color: #1B1464;
+    background-color: transparent;
+    border: none;
+    font-size: 0.9vw;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.modalData {
+    font-size: 2vw;
+    margin-bottom: 0.3vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+
+
+}
+
+
+.modalContent {
+    display: flex;
+    height: 20vw;
+    flex-direction: column;
+    overflow-y: auto;
+
+
+}
+
+.checkpointsButton {
+    background: transparent;
+    border: none;
+    color: #1B1464;
+    font-size: 0.9vw;
+    cursor: pointer;
+    font-weight: 550;
+    text-decoration: underline;
+}
+
+.eachCheckpoint {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    /* justify-content: center; */
+
+
+}
+
+.iconAndLine {
+    display: flex;
+    flex-direction: column;
+    width: 2vw;
+    height: 2.9vw;
+    margin-top: 0.2vw;
+    margin-bottom: -0.4vw;
+
+
+}
+
+.checkpointsIcon {
+    width: 1vw;
+    height: 0.7vw;
+    color: #00AAC8;
+    margin: 1px auto
+}
+
+.checkpointsIcon2 {
+
+    width: 1vw;
+    height: 0.7vw;
+    color: #1B1464;
+    margin: 3px auto
+}
+
+.checkpointsBox {
+    display: flex;
+    margin-top: 0px !important;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+
+
+
+}
+
+.checksYDatas {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.checks {
+    width: 37%;
+    height: 100%;
+}
+
+.datas {
+    padding-left: 5%;
+    width: 70%;
+    height: 100%;
+
+
+}
+
+.labName {
+    font-size: 1.1vw;
+    margin-left: 0.5vw;
+
+}
+
+.checkDate {
+    display: flex;
+    font-size: 1vw;
+    margin-bottom: 6.4%;
+    width: 100%;
+    margin-right: 5%;
+    padding-left: 2%;
+    text-align: left;
+
+    /*  justify-content: flex-end; */
+}
+
+.intermediateLine {
+    /*   border-right: 0.3vw solid #00ABC8;  */
+    height: 1.9vw;
+    width: 0.2vw;
+    margin: 1px auto;
+    background-color: #00ABC8;
+    justify-content: center;
+
+}
+
+/* estilos de checkpoints para cuando solo pido el grafico(graphOnly:true) */
+.gOnlyContainer {
+    /* border: solid red 1px; */
+    display: flex;
+    margin-top: 0px !important;
+    flex-direction: column;
+    height: 27vw;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.gOnlyChecks {
+    width: 3vw;
+    height: 100%;
+}
+
+.gOnlychecksYDatas {
+    display: flex;
+
+    width: 100%;
+    height: 23vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* border: solid rgb(0, 255, 76) 1px; */
+}
+
+.gOnlyEachCheckpoint {
+    width: 1.5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    height: 5vw;
+    /* border: solid rgb(0, 98, 255) 1px; */
+}
+
+.gOnlyCheckpointsIcon {
+    width: 1vw;
+    height: 1.2vw;
+    color: #00AAC8;
+    margin: 1px auto
+}
+
+.gOnlyCheckpointsIcon2 {
+
+    width: 1vw;
+    height: 1.2vw;
+    color: #1B1464;
+    margin: 3px auto
+}
+
+.gOnly_intermediateLine {
+    height: 5vw;
+    width: 0.2vw;
+    margin: 1px auto;
+    background-color: #00ABC8;
+    justify-content: center;
+
+}
+
+.gOnlyiconAndLine {
+    /* border: solid red 1px; */
+    display: flex;
+    flex-direction: column;
+    width: 2vw;
+    height: 5vw;
+    margin-top: 0.2vw;
+    margin-bottom: -0.4vw;
+}
+
+.gOnlyDatas {
+    /* border: solid rgb(123, 0, 255) 1px; */
+    /* padding-left: 5%; */
+    width: 100%;
+    height: 100%;
+}
+
+.gOnlyCheckDate {
+    /* border: solid rgb(157, 255, 0) 1px; */
+    height: 5vw;
+}
+
+.gOnlyDate_Temperature {
+    font-size: 0.9vw;
+}
+
+
+
+
+@media (max-width:800px) {
+    .tableContainer {
+        width: 90%;
+        height: 60vw;
+    }
+
+    .pagination {
+        margin-top: 0;
+    }
+
+    .contentButton {
+        font-size: 1.8vw;
+    }
+
+    .checkpointsButton {
+        font-size: 1.8vw;
+    }
+
+
+
+}

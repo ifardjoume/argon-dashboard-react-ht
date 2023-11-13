@@ -565,7 +565,7 @@ function Dashboard() {
                 COMPLETED: {allData?.completedShipsState}
               </h2> */}
               <CardTitle
-                tag="h3"
+                tag="h4"
                 className="text-uppercase text-muted mb-0"
                 style={{ marginTop: "1vw", marginLeft: "1vw" }}
               >
@@ -631,9 +631,9 @@ function Dashboard() {
                       }}
                     >
                       <CardTitle
-                        tag="h3"
+                        tag="h4"
                         className="text-uppercase text-muted mb-0"
-                        style={{ marginTop: "1vw", marginLeft: "1vw" }}
+                        style={{ marginTop: "1vw", margin: "1vw auto" }}
                       >
                         FAILED/UNCERTAIN:{" "}
                         {allData?.uncertShipsState + allData?.failShipsState > 0
@@ -680,7 +680,7 @@ function Dashboard() {
                       }}
                     >
                       <CardTitle
-                        tag="h3"
+                        tag="h4"
                         className="text-uppercase text-muted mb-0"
                         style={{ marginTop: "1vw", marginLeft: "1vw" }}
                       >
@@ -779,7 +779,7 @@ function Dashboard() {
                       }}
                     >
                       <CardTitle
-                        tag="h3"
+                        tag="h4"
                         className="text-uppercase text-muted mb-0"
                         style={{ marginTop: "1vw", marginLeft: "1vw" }}
                       >

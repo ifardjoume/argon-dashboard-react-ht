@@ -292,6 +292,8 @@ export default function Comments({
           position: "relative",
           alignItems: "center",
           justifyContent: "center",
+        
+          top: "50%",
         }}
       >
         <Spinner className="spinner" />
@@ -501,10 +503,11 @@ export default function Comments({
       //cuadro de comentarios de los reportes
       return (
         <>
+          {alertMessage}
           <div className={rc_freeze ? styles.fContainer : styles.container}>
             <h3 className={styles.title}>
-              Comments of shipment
-              {/* {shipment_id.split("-")[1]} */}
+              Comments:
+          
             </h3>
             <div className={styles.commentsAndAddContainer}>
               {/* COMENTARIOS ---------------------------------------------------- */}
@@ -546,12 +549,15 @@ export default function Comments({
                   value={commentAdded}
                 />
                 <div className={styles.buttonsContainer}>
-                  <button
+                  {/* <button
                     onClick={handleConfirmComment}
                     className={rc_freeze ? styles.fButton : styles.button}
                   >
                     Save
-                  </button>
+                  </button> */}
+                  <Button color="primary" type="button" style={{ marginTop:"10%"}} onClick={confirmAlert}>
+                  Send comment
+                </Button>
                 </div>
               </div>
             </div>
