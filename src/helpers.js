@@ -177,6 +177,10 @@ const capitalizeFirstLetter = (string) => {
 };
 
 export const convertirHoraLocal = (fechaISO, zonaHoraria) => {
+  console.log('entre a la funcion')
+  console.log(fechaISO)
+  console.log(zonaHoraria)
+
   if (fechaISO && zonaHoraria && localStorage.getItem("language") === "es") {
     const fechaUtc = utcToZonedTime(fechaISO, zonaHoraria);
     const fechaFormateada = format(fechaUtc, "MMM dd  h:mm a", { locale: es });
@@ -184,7 +188,10 @@ export const convertirHoraLocal = (fechaISO, zonaHoraria) => {
     return capitalizeFirstLetter(fechaFormateada);
   }
   if (fechaISO && zonaHoraria && localStorage.getItem("language") !== "es") {
+
     const fechaUtc = formatInTimeZone(fechaISO, zonaHoraria, "MMM dd  h:mm a");
+    console.log('2do if')
+    console.log(fechaUtc)
     return fechaUtc;
   }
 };

@@ -5,7 +5,7 @@ import AccelerationGraph from './accelerationGraph/AccelerationGraph'
 
 import Comments from 'views/pages/dashboards/modals/Comments'
 import CheckpointsModal from 'views/pages/dashboards/modals/CheckpointsModal'
-import { gmt } from 'const'
+
 const DropdownShipments = ({shipment_id}) => {
   return (
     <div  className={styles.dropdownShipments}>
@@ -19,7 +19,7 @@ const DropdownShipments = ({shipment_id}) => {
         </div>
         <div className={styles.checkpointsContainer}>
 
-           <CheckpointsModal shipment_id={shipment_id} gmt={gmt}/>
+           <CheckpointsModal shipment_id={shipment_id} dropdown={true}/>
         </div>  
         </div>
       

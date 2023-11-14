@@ -130,7 +130,6 @@ function Dashboard() {
   const toggleModalAlerts = (e, shipment_id) => {
     setModalAlerts(!modalAlerts);
     setShipment_id(shipment_id);
-   
   };
   // const toggleNavs = (e, index) => {
   //   e.preventDefault();
@@ -312,7 +311,7 @@ function Dashboard() {
     return (
       <>
         {activeTab === "inTransit" ? (
-          <Table  className="align-items-center table-flush" responsive >
+          <Table className="align-items-center table-flush" responsive>
             <thead>
               <tr>
                 <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ID</th>
@@ -335,7 +334,7 @@ function Dashboard() {
                 {/* Agrega más encabezados según lo que quieras mostrar */}
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
                   <td style={{ textAlign: "center" }}>
@@ -406,7 +405,7 @@ function Dashboard() {
             </tbody>
           </Table>
         ) : (
-          <Table className="align-items-center table-flush"  responsive>
+          <Table className="align-items-center table-flush" responsive>
             <thead>
               <tr>
                 <th style={{ textAlign: "center", fontSize: "0.8vw" }}>ID</th>
@@ -430,7 +429,7 @@ function Dashboard() {
                 {/* Agrega más encabezados según lo que quieras mostrar */}
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               {info?.selectedItems?.map((item, index) => (
                 <tr key={index}>
                   {/* id */}
@@ -469,7 +468,7 @@ function Dashboard() {
                   <th style={{ textAlign: "center" }}>
                     <button
                       className="btn-last-checkpoint"
-                      onClick={(e)=>toggleModalAlerts(e, item.shipment_id)}
+                      onClick={(e) => toggleModalAlerts(e, item.shipment_id)}
                     >
                       {item.status === "FAILED" ? (
                         <img
@@ -489,8 +488,7 @@ function Dashboard() {
                           src={successIcon}
                           alt=""
                         />
-                      )
-                      }
+                      )}
                     </button>
                   </th>
 
@@ -586,10 +584,25 @@ function Dashboard() {
                     </div>
                   ) : (
                     <>
-                      <Card style={{ height: "100%", padding: "2%" }}>
-                        {/* <Doughnut data={graphicData} options={options} /> */}
-                        <Pie data={graphicData} options={options} />
-                      </Card>
+                      {allData?.completedShipsState === 0 ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: "100%",
+                            // position: "relative",
+                            // top: "5vw",
+                          }}
+                        >
+                          No data to show
+                        </div>
+                      ) : (
+                        <Card style={{ height: "100%", padding: "2%" }}>
+                          {/* <Doughnut data={graphicData} options={options} /> */}
+                          <Pie data={graphicData} options={options} />
+                        </Card>
+                      )}
                     </>
                   )}
                 </div>
@@ -599,20 +612,8 @@ function Dashboard() {
 
           <Col className="mb-5 mb-xl-0" xl="8">
             <Card style={{ height: "80%" }}>
-              {/*<CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
-                    </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
-                  </div>
-                 
-                </Row> 
-              </CardHeader>*/}
               <CardBody style={{ height: "50%" }}>
                 {/* Chart */}
-                {/* <div className="chart" style={{height:"20vw"}}> */}
                 <Row>
                   {/* FAILED/UNCERTAIN */}
                   <Col
@@ -654,10 +655,22 @@ function Dashboard() {
                           </div>
                         ) : (
                           <>
-                            <div style={{ height: "100%" }}>
-                              {/* <Doughnut data={failUncertain} options={options} /> */}
-                              <Pie data={failUncertain} options={options} />
+                          {allData?.uncertShipsState + allData?.failShipsState === 0 ? (
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                height: "100%",
+                              }}
+
+                            >
+                              No data to show
                             </div>
+                          ) : (
+                            <div style={{ height: "100%" }}>
+                              <Pie data={failUncertain} options={options} />
+                            </div>)}
                           </>
                         )}
                       </CardBody>
@@ -755,6 +768,7 @@ function Dashboard() {
                             alignItems: "center",
                             justifyContent: "center",
                             height: "100%",
+                          
                           }}
                         >
                           <Spinner className="spinner" />
@@ -814,7 +828,19 @@ function Dashboard() {
                                 ))}
                               </div>
                             ) : (
-                              <div>no alerts</div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  height: "100%",
+                                  position: "relative",
+                                  top: "5vw",
+                                  // border: "solid red 1px",
+                                }}
+                              >
+                                No alerts to show
+                              </div>
                             )}
                           </div>
                         ) : (
@@ -863,8 +889,8 @@ function Dashboard() {
           </Col>
           {/* tabla */}
           <Col xl="8">
-            <Card className="shadow" >
-              <div >
+            <Card className="shadow">
+              <div>
                 <Nav>
                   <NavItem className="navText">
                     <NavLink
@@ -875,7 +901,8 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "inTransit" && "#5e72e4",
-                        textDecoration: activeTab === "inTransit" ? "underline" : "none",
+                        textDecoration:
+                          activeTab === "inTransit" ? "underline" : "none",
                       }}
                       id="tooltipTransit"
                     >
@@ -895,10 +922,9 @@ function Dashboard() {
                             color: "#5e72e4",
                             backgroundColor: "#fafafa",
                             fontFamily: "Open Sans, sans-serif",
-                       
                           }}
                         >
-                         In transit
+                          In transit
                         </UncontrolledTooltip>
                       )}
                     </NavLink>
@@ -912,7 +938,8 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "completed" && "#5e72e4",
-                        textDecoration: activeTab === "completed" ? "underline" : "none",
+                        textDecoration:
+                          activeTab === "completed" ? "underline" : "none",
                       }}
                       id="tooltipCompleted"
                     >
@@ -921,8 +948,8 @@ function Dashboard() {
                       ) : (
                         <img style={iconCard} src={completedIcon} alt="" />
                       )}
-                         {/* tooltip  transit*/}
-                         {activeTab !== "completed" && (
+                      {/* tooltip  transit*/}
+                      {activeTab !== "completed" && (
                         <UncontrolledTooltip
                           delay={0}
                           placement="top"
@@ -934,12 +961,12 @@ function Dashboard() {
                             fontFamily: "Open Sans, sans-serif",
                           }}
                         >
-                         Completed
+                          Completed
                         </UncontrolledTooltip>
                       )}
                     </NavLink>
                   </NavItem>
-                  
+
                   <NavItem>
                     <NavLink
                       className={classnames({
@@ -949,8 +976,8 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "succeeded" && "#5e72e4",
-                        textDecoration: activeTab === "succeeded" ? "underline" : "none",
-
+                        textDecoration:
+                          activeTab === "succeeded" ? "underline" : "none",
                       }}
                       id="tooltipSucceeded"
                     >
@@ -959,7 +986,7 @@ function Dashboard() {
                       ) : (
                         <img style={iconCard} src={succededIcon} alt="" />
                       )}
-                        {activeTab !== "succeeded" && (
+                      {activeTab !== "succeeded" && (
                         <UncontrolledTooltip
                           delay={0}
                           placement="top"
@@ -971,7 +998,7 @@ function Dashboard() {
                             fontFamily: "Open Sans, sans-serif",
                           }}
                         >
-                         Succeeded
+                          Succeeded
                         </UncontrolledTooltip>
                       )}
                     </NavLink>
@@ -985,7 +1012,8 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "uncertain" && "#5e72e4",
-                        textDecoration: activeTab === "uncertain" ? "underline" : "none",
+                        textDecoration:
+                          activeTab === "uncertain" ? "underline" : "none",
                       }}
                       id="tooltipUncertain"
                     >
@@ -994,7 +1022,7 @@ function Dashboard() {
                       ) : (
                         <img style={iconCard} src={uncertainIcon} alt="" />
                       )}
-                       {activeTab !== "uncertain" && (
+                      {activeTab !== "uncertain" && (
                         <UncontrolledTooltip
                           delay={0}
                           placement="top"
@@ -1006,7 +1034,7 @@ function Dashboard() {
                             fontFamily: "Open Sans, sans-serif",
                           }}
                         >
-                         Uncertain
+                          Uncertain
                         </UncontrolledTooltip>
                       )}
                     </NavLink>
@@ -1018,7 +1046,8 @@ function Dashboard() {
                       href="#"
                       style={{
                         color: activeTab === "failed" && "#5e72e4",
-                        textDecoration: activeTab === "failed" ? "underline" : "none",
+                        textDecoration:
+                          activeTab === "failed" ? "underline" : "none",
                       }}
                       id="tooltipFailed"
                     >
@@ -1037,11 +1066,9 @@ function Dashboard() {
                             color: "#5e72e4",
                             backgroundColor: "#fafafa",
                             fontFamily: "Open Sans, sans-serif",
-                           
                           }}
                         >
-                          
-                        Failed
+                          Failed
                         </UncontrolledTooltip>
                       )}
                     </NavLink>
@@ -1101,6 +1128,7 @@ function Dashboard() {
         className="custom-modal" // Agrega una clase CSS personalizada
         isOpen={modalCheckpoints}
         toggle={toggleModalCheckpoints}
+        style={{width:"20vw"}}
       >
         <ModalHeader toggle={toggleModalCheckpoints}>CHECKPOINTS</ModalHeader>
         <ModalBody>
@@ -1163,9 +1191,8 @@ function Dashboard() {
         toggle={toggleModalAlerts}
         style={{ minWidth: "75vw" }}
       >
-      
         <ModalBody>
-       <TempIntrusionChart  shipment_id={shipment_id} />
+          <TempIntrusionChart shipment_id={shipment_id} />
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={toggleModalAlerts}>
