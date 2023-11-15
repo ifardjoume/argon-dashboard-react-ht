@@ -36,7 +36,7 @@ import completedIcon from "../../assets/img/icons/common/oldIcons/viajesHechos.p
 import succededIcon from "../../assets/img/icons/common/oldIcons/viajesConformes.png";
 import uncertainIcon from "../../assets/img/icons/common/oldIcons/viajesParaRevision.png";
 import failedIcon from "../../assets/img/icons/common/oldIcons/viajesConformes.png";
-import "../../assets/css/myCss/global.css";
+
 function CardsHeader({
   name,
   parentName,
@@ -109,7 +109,8 @@ function CardsHeader({
 
   return (
     <>
-      <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
+      <div className="header bg- pb-8 pt-5 pt-md-8" >{/* header bg-gradient-info pb-8 pt-5 pt-md-8" */}
+        
         <Container fluid>
           <div /* className="header-body" */>
             {/* ---buttons---------- */}

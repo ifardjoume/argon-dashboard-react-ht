@@ -40,6 +40,7 @@ import { ApolloProvider } from "@apollo/client";
 import { ContextFilterDayMonth } from "context/filterDayMonth";
 import { client } from "apolloClient";
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const user_id =
   localStorage.getItem("token")?.length > 0 &&
@@ -76,7 +77,8 @@ if (
   );
 } else {
   console.log('hay user_id')
-  root.render(
+  root.render( 
+  
     <ApolloProvider client={client}>
       <ContextFilterDayMonth>
         <BrowserRouter>
@@ -91,6 +93,10 @@ if (
         </BrowserRouter>
       </ContextFilterDayMonth>
     </ApolloProvider>
+  
   );
 }
+
+
+
 

@@ -1,3 +1,8 @@
+/* background image */
+body{
+  background-color: blueviolet !important;
+  
+}
 /* header cards dashboard */
 .spinner {
     color: rgb(14, 66, 186);

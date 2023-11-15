@@ -93,6 +93,7 @@ import TempIntrusionChart from "./graficoTempIntrusion/TempIntrusionChart";
 import successIcon from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 86.png";
 import failedIcon2 from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 87.png";
 import uncertainIcon2 from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 88.png";
+import  "../../../assets/css/myCss/global.css";
 function Dashboard() {
   //hooks
   const [
@@ -540,7 +541,8 @@ function Dashboard() {
     );
   }
   return (
-    <>
+    <div >
+    
       <CardsHeader
         name="Default"
         parentName="Dashboards"
@@ -1203,7 +1205,7 @@ function Dashboard() {
             </Button> */}
         </ModalFooter>
       </Modal>
-    </>
+    </div>
   );
 }
 
