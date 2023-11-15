@@ -1,7 +1,19 @@
 /* background image */
-body{
-  background-color: blueviolet !important;
-  
+#root { 
+    
+  overflow: auto;
+}
+body {
+
+  background-image: url(../../../../isotipo.jpeg);
+  background-size: cover;
+  margin: 0;
+  background-repeat: no-repeat;
+  /* padding-right: 0 !important; */
+   min-height: 100vh;
+ /* border: solid red 1px; */
+
+
 }
 /* header cards dashboard */
 .spinner {

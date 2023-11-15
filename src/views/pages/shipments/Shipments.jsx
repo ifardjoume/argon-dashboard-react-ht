@@ -610,7 +610,7 @@ const Shipments = () => {
                 margin: "auto",
               }}
             >
-              <Table>
+              <Table className="custom-table">
                 <thead>
                   <tr>
                     <th className={styles.theader}>ID</th>
@@ -636,12 +636,11 @@ const Shipments = () => {
                         style={
                           data.indexOf(s) % 2 === 0
                             ? { background: "#FAFAFA" }
-                            : { background: "#D9F1F5" }
-                            
+                            : { background: "#D9F1F5" }   
                         }
                       >
                         {/* id */}
-                        <td>
+                        <td >
                           <div className={styles.moveDown}>
                             {" "}
                             {s?.shipment_id.split("-")[1]}

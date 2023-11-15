@@ -128,25 +128,45 @@
     color:#00ABC8;;
     background-color: #FAFAFA;
     border: none !important;
+
+  
+}
+td{
+
+padding:0 !important;
+
 }
 .headerData{  
  text-align: center; 
  border-bottom: solid rgb(216, 216, 216) 1px;
  cursor: pointer;
-    
+ height: 3vw;
+
 }
 .moveDown{
-
- position: relative;
- top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ /* position: relative;
+ top: 25px; */
  font-size: 0.9vw !important;
  color:#1B1464;
  text-align: center;
- ;
+
+ height: 5vw !important;
+ 
+
 }
 .departure_arrival{
     font-size: 0.9vw !important;
     color:#1B1464;
+    display: flex;
+    justify-content: center;
+    align-items: center ;
+   
+    position: relative;
+    /* top: 20px; */
+    height: 5vw !important;
 }
 .rombo {
     width: 1.5vw;
