@@ -110,6 +110,21 @@
     border: 0.15vw solid #f5365c !important;
     color: #fafafa !important;
 }
+
+.disabled_button {
+    background-color: #ccc; /* Color de fondo gris para el botón deshabilitado */
+    cursor: not-allowed; /* Cambia el cursor cuando está deshabilitado */
+    /* Otros estilos adicionales para el botón deshabilitado si es necesario */
+  }
+  .error_text {
+    display: flex;
+    color: red;
+    justify-content: center;
+    align-items: center;
+    /* margin-top: 2%; */
+    height: 2vw;
+
+}
 /* TABLA */
 .message1 {
     margin-top: 4vw;
@@ -127,9 +142,7 @@
     font-size: 1vw !important;
     color:#00ABC8;;
     background-color: #FAFAFA;
-    border: none !important;
-
-  
+    border: none !important;  
 }
 td{
 
@@ -152,7 +165,6 @@ padding:0 !important;
  font-size: 0.9vw !important;
  color:#1B1464;
  text-align: center;
-
  height: 5vw !important;
  
 
@@ -163,19 +175,24 @@ padding:0 !important;
     display: flex;
     justify-content: center;
     align-items: center ;
-   
     position: relative;
-    /* top: 20px; */
     height: 5vw !important;
 }
+.status{
+    /* border: solid red 1px; */
+}
 .rombo {
-    width: 1.5vw;
+    width: 2vw;
     position: relative;
-    top: 0.8vw
+    top: 1.5vw
+}
+.reports{
+    /* border: solid red 1px; */
+    
 }
 .checkBox{
     position: relative;
-    top: 0.8vw;
+    top: 1.5vw;
     width: 1.5vw;
     height: 1.5vw !important;
 }
@@ -183,8 +200,10 @@ padding:0 !important;
 /* Dropdown */
 .dropdownShipments{
   
- width: 97%;
+ width: 100%;
 height: 50vw;
+/* border: solid red 1px; */
+background-color: #FAFAFA;
 }
 .temp_acc_check_container{
     display: flex;

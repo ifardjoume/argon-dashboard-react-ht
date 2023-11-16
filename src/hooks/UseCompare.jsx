@@ -20,7 +20,6 @@ export const useCompare = () => {
     for (let i = 0; i < shipsLen; i++) {
       shipsChecked[i].checked = false
     }
-
     array = [];
     setArrayState([])
   }
@@ -41,12 +40,9 @@ export const useCompare = () => {
   };
 
 
-
   const compareShipments = async (arrayState, company_id, onAction, errorMsj) => {
-
     if (array.length < 2 || array.length === 0 || array.length > 5) {
-      setArrayState([])
-
+     // setArrayState([])
       errorMsj()
     } else {
       lazyGetShipmentsToCompare({

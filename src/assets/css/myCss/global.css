@@ -77,6 +77,10 @@ body {
   /* border: solid red 1px; */
   height: 50vw;
 }
+.compare_modal{
+  border: solid red 1px;
+
+}
 .vertical-timeline-element.custom-line {
   min-height: 2.5vw; /* Ajusta la altura de la línea según lo necesario */
   

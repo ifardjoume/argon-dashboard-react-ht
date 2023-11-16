@@ -55,8 +55,7 @@ const CheckpointsModal = ({ shipment_id, dropdown }) => {
       const getShipmentDetail = async () => {
         try {
           await getShipment({ variables: { shipment_id } });
-          console.log("desde el efect");
-          console.log(contentData);
+        
         } catch (error) {
           console.log(error);
         }
@@ -138,16 +137,17 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
       {/* para dropdown */}
 
       {contentData?.shipment?.status !== "TRANSIT" && (
-        <div style={{ overflow: "auto" }}>
+        <div style={{ overflow: "auto" , paddingTop:"8%"}}>
           <div
             style={{
               fontSize: "1vw",
               color: "#1B1464",
               textAlign: "center",
               position: "sticky",
-              top: 0,
+              top: "2%",
               zIndex: 1000, // Ajusta según sea necesario
               backgroundColor: "#fff", // Ajusta según sea necesario
+              // border:"solid red 1px"
             }}
           >
             Time in transit (DD/HH/MM/SS): <br />
@@ -159,6 +159,8 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
               display: "flex",
               marginLeft: "-30px",
               width: "100%",
+              // border:"solid red 1px",
+              // position: "relative",
             }}
           >
             <Timeline align="left">
@@ -198,6 +200,7 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
           </div>
         </div>
       )}
+      
     </>
   );
  

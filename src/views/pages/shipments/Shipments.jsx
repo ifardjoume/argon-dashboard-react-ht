@@ -14,6 +14,10 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "reactstrap";
 import { AiOutlineDownload } from "react-icons/ai";
 import styles from "./shipments.module.css";
@@ -32,9 +36,39 @@ import rombo_succes from "../../../assets/img/icons/statusIcons/IconoStatus_SUCC
 import rombo_uncert from "../../../assets/img/icons/statusIcons/IconoStatus_UNCERTAIN.png";
 import rombo_fail from "../../../assets/img/icons/statusIcons/IconoStatus_FAILED.png";
 import DropdownShipments from "./dropdowShipments/DropdownShipments";
+import ShipmentsToCompare from "./shipmentsToCompare/ShipmentsToCompare";
 const Shipments = () => {
-  const { handleCheck, arrayState, clearSelection, errorState, error } =
-    useCompare();
+  const {
+    handleCheck,
+    arrayState,
+    clearSelection,
+    errorState,
+    error,
+    compareShipments,
+  } = useCompare();
+
+  //ESTADO PARA MODAL DE COMPARAR ENVIOS
+  const [compareModal, setCompareModal] = useState(false);
+  const [dataToCompare, setDataTocompare] = useState([]);
+  const [errorText, setErrorText] = useState("");
+
+  const onAction = async (data) => {
+    setDataTocompare(data);
+    console.log(data);
+    handleOpenCompare();
+  };
+
+  //si trato de comparar y no seleccione envios o seleccione solo uno tira este msj
+  const errorMsj = () => {
+    setErrorText(
+      "You must select from 2 to 5 shipments to be able to compare!"
+    );
+
+    setTimeout(() => {
+      setErrorText("");
+    }, 4000);
+  };
+
   //estado para guardarme la info filtrada
   const [filters, setFilters] = useState({
     status: null,
@@ -114,8 +148,6 @@ const Shipments = () => {
     }
 
     info = filtersResult?.shipments;
-    console.log("infoooo");
-    console.log(info);
   }, [page]);
 
   //HANDLERS ---------------------------------------------------------------------------------------------
@@ -137,8 +169,7 @@ const Shipments = () => {
   //handler cuando submiteo los filtros
   const handleFilter = async (e) => {
     e.preventDefault();
-    console.log("filtros");
-    console.log(filters);
+
     try {
       await filterData({
         variables: {
@@ -168,6 +199,16 @@ const Shipments = () => {
     }
   };
 
+  //handler open modal compare shipments
+  const handleOpenCompare = () => {
+    setCompareModal(true);
+  };
+  //handler close comparar shipments
+  const handleCloseCompare = () => {
+    setCompareModal(false);
+
+    setErrorText("");
+  };
   //CUANDO ENCUENTRE RESULTADOS LA DATA VA A SER ESTA -------------------------------------------------------------
   if (filtersResult?.shipments?.selectedItems) {
     dataLength = filtersResult?.shipments?.total;
@@ -573,15 +614,33 @@ const Shipments = () => {
             </span>
             <span className="btn-inner--text">Search</span>
           </Button>
-
-          <Button className={styles.button_compare}>Compare</Button>
-          <Button className={styles.button_clear} onClick={clearSelection}>
+          {console.log(arrayState)}
+          <Button
+            className={`${styles.button_compare} ${
+              arrayState.length < 1 ? styles.disabled_button : ""
+            }`}
+            onClick={() => {
+              compareShipments(arrayState, company_id, onAction, errorMsj);
+            }}
+            disabled={arrayState.length < 2 ? true : false}
+          >
+            Compare
+          </Button>
+          <Button
+            className={`${styles.button_clear} ${
+              arrayState.length < 1 ? styles.disabled_button : ""
+            }`}
+            onClick={clearSelection}
+            disabled={arrayState.length < 1 ? true : false}
+          >
             Clear
           </Button>
         </div>
       </Form>
 
       {/* TABLA */}
+      {/* mensaje de error------------------------------ */}
+      <div className={styles.error_text}>{errorText}</div>
       {filtersLoading ? (
         <div
           style={{
@@ -595,7 +654,7 @@ const Shipments = () => {
           <Spinner className="spinner" />
         </div>
       ) : (
-        <div >
+        <div>
           {/* Por si no hay filtros puestos */}
           {typeof data === "string" ? (
             <div className={styles.message1}>Please select search settings</div>
@@ -636,11 +695,11 @@ const Shipments = () => {
                         style={
                           data.indexOf(s) % 2 === 0
                             ? { background: "#FAFAFA" }
-                            : { background: "#D9F1F5" }   
+                            : { background: "#D9F1F5" }
                         }
                       >
                         {/* id */}
-                        <td >
+                        <td>
                           <div className={styles.moveDown}>
                             {" "}
                             {s?.shipment_id.split("-")[1]}
@@ -724,7 +783,7 @@ const Shipments = () => {
                           }
                         </td>
                         {/* status */}
-                        <td>
+                        <td className={styles.status}>
                           {s?.status === "SUCCESSFUL" && (
                             <img
                               alt=""
@@ -748,7 +807,7 @@ const Shipments = () => {
                           )}
                         </td>
                         {/* reports */}
-                        <td>
+                        <td className={styles.reports}>
                           {" "}
                           <button
                             onClick={(e) => handleDownload(e, s?.shipment_id)}
@@ -756,6 +815,8 @@ const Shipments = () => {
                               border: "none",
                               background: "none",
                               width: "50%",
+                              position: "relative",
+                              top: "1vw",
                             }}
                           >
                             <AiOutlineDownload size="2vw" />
@@ -768,6 +829,8 @@ const Shipments = () => {
                               border: "none",
                               background: "none",
                               width: "50%",
+                              position: "relative",
+                              top: "1vw",
                             }}
                           >
                             <AiOutlineDownload size="2vw" />
@@ -793,11 +856,12 @@ const Shipments = () => {
                           <Collapse
                             isOpen={selectedRows.includes(s.shipment_id)}
                           >
-                           <DropdownShipments 
-                          shipment_id={s.shipment_id}
-                          //expanded={expanded}
-                          index={index}
-                          gmt={company_detail.company.gmt}/>
+                            <DropdownShipments
+                              shipment_id={s.shipment_id}
+                              //expanded={expanded}
+                              index={index}
+                              gmt={company_detail.company.gmt}
+                            />
                           </Collapse>
                         </td>
                       </tr>
@@ -851,6 +915,28 @@ const Shipments = () => {
           </nav>
         </CardFooter>
       )}
+
+      {/* MODAL COMPARE SHIPMENTS */}
+
+      <Modal
+        className="modal-dialog-centered" // Agrega una clase CSS personalizada
+        isOpen={compareModal}
+        toggle={handleCloseCompare}
+        style={{ maxWidth: "70vw" }}
+      >
+        <ModalHeader toggle={handleCloseCompare}></ModalHeader>
+        <ModalBody style={{ width: "70vw", height: "70vh", overflow: "auto" }}>
+          <ShipmentsToCompare
+            dataToCompare={dataToCompare}
+            gmt={company_detail?.company?.gmt}
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={handleCloseCompare}>
+            Close
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };
