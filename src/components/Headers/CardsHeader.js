@@ -117,10 +117,11 @@ function CardsHeader({
             <div style={buttonsContainerStyle}>
               <Button
                 style={{
-                  borderColor: initialFilter !== "month" && "initial",
-                  borderWidth: "1px",
+                  borderColor:initialFilter === 'day' ? '#00ABC8' : 'gray',
+                  // borderWidth: "1px",
                   height: "40px",
                   textAlign: "center",
+                  backgroundColor: initialFilter === 'day' ? '#00ABC8' : 'gray', // Color rojo si es 'day', gris en caso contrario
                 }}
                 color="primary"
                 id="initial_filter_day"
@@ -131,13 +132,14 @@ function CardsHeader({
               </Button>
               <Button
                 style={{
-                  borderColor: initialFilter === "month" && "initial",
-                  borderWidth: "1px",
+                  borderColor:initialFilter === 'month' ? '#00ABC8' : 'gray',
+                  
                   height: "40px",
                   width: "150px",
                   textAlign: "center",
+                  backgroundColor: initialFilter === 'month' ? '#00ABC8' : 'gray', // Color rojo si es 'day', gris en caso contrario
                 }}
-                color="success"
+                color="primary"
                 value="month"
                 onClick={handlerInitialFilter}
               >

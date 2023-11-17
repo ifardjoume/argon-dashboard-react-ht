@@ -44,6 +44,11 @@ import {
   Col,
 } from "reactstrap";
 import { logOut } from "helpers";
+import { GET_USERNAME } from "queries";
+import { user_id } from "const";
+import { useQuery } from "@apollo/client";
+import notificationIcon from "./notification.png";
+import logoHtrace from "./logoHtrace.png";
 
 function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
   // function that on mobile devices makes the search open
@@ -73,25 +78,48 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
     }, 500);
   };
 
+  //query para obtener el username
+  const {
+    loading: usernameLoading,
+    error: usernameError,
+    data: usernameData,
+  } = useQuery(GET_USERNAME, {
+    variables: {
+      user_id: user_id,
+    },
+  });
+
   return (
     <>
       <Navbar
         className={classnames(
-          "navbar-top navbar-expand border-bottom",
-          { "navbar-dark bg-info": theme === "dark" },
-          { "navbar-light bg-secondary": theme === "light" }
+          "navbar-top navbar-expand border-bottom"
+          // { "navbar-dark bg-info": theme === "dark" },
+          // { "navbar-light bg-secondary": theme === "light" }
         )}
       >
         <Container fluid>
-          <Collapse navbar isOpen={true}>
+          <Collapse
+            /* navbar */ isOpen={true}
+            style={{
+              // border: "solid green 1px",
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              height: "60px",
+            }}
+          >
+            {/* buscador navBar/ Logo RealCollect */}
             <Form
-              className={classnames(
-                "navbar-search form-inline mr-sm-3",
-                { "navbar-search-light": theme === "dark" },
-                { "navbar-search-dark": theme === "light" }
-              )}
+              // className={classnames(
+              //   "navbar-search form-inline mr-sm-3",
+              //   { "navbar-search-light": theme === "dark" },
+              //   { "navbar-search-dark": theme === "light" }
+              // )}
+              style={{  width: "30%", display:"flex", alignItems:"center"}}
             >
-              <FormGroup className="mb-0">
+              <img src={logoHtrace} style={{width:"15vw"}}/>
+              {/* <FormGroup className="mb-0">
                 <InputGroup className="input-group-alternative input-group-merge">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
@@ -108,11 +136,28 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                 onClick={closeSearch}
               >
                 <span aria-hidden={true}>×</span>
-              </button>
+              </button> */}
             </Form>
-
-            <Nav className="align-items-center ml-md-auto" navbar>
-              <NavItem className="d-xl-none">
+            {/* ------------------------------------------------------------------------------- */}
+            {/* Notofications / profile */}
+            <div
+              style={{
+                // border: "solid yellow 1px",
+                width: "20%",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <div
+                /* className="align-items-center ml-md-auto "*/ /* navbar */ style={{
+                  // border: "solid red 1px",
+                  width: "20%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {/* <NavItem className="d-xl-none">
                 <div
                   className={classnames(
                     "pr-3 sidenav-toggler",
@@ -127,28 +172,31 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                     <i className="sidenav-toggler-line" />
                   </div>
                 </div>
-              </NavItem>
-              <NavItem className="d-sm-none">
+              </NavItem> */}
+
+                {/* <NavItem className="d-sm-none">
                 <NavLink onClick={openSearch}>
                   <i className="ni ni-zoom-split-in" />
                 </NavLink>
-              </NavItem>
-              <UncontrolledDropdown nav>
-                <DropdownToggle className="nav-link" color="" tag="a">
-                  <i className="ni ni-bell-55" />
-                </DropdownToggle>
-                <DropdownMenu
-                  className="dropdown-menu-xl py-0 overflow-hidden"
-                  right
-                >
-                  <div className="px-3 py-3">
+              </NavItem> */}
+
+                <UncontrolledDropdown /* nav */>
+                  <DropdownToggle className="nav-link" color="" tag="a">
+                   <img src={notificationIcon} style={{width:"1.5vw"}}/>
+                  </DropdownToggle>
+                  <DropdownMenu
+                    className="dropdown-menu-xl py-0 overflow-hidden"
+                    right
+                  >
+                    {/* <div className="px-3 py-3">
                     <h6 className="text-sm text-muted m-0">
                       You have <strong className="text-info">13</strong>{" "}
                       notifications.
                     </h6>
-                  </div>
+                  </div> */}
 
-                  <ListGroup flush>
+                    <div>Notifications</div>
+                    {/* <ListGroup flush>
                     <ListGroupItem
                       className="list-group-item-action"
                       href="#pablo"
@@ -294,18 +342,19 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                         </div>
                       </Row>
                     </ListGroupItem>
-                  </ListGroup>
+                  </ListGroup> */}
 
-                  <DropdownItem
+                    {/* <DropdownItem
                     className="text-center text-info font-weight-bold py-3"
                     href="#pablo"
                     onClick={(e) => e.preventDefault()}
                   >
                     View all
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <UncontrolledDropdown nav>
+                  </DropdownItem> */}
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+
+                {/* <UncontrolledDropdown nav>
                 <DropdownToggle className="nav-link" color="" tag="a">
                   <i className="ni ni-ungroup" />
                 </DropdownToggle>
@@ -388,27 +437,50 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                     </Col>
                   </Row>
                 </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
-            <Nav className="align-items-center ml-auto ml-md-0" navbar>
-              <UncontrolledDropdown nav>
-                <DropdownToggle className="nav-link pr-0" color="" tag="a">
-                  <Media className="align-items-center">
-                    <span className="avatar avatar-sm rounded-circle">
-                      <img
+              </UncontrolledDropdown> */}
+              </div>
+
+              <div
+                /* className="align-items-center ml-auto ml-md-0" */ /* navbar */ style={{
+                  // border: "solid blue 1px",
+                  width: "60%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <UncontrolledDropdown /* nav */>
+                  <DropdownToggle className="nav-link pr-0" color="" tag="a">
+                    <Media className="align-items-center">
+                      <span className="avatar avatar- rounded-circle">
+                        {/* profile image */}
+                        {/* <img
                         alt="..."
                         src={require("assets/img/theme/team-4.jpg")}
-                      />
-                    </span>
-                    <Media className="ml-2 d-none d-lg-block">
-                      <span className="mb-0 text-sm font-weight-bold">
-                        John Snow
+                      /> */}
                       </span>
+
+                      {/* Profile name */}
+                      <div
+                        style={{
+                          // border: "solid red 1px",
+                          width: "6vw",
+                          height: "100%",
+                          height: "100%",
+                          display: "flex",
+                          fontSize: "1.5vw",
+                          color: "#1B1464 ",
+                          justifyContent: "center",
+                          
+                        }}
+                      >
+                        {user_id ? usernameData?.user?.username : "SUDO"}
+                      </div>
                     </Media>
-                  </Media>
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem className="noti-title" header tag="div">
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    {/* <DropdownItem className="noti-title" header tag="div">
                     <h6 className="text-overflow m-0">Welcome!</h6>
                   </DropdownItem>
                   <DropdownItem
@@ -439,17 +511,16 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                     <i className="ni ni-support-16" />
                     <span>Support</span>
                   </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem
-                    href="#pablo"
-                    onClick={logOut}
-                  >
-                    <i className="ni ni-user-run" />
-                    <span>Logout</span>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
+                  <DropdownItem divider /> */}
+
+                    <DropdownItem href="#pablo" onClick={logOut}>
+                      <i className="ni ni-user-run" />
+                      <span>Logout</span>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </div>
+            </div>
           </Collapse>
         </Container>
       </Navbar>
