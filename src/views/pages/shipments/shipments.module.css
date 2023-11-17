@@ -101,18 +101,19 @@
     
 }
 .button_compare{
-    background-color: #1B1464 !important;
+    background-color: #fafafa !important;
     border: 0.15vw solid #1B1464 !important;
-    color: #fafafa !important;
+    color: #1B1464  !important;
 }
 .button_clear{
-    background-color: #f5365c   !important;
-    border: 0.15vw solid #f5365c !important;
-    color: #fafafa !important;
+    background-color: #fafafa !important;
+    border: 0.15vw solid red !important;
+    color: red !important;
 }
 
 .disabled_button {
     background-color: #ccc; /* Color de fondo gris para el botón deshabilitado */
+    
     cursor: not-allowed; /* Cambia el cursor cuando está deshabilitado */
     /* Otros estilos adicionales para el botón deshabilitado si es necesario */
   }

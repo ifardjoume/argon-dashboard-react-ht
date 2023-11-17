@@ -616,9 +616,10 @@ const Shipments = () => {
           </Button>
           {console.log(arrayState)}
           <Button
-            className={`${styles.button_compare} ${
-              arrayState.length < 1 ? styles.disabled_button : ""
-            }`}
+            // className={`${styles.button_compare} ${
+            //   arrayState.length < 1 ? styles.disabled_button : ""
+            // }`}
+            className={arrayState.length < 2 ? styles.disabled_button : styles.button_compare}
             onClick={() => {
               compareShipments(arrayState, company_id, onAction, errorMsj);
             }}
@@ -627,9 +628,7 @@ const Shipments = () => {
             Compare
           </Button>
           <Button
-            className={`${styles.button_clear} ${
-              arrayState.length < 1 ? styles.disabled_button : ""
-            }`}
+            className={arrayState.length < 1 ? styles.disabled_button : styles.button_clear}
             onClick={clearSelection}
             disabled={arrayState.length < 1 ? true : false}
           >
