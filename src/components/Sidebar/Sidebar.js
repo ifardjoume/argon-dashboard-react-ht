@@ -178,11 +178,12 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
       <div className="sidenav-header d-flex align-items-center">
         {logo ? (
           <NavbarBrand {...navbarBrandProps}>
-            <img
+            {/* <img
               alt={logo.imgAlt}
               className="navbar-brand-img"
               src={logo.imgSrc}
-            />
+            /> */}
+            Algun logo/Info
           </NavbarBrand>
         ) : null}
         <div className="ml-auto">
@@ -203,12 +204,12 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
       <div className="navbar-inner">
         <Collapse navbar isOpen={true}>
           <Nav navbar>{createLinks(routes)}</Nav>
-          <hr className="my-3" />
+          {/* <hr className="my-3" />
           <h6 className="navbar-heading p-0 text-muted">
             <span className="docs-normal">Documentation</span>
             <span className="docs-mini">D</span>
-          </h6>
-          <Nav className="mb-md-3" navbar>
+          </h6> */}
+          {/* <Nav className="mb-md-3" navbar>
             <NavItem>
               <NavLink
                 href="https://demos.creative-tim.com/argon-dashboard-pro-react/#/documentation/overview?ref=adpr-sidebar"
@@ -245,7 +246,7 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
                 <span className="nav-link-text">Plugins</span>
               </NavLink>
             </NavItem>
-          </Nav>
+          </Nav> */}
         </Collapse>
       </div>
     </div>

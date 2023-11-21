@@ -24,7 +24,7 @@ function AuthFooter() {
   return (
     <>
       <footer className="py-5" id="footer-main">
-        <Container>
+        {/* <Container>
           <Row className="align-items-center justify-content-xl-between">
             <Col xl="6">
               <div className="copyright text-center text-xl-left text-muted">
@@ -75,7 +75,7 @@ function AuthFooter() {
               </Nav>
             </Col>
           </Row>
-        </Container>
+        </Container> */}
       </footer>
     </>
   );

@@ -35,7 +35,7 @@ import {
 function AdminNavbar() {
   return (
     <>
-      <Navbar
+      {/* <Navbar
         className="navbar-horizontal navbar-main navbar-dark bg-info"
         expand="lg"
         id="navbar-main"
@@ -195,7 +195,7 @@ function AdminNavbar() {
             </Nav>
           </UncontrolledCollapse>
         </Container>
-      </Navbar>
+      </Navbar> */}
     </>
   );
 }
