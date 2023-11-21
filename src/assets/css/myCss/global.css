@@ -42,7 +42,7 @@ body {
    margin-bottom: 1vw;
 }
 .barra-fondo-warning{
-    background-color: #5e72e4;
+    background-color: #5e72e4 !important;
     
 }
 .nav{
