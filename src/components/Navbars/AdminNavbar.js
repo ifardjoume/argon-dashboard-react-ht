@@ -472,6 +472,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                           fontSize: "1.5vw",
                           color: "#1B1464 ",
                           justifyContent: "center",
+                          cursor: "pointer",
                           
                         }}
                       >
