@@ -28,11 +28,7 @@ const CheckpointsModal = ({ shipment_id, dropdown }) => {
   //queries
   const [
     getShipment,
-    {
-       loading: contentLoading,
-      error: contentError,
-      data: contentData,
-    },
+    { loading: contentLoading, error: contentError, data: contentData },
   ] = useLazyQuery(GET_SHIPMENT_DETAIL);
 
   //query para traerme las branches de la compañia
@@ -51,7 +47,6 @@ const CheckpointsModal = ({ shipment_id, dropdown }) => {
       const getShipmentDetail = async () => {
         try {
           await getShipment({ variables: { shipment_id } });
-        
         } catch (error) {
           console.log(error);
         }
@@ -77,14 +72,13 @@ const CheckpointsModal = ({ shipment_id, dropdown }) => {
 
     return `${days}d ${hours}h ${minutes}m ${seconds}s`;
   };
-if(contentLoading) return(
-<div
-style={{margin:"auto", width:"100%", textAlign:"center"}}
->
-<Spinner className="spinner"/> 
-</div>
-)
- 
+  if (contentLoading)
+    return (
+      <div style={{ margin: "auto", width: "100%", textAlign: "center" }}>
+        <Spinner className="spinner" />
+      </div>
+    );
+
   return (
     <>
       <div style={{ overflow: "auto", maxHeight: "60vh" }}>
@@ -95,16 +89,51 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
                 <TimelineOppositeContent
                   sx={{ m: "auto 0" }}
                   align="right"
-                  variant="body2"
+                  // variant="body2"
                   color="text.primary"
+                  variant="h6"
                 >
-                  {convertirHoraLocal(c?.timestamp, company_detail.company.gmt)}
+                  <div style={{ color: "#1B1464" }}>
+                    {
+                      convertirHoraLocal(
+                        c?.timestamp,
+                        company_detail.company.gmt
+                      ).split("  ")[0]
+                    }{" "}
+                    -{" "}
+                    {
+                      convertirHoraLocal(
+                        c?.timestamp,
+                        company_detail.company.gmt
+                      ).split("  ")[1]
+                    }{" "}
+                    <br />
+                    <strong>
+                      {c?.temperature ? ` ${c?.temperature}°C` : ""}
+                    </strong>
+                  </div>
                 </TimelineOppositeContent>
                 <TimelineSeparator>
-                <TimelineConnector style={{ backgroundColor: i === 0 && "transparent" } } />
-                  <TimelineDot color={i === 0 ? "primary" : "grey"} />
+                  <TimelineConnector
+                    style={{ backgroundColor: i === 0 && "transparent" }}
+                  />
+                  <TimelineDot
+                    style={{
+                      backgroundColor:
+                        i === contentData?.shipment?.checkpoints?.length - 1
+                          ? "#00ABC8"
+                          : "#bdbdbd",
+                      //color: i === data?.shipment?.checkpoints?.length - 1 ? "#FFFFFF" : "#000000" // Puedes ajustar el color del texto según tu diseño
+                    }}
+                  />
 
-                  <TimelineConnector style={{ backgroundColor: i === contentData?.shipment?.checkpoints?.length - 1 && "transparent" } } />
+                  <TimelineConnector
+                    style={{
+                      backgroundColor:
+                        i === contentData?.shipment?.checkpoints?.length - 1 &&
+                        "transparent",
+                    }}
+                  />
                 </TimelineSeparator>
                 <TimelineContent
                   sx={{ py: "12px", px: 2 }}
@@ -116,14 +145,12 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
                   }
                 >
                   <Typography variant="h6" component="span">
-                    {c.location}
+                    <div style={{ color: "#00AAC8" }}>
+                      {c.label ? `${c.label}: ${c?.location}` : c.location}
+                    </div>
                   </Typography>
-                  <Typography>
-                    {c?.temperature ? ` (${c?.temperature}°C)` : ""} 
-                  </Typography>
-                  <Typography>
-                     {c?.responsible_name} 
-                  </Typography>
+
+                  <Typography variant="h6">{c?.responsible_name}</Typography>
                 </TimelineContent>
               </TimelineItem>
             ))}
@@ -133,27 +160,11 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
       {/* para dropdown */}
 
       {contentData?.shipment?.status !== "TRANSIT" && (
-        <div style={{ overflow: "auto" , paddingTop:"8%"}}>
-          <div
-            style={{
-              fontSize: "1vw",
-              color: "#1B1464",
-              textAlign: "center",
-              position: "sticky",
-              top: "2%",
-              zIndex: 1000, // Ajusta según sea necesario
-              backgroundColor: "#fff", // Ajusta según sea necesario
-              // border:"solid red 1px"
-            }}
-          >
-            Time in transit (DD/HH/MM/SS): <br />
-            {totalDuration ? convertSeconds(totalDuration) : ""}
-          </div>
-          <br />
+        <div style={{ overflow: "auto", paddingTop: "8%", height: "50vh", width:"100%" }}>
           <div
             style={{
               display: "flex",
-              marginLeft: "-30px",
+              marginLeft: "-3vw",
               width: "100%",
               // border:"solid red 1px",
               // position: "relative",
@@ -164,12 +175,13 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
                 <TimelineItem key={i}>
                   <TimelineSeparator>
                     <TimelineDot
-                      color={
-                        i === 0 ||
-                        i === contentData?.shipment?.checkpoints?.length - 1
-                          ? "primary"
-                          : "grey"
-                      }
+                      style={{
+                        backgroundColor:
+                          i === contentData?.shipment?.checkpoints?.length - 1
+                            ? "#00ABC8"
+                            : "#bdbdbd",
+                        //color: i === data?.shipment?.checkpoints?.length - 1 ? "#FFFFFF" : "#000000" // Puedes ajustar el color del texto según tu diseño
+                      }}
                     />
                     {i !== contentData?.shipment?.checkpoints?.length - 1 && (
                       <TimelineConnector />
@@ -179,15 +191,41 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
                     <Typography variant="h6">
                       {convertirHoraLocal(
                         c?.timestamp,
-                        company_detail.company.gmt
+                        company_detail?.company?.gmt
                       )}
                     </Typography>
+                    <Typography variant="h6">
+                      {c?.temperature ? ` ${c?.temperature.toFixed(2)}°C` : ""}
+                    </Typography>
                     <Typography variant="h6" component="span">
-                      {c?.location}
+                      {c.location}
+                      <div
+                        style={{
+                          display: "flex",
+                          // justifyContent: "space-between",
+                        }}
+                      >
+                  
+                        {c?.label && (
+                          <label
+                            style={{
+                              // backgroundColor: "#00ABC8",
+                              color: "#00ABC8",
+                              fontSize: "0.8vw",
+                              display: "flex",
+                              //justifyContent: "center",
+                              alignItems: "center",
+                              // padding: "0.2vw",
+                              // borderRadius: "0.3vw",
+                              // width: "5.5vw",
+                            }}
+                          >
+                            {c?.label}
+                          </label>
+                        )}
+                      </div>
                     </Typography>
-                    <Typography>
-                      {c?.temperature ? ` (${c?.temperature}°C)` : ""}
-                    </Typography>
+
                     <Typography>{c?.responsible_name}</Typography>
                   </TimelineContent>
                 </TimelineItem>
@@ -196,10 +234,8 @@ style={{margin:"auto", width:"100%", textAlign:"center"}}
           </div>
         </div>
       )}
-      
     </>
   );
- 
 };
 
 export default CheckpointsModal;

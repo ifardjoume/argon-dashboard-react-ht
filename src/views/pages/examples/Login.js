@@ -99,7 +99,6 @@ function Login() {
   const handleLogin = (e) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
     console.log(login);
-    
   };
   useEffect(() => {
     let access_to;
@@ -205,10 +204,6 @@ function Login() {
 
   //hanler forgotPass
 
-
-
- 
-
   //handlers de select operator
   const handleSelectOpeModal = () => {
     setSelectOpeModal(true);
@@ -224,7 +219,6 @@ function Login() {
     // window.location.replace("/");
     setSelectOpeModal(false);
   };
-  
 
   return (
     <>
@@ -235,8 +229,11 @@ function Login() {
       <Container className="mt--8 pb-5">
         <Row className="justify-content-center">
           <Col lg="5" md="7">
-            <Card className="bg-secondary border-0 mb-0">
-              <CardHeader className="bg-transparent pb-5">
+            <Card
+              /* className="bg-transparent border-0 mb-0"
+               */ style={{ backgroundColor:"transparent", borderRadius:"10px" }}
+            >
+              {/* <CardHeader className="bg-transparent pb-5">
                 <div className="text-muted text-center mt-2 mb-3">
                   <small>Sign in with</small>
                 </div>
@@ -274,11 +271,11 @@ function Login() {
                     <span className="btn-inner--text">Google</span>
                   </Button>
                 </div>
-              </CardHeader>
+              </CardHeader> */}
               <CardBody className="px-lg-5 py-lg-5">
-                <div className="text-center text-muted mb-4">
+                {/* <div className="text-center text-muted mb-4">
                   <small>Or sign in with credentials</small>
-                </div>
+                </div> */}
                 <Form role="form">
                   <FormGroup
                     className={classnames("mb-3", {
@@ -324,7 +321,7 @@ function Login() {
                       />
                     </InputGroup>
                   </FormGroup>
-                  <div className="custom-control custom-control-alternative custom-checkbox">
+                  {/* <div className="custom-control custom-control-alternative custom-checkbox">
                     <input
                       className="custom-control-input"
                       id=" customCheckLogin"
@@ -336,7 +333,7 @@ function Login() {
                     >
                       <span className="text-muted">Remember me</span>
                     </label>
-                  </div>
+                  </div> */}
                   <div className="text-center">
                     <Button
                       className="my-4"
@@ -346,16 +343,15 @@ function Login() {
                     >
                       Sign in
                     </Button>
-                    
                   </div>
                 </Form>
-               {loginError&& 'Wrong username or password'} 
+                {loginError && "Wrong username or password"}
               </CardBody>
             </Card>
             <Row className="mt-3">
               {/* forgot pass */}
-              <Col className="text-center" >
-              <ForgotPass/>
+              <Col className="text-center">
+                <ForgotPass />
               </Col>
               {/* <Col className="text-right" xs="6">
                 <a
@@ -369,9 +365,7 @@ function Login() {
             </Row>
           </Col>
         </Row>
-      
       </Container>
-
     </>
   );
 }

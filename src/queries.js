@@ -216,6 +216,7 @@ export const GET_SHIPMENT_DETAIL = gql`
         location
         timestamp
         temperature
+        label
       }
       temperature_readings {
         value
@@ -428,6 +429,9 @@ export const GET_SHIPMENTS_PAG_TO_HEADER = gql`
     $page: Int
     $per_page: Int
     $shipment_id: String
+    $branch_id: String
+    $operator_id: String
+    $temperature_range: String
   ) {
     shipments(
       in_transit: $in_transit
@@ -444,6 +448,9 @@ export const GET_SHIPMENTS_PAG_TO_HEADER = gql`
       page: $page
       per_page: $per_page
       shipment_id: $shipment_id
+      branch_id: $branch_id
+      operator_id: $operator_id
+      temperature_range: $temperature_range
     ) {
       total
       per_page
@@ -455,17 +462,13 @@ export const GET_SHIPMENTS_PAG_TO_HEADER = gql`
         shippers_id
         qr
         type
-
         origin_id
         origin_op_id
         destination_id
         destination_op_id
-
         departure
         arrival
         status
-
-        
         temperature_range {
           name
           max

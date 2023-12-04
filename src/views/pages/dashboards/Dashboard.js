@@ -1130,9 +1130,9 @@ function Dashboard() {
         className="custom-modal" // Agrega una clase CSS personalizada
         isOpen={modalCheckpoints}
         toggle={toggleModalCheckpoints}
-        style={{width:"20vw"}}
+        style={{width:"25vw"}}
       >
-        <ModalHeader toggle={toggleModalCheckpoints}>CHECKPOINTS</ModalHeader>
+        <ModalHeader toggle={toggleModalCheckpoints}>ROUTE MAP</ModalHeader>
         <ModalBody>
           <CheckpointsModal shipment_id={shipment_id} />
         </ModalBody>
