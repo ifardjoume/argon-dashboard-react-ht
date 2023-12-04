@@ -187,7 +187,8 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive }) {
               className="navbar-brand-img"
               src={logo.imgSrc}
             /> */}
-            Algun logo/Info
+            {/* Algun logo/Info */}
+            H+Trace
           </NavbarBrand>
         ) : null}
         <div className="ml-auto">
