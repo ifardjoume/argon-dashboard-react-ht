@@ -85,7 +85,6 @@ const Shipments = () => {
     branch_id: "",
     operator_id: "",
     temperature_range: "",
-
   });
   //estados para la paginacion
   const [page, setPage] = useState(1);
@@ -150,7 +149,6 @@ const Shipments = () => {
           branch_id: filters.branch_id,
           operator_id: filters.operator_id,
           temperature_range: filters.temperature_range,
-
         },
       });
     }
@@ -410,281 +408,302 @@ const Shipments = () => {
     <div style={{ width: "100%", height: "100vh" }}>
       <h2 className={styles.reportsTitle}>Reports</h2>
       {/* FILTROS */}
-   <Form className={styles.form} onSubmit={handleFilter}>
-  <FormGroup className={styles.container}>
-    {/* origin */}
-    <div className={styles.inputContainer}>
-      <Label for="example-text-input" className={styles.label}>
-        ORIGIN
-      </Label>
-      <Input
-        type="select"
-        name="origin_id"
-        id="example-select"
-        className={styles.input}
-        onChange={handleChange}
-      >
-        <option value="" className={styles.option}>
-          All
-        </option>
-        {company_detail?.company?.branches.map((b) => (
-          <option value={b.branch_id} key={b.branch_id}>
-            {b.name}
-          </option>
-        ))}
-      </Input>
-    </div>
+      <Form className={styles.form} onSubmit={handleFilter}>
+        <FormGroup className={styles.container}>
+          {/* origin */}
+          <div className={styles.inputContainer}>
+            <Label for="example-text-input" className={styles.label}>
+              ORIGIN
+            </Label>
+            <Input
+              type="select"
+              name="origin_id"
+              id="example-select"
+              className={styles.input}
+              onChange={handleChange}
+            >
+              <option value="" className={styles.option}>
+                All
+              </option>
+              {company_detail?.company?.branches.map((b) => (
+                <option value={b.branch_id} key={b.branch_id}>
+                  {b.name}
+                </option>
+              ))}
+            </Input>
+          </div>
 
-    {/* destination */}
-    <div className={styles.inputContainer}>
-      <Label for="example-text-input" className={styles.label}>
-        DESTINATION
-      </Label>
-      <Input
-        type="select"
-        name="destination_id"
-        id="example-select"
-        className={styles.input}
-        onChange={handleChange}
-      >
-        <option value="">
-          {localStorage.getItem("language") === "en" ? "All" : "Todos"}
-        </option>
-        {company_detail?.company?.branches.map((b) => (
-          <option value={b.branch_id} key={b.branch_id}>
-            {b.name}
-          </option>
-        ))}
-      </Input>
-    </div>
+          {/* destination */}
+          <div className={styles.inputContainer}>
+            <Label for="example-text-input" className={styles.label}>
+              DESTINATION
+            </Label>
+            <Input
+              type="select"
+              name="destination_id"
+              id="example-select"
+              className={styles.input}
+              onChange={handleChange}
+            >
+              <option value="">
+                {localStorage.getItem("language") === "en" ? "All" : "Todos"}
+              </option>
+              {company_detail?.company?.branches.map((b) => (
+                <option value={b.branch_id} key={b.branch_id}>
+                  {b.name}
+                </option>
+              ))}
+            </Input>
+          </div>
 
-    {/* from */}
-    <div className={styles.inputContainer}>
-      <Label for="example-date-input" className={styles.label}>
-        FROM
-      </Label>
-      <Input
-        id="example-date-input"
-        type="date"
-        className={styles.input}
-        name="from_date"
-        onChange={handleChange}
-      />
-    </div>
+          {/* from */}
+          <div className={styles.inputContainer}>
+            <Label for="example-date-input" className={styles.label}>
+              FROM
+            </Label>
+            <Input
+              id="example-date-input"
+              type="date"
+              className={styles.input}
+              name="from_date"
+              onChange={handleChange}
+            />
+          </div>
 
-    {/* to */}
-    <div className={styles.inputContainer}>
-      <Label for="example-date-input" className={styles.label}>
-        TO
-      </Label>
-      <Input
-        id="example-date-input"
-        type="date"
-        className={styles.input}
-        name="to_date"
-        onChange={handleChange}
-      />
-    </div>
+          {/* to */}
+          <div className={styles.inputContainer}>
+            <Label for="example-date-input" className={styles.label}>
+              TO
+            </Label>
+            <Input
+              id="example-date-input"
+              type="date"
+              className={styles.input}
+              name="to_date"
+              onChange={handleChange}
+            />
+          </div>
 
-    {/* sender */}
-    <div className={styles.inputContainer}>
-      <Label for="example-text-input" className={styles.label}>
-        SENDER
-      </Label>
-      <Input
-        type="select"
-        name="origin_op_id"
-        id="example-select"
-        className={styles.input}
-        onChange={handleChange}
-      >
-        <option value="" className={styles.option}>
-          {localStorage.getItem("language") === "en" ? "All" : "Todos"}
-        </option>
-        {company_detail?.company?.operators.map((o) => (
-          <option value={o.operator_id} key={o.operator_id}>
-            {o.name} ({o.operator_id.split("-")[0] + "-" + o.operator_id.split("-")[1]})
-          </option>
-        ))}
-      </Input>
-    </div>
+          {/* sender */}
+          <div className={styles.inputContainer}>
+            <Label for="example-text-input" className={styles.label}>
+              SENDER
+            </Label>
+            <Input
+              type="select"
+              name="origin_op_id"
+              id="example-select"
+              className={styles.input}
+              onChange={handleChange}
+            >
+              <option value="" className={styles.option}>
+                {localStorage.getItem("language") === "en" ? "All" : "Todos"}
+              </option>
+              {company_detail?.company?.operators.map((o) => (
+                <option value={o.operator_id} key={o.operator_id}>
+                  {o.name} (
+                  {o.operator_id.split("-")[0] +
+                    "-" +
+                    o.operator_id.split("-")[1]}
+                  )
+                </option>
+              ))}
+            </Input>
+          </div>
 
-    {/* receiver */}
-    <div className={styles.inputContainer}>
-      <Label for="example-text-input" className={styles.label}>
-        RECEIVER
-      </Label>
-      <Input
-        type="select"
-        name="destination_op_id"
-        id="example-select"
-        className={styles.input}
-        onChange={handleChange}
-      >
-        <option value="" className={styles.option}>
-          {localStorage.getItem("language") === "en" ? "All" : "Todos"}
-        </option>
-        {company_detail?.company?.operators.map((o) => (
-          <option value={o.operator_id} key={o.operator_id}>
-            {o.name} ({o.operator_id.split("-")[0] + "-" + o.operator_id.split("-")[1]})
-          </option>
-        ))}
-      </Input>
-    </div>
+          {/* receiver */}
+          <div className={styles.inputContainer}>
+            <Label for="example-text-input" className={styles.label}>
+              RECEIVER
+            </Label>
+            <Input
+              type="select"
+              name="destination_op_id"
+              id="example-select"
+              className={styles.input}
+              onChange={handleChange}
+            >
+              <option value="" className={styles.option}>
+                {localStorage.getItem("language") === "en" ? "All" : "Todos"}
+              </option>
+              {company_detail?.company?.operators.map((o) => (
+                <option value={o.operator_id} key={o.operator_id}>
+                  {o.name} (
+                  {o.operator_id.split("-")[0] +
+                    "-" +
+                    o.operator_id.split("-")[1]}
+                  )
+                </option>
+              ))}
+            </Input>
+          </div>
 
-    {/* shipment status */}
-    <div className={styles.inputContainer}>
-      <Label for="example-text-input" className={styles.label}>
-        STATUS
-      </Label>
-      <Input
-        type="select"
-        name="status"
-        id="example-select"
-        className={styles.input}
-        onChange={handleChange}
-      >
-        <option value="">All</option>
-        <option value="SUCCESSFUL">Successful</option>
-        <option value="UNCERTAIN">Uncertain</option>
-        <option value="FAILED">Failed</option>
-      </Input>
-    </div>
+          {/* shipment status */}
+          <div className={styles.inputContainer}>
+            <Label for="example-text-input" className={styles.label}>
+              STATUS
+            </Label>
+            <Input
+              type="select"
+              name="status"
+              id="example-select"
+              className={styles.input}
+              onChange={handleChange}
+            >
+              <option value="">All</option>
+              <option value="SUCCESSFUL">Successful</option>
+              <option value="UNCERTAIN">Uncertain</option>
+              <option value="FAILED">Failed</option>
+            </Input>
+          </div>
 
-    {/* BARCODE */}
-    <div className={styles.inputContainer}>
-      <Label for="example-date-input" className={styles.label}>
-        BARCODE
-      </Label>
-      <Input
-        type="text"
-        className={styles.input}
-        name="barcode"
-        onChange={handleChange}
-      />
-    </div>
+          {/* BARCODE */}
+          <div className={styles.inputContainer}>
+            <Label for="example-date-input" className={styles.label}>
+              BARCODE
+            </Label>
+            <Input
+              type="text"
+              className={styles.input}
+              name="barcode"
+              onChange={handleChange}
+            />
+          </div>
 
-    {/* qr */}
-    <div className={styles.inputContainer}>
-      <Label for="example-date-input" className={styles.label}>
-        QR
-      </Label>
-      <Input
-        type="text"
-        className={styles.input}
-        name="qr"
-        onChange={handleChange}
-      />
-    </div>
+          {/* qr */}
+          <div className={styles.inputContainer}>
+            <Label for="example-date-input" className={styles.label}>
+              QR
+            </Label>
+            <Input
+              type="text"
+              className={styles.input}
+              name="qr"
+              onChange={handleChange}
+            />
+          </div>
 
-    {/* id */}
-    <div className={styles.inputContainer}>
-      <Label for="example-date-input" className={styles.label}>
-        ID
-      </Label>
-      <Input
-        type="text"
-        className={styles.input}
-        name="shipment_id"
-        onChange={handleChange}
-      />
-    </div>
+          {/* id */}
+          <div className={styles.inputContainer}>
+            <Label for="example-date-input" className={styles.label}>
+              ID
+            </Label>
+            <Input
+              type="text"
+              className={styles.input}
+              name="shipment_id"
+              onChange={handleChange}
+            />
+          </div>
 
-    {/* branch_id */}
-    <div className={styles.inputContainer}>
-      <Label for="example-text-input" className={styles.label}>
-        BRANCH
-      </Label>
-      <Input
-        type="select"
-        name="branch_id"
-        id="example-select"
-        className={styles.input}
-        onChange={handleChange}
-      >
-        <option value="">All</option>
-        {company_detail?.company?.branches.map((b) => (
-          <option value={b.branch_id} key={b.branch_id}>
-            {b.name}
-          </option>
-        ))}
-      </Input>
-    </div>
+          {/* branch_id */}
+          <div className={styles.inputContainer}>
+            <Label for="example-text-input" className={styles.label}>
+              BRANCH
+            </Label>
+            <Input
+              type="select"
+              name="branch_id"
+              id="example-select"
+              className={styles.input}
+              onChange={handleChange}
+            >
+              <option value="">All</option>
+              {company_detail?.company?.branches.map((b) => (
+                <option value={b.branch_id} key={b.branch_id}>
+                  {b.name}
+                </option>
+              ))}
+            </Input>
+          </div>
 
-    {/* operator_id */}
-    <div className={styles.inputContainer}>
-      <Label for="example-text-input" className={styles.label}>
-        OPERATOR
-      </Label>
-      <Input
-        type="select"
-        name="operator_id"
-        id="example-select"
-        className={styles.input}
-        onChange={handleChange}
-      >
-        <option value="">All</option>
-        {company_detail?.company?.operators.map((o) => (
-          <option value={o.operator_id} key={o.operator_id}>
-            {o.name} ({o.operator_id.split("-")[0] + "-" + o.operator_id.split("-")[1]})
-          </option>
-        ))}
-      </Input>
-    </div>
+          {/* operator_id */}
+          <div className={styles.inputContainer}>
+            <Label for="example-text-input" className={styles.label}>
+              OPERATOR
+            </Label>
+            <Input
+              type="select"
+              name="operator_id"
+              id="example-select"
+              className={styles.input}
+              onChange={handleChange}
+            >
+              <option value="">All</option>
+              {company_detail?.company?.operators.map((o) => (
+                <option value={o.operator_id} key={o.operator_id}>
+                  {o.name} (
+                  {o.operator_id.split("-")[0] +
+                    "-" +
+                    o.operator_id.split("-")[1]}
+                  )
+                </option>
+              ))}
+            </Input>
+          </div>
 
-    {/* temp_range */}
-    <div className={styles.inputContainer}>
-      <Label for="example-text-input" className={styles.label}>
-        TEMP RANGE
-      </Label>
-      <Input
-        type="select"
-        name="temperature_range"
-        id="example-select"
-        className={styles.input}
-        onChange={handleChange}
-      >
-        <option value="">All</option>
-        {company_detail?.company?.alert_params?.temperature_alerts?.map((t) => (
-          <option value={t.name} key={t.name}>
-            {t?.name}
-          </option>
-        ))}
-      </Input>
-    </div>
-    
-  </FormGroup>
+          {/* temp_range */}
+          <div className={styles.inputContainer}>
+            <Label for="example-text-input" className={styles.label}>
+              TEMP RANGE
+            </Label>
+            <Input
+              type="select"
+              name="temperature_range"
+              id="example-select"
+              className={styles.input}
+              onChange={handleChange}
+            >
+              <option value="">All</option>
+              {company_detail?.company?.alert_params?.temperature_alerts?.map(
+                (t) => (
+                  <option value={t.name} key={t.name}>
+                    {t?.name}
+                  </option>
+                )
+              )}
+            </Input>
+          </div>
+        </FormGroup>
 
-  <div className={styles.buttons}>
-    <Button
-      className="btn-icon btn-3"
-      color="primary"
-      type="button"
-      onClick={handleFilter}
-    >
-      <span className="btn-inner--icon">
-        <i className="fa-solid fa-magnifying-glass"></i>
-      </span>
-      <span className="btn-inner--text">Search</span>
-    </Button>
-    <Button
-      className={arrayState.length < 2 ? styles.disabled_button : styles.button_compare}
-      onClick={() => {
-        compareShipments(arrayState, company_id, onAction, errorMsj);
-      }}
-      disabled={arrayState.length < 2 ? true : false}
-    >
-      Compare
-    </Button>
-    <Button
-      className={arrayState.length < 1 ? styles.disabled_button : styles.button_clear}
-      onClick={clearSelection}
-      disabled={arrayState.length < 1 ? true : false}
-    >
-      Clear
-    </Button>
-  </div>
-</Form>
+        <div className={styles.buttons}>
+          <Button
+            className="btn-icon btn-3"
+            color="primary"
+            type="button"
+            onClick={handleFilter}
+          >
+            <span className="btn-inner--icon">
+              <i className="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <span className="btn-inner--text">Search</span>
+          </Button>
+          <Button
+            className={
+              arrayState.length < 2
+                ? styles.disabled_button
+                : styles.button_compare
+            }
+            onClick={() => {
+              compareShipments(arrayState, company_id, onAction, errorMsj);
+            }}
+            disabled={arrayState.length < 2 ? true : false}
+          >
+            Compare
+          </Button>
+          <Button
+            className={
+              arrayState.length < 1
+                ? styles.disabled_button
+                : styles.button_clear
+            }
+            onClick={clearSelection}
+            disabled={arrayState.length < 1 ? true : false}
+          >
+            Clear
+          </Button>
+        </div>
+      </Form>
 
       {/* TABLA */}
       {/* mensaje de error------------------------------ */}
@@ -856,10 +875,13 @@ const Shipments = () => {
                           )}
                         </td>
                         {/* type */}
-                            <td>
-                             <div className={styles.departure_arrival}> {s?.temperature_range?.name}</div>  
-                            </td>
-                       
+                        <td>
+                          <div className={styles.departure_arrival}>
+                            {" "}
+                            {s?.temperature_range?.name}
+                          </div>
+                        </td>
+
                         {/* reports */}
                         <td className={styles.reports}>
                           {" "}

@@ -7,12 +7,12 @@
     margin-top: 2vw;
 }
 .form{
-    display: flex;
-  flex-direction: column;
-    justify-content: space-evenly;
+ display: flex;
+flex-direction: column;
+justify-content: space-evenly;
    
     /* border: solid rgb(0, 0, 0) 1px; */
-    padding-left: 2.5%;
+    /* padding-left: 2.5%; */
     margin-top: 2%;
 }
 .container{
@@ -21,15 +21,7 @@
     flex-wrap: wrap;
 
 }
-.subContainer{
-    display: flex;
-    justify-content:space-between;
-    /* align-items: center; */
-    /* border: solid rgb(0, 0, 0) 1px; */
-    width: 38.5%;
-    min-width:550px
 
-}
 .label{
     /* border:solid red 1px; */
     width: 10vw;
@@ -39,67 +31,24 @@
     margin-top:20px
     
 }
-.origin_destination{
-    display:flex;
-   
-    /* border: solid red 1px; */
-    /* min-width:10vw; */
-    /* flex-direction: column;
-    align-items: center; */
-    /* flex-grow: 1; */
 
-
-}
-.sender_receiver{
-    display:flex;
-    
-    /* border: solid rgb(25, 87, 180) 1px; */
-    /* min-width:10vw; */
-    flex-direction: column;
-    /* justify-content: center;
-    align-items: center; */
-    /* flex-grow: 1; */
-}
-.origin_destination{
-    display:flex;
-    /* border: solid rgb(255, 255, 0) 1px; */
-    /* min-width: 10w; */
-    flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* flex-grow: 1; */
-}
-.from_to{
-    display:flex;
-    /* border: solid rgb(12, 198, 33) 1px; */
-    /* min-width:10vw; */
-    flex-direction: column;
-    /* justify-content: center;
-    align-items: center; */
-    /* flex-grow: 1; */
-}
 
 .input{
-    width: 10vw;
-    min-width: 140px;
-   
-  
+ width: 10vw !important;
 }
 .inputContainer{
    
     margin-right: 1vw;
 }
 .buttons{
-    display: flex;
+display: flex;
     /* border: solid rgb(198, 105, 12) 1px; */
-    justify-content: center;
-  width: 100%;
-  margin-top: 2%;
-  margin-bottom: 5%;
-  position: relative;
-  left: -1%;
-  
-    
+justify-content: center;
+width: 100%;
+margin-top: 2%;
+margin-bottom: 5%;
+position: relative;
+left: -1%;   
 }
 .button_compare{
     background-color: #fafafa !important;
