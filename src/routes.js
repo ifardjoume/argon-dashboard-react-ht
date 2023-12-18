@@ -41,6 +41,7 @@ import Validation from "views/pages/forms/Validation.js";
 import Vector from "views/pages/maps/Vector.js";
 import Widgets from "views/pages/Widgets.js";
 import Shipments from "views/pages/shipments/Shipments";
+import Configuration from "views/pages/components/configuration/Configuration";
 
 
 const routes = [
@@ -72,7 +73,7 @@ const routes = [
       {
         path: "/dashboard",
         name: "Dashboard",
-        icon: "ni ni-shop text-primary",
+        icon: "ni ni-chart-bar-32",
         miniName: "D",
         component: <Dashboard />,
         layout: "/admin",
@@ -81,8 +82,15 @@ const routes = [
       {
         path: "/reports",
         name: "Reports",
-        icon: "ni ni-single-copy-04",
+        icon: "ni ni-archive-2",
         component: <Shipments />,
+        layout: "/admin",
+      },
+      {
+        path: "/configuration",
+        name: "Settings",
+        icon: "ni ni-settings",
+        component: <Configuration />,
         layout: "/admin",
       },
       {
@@ -92,6 +100,7 @@ const routes = [
         component: <Login />,
         layout: "/auth",
       },
+
   // {
   //   collapse: true,
   //   name: "Examples",
@@ -149,82 +158,82 @@ const routes = [
   //     },
   //   ],
   // },
-  // {
-  //   collapse: true,
-  //   name: "Components",
-  //   icon: "ni ni-ui-04 text-info",
-  //   state: "componentsCollapse",
-  //   views: [
-  //     {
-  //       path: "/buttons",
-  //       name: "Buttons",
-  //       miniName: "B",
-  //       component: <Buttons />,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/cards",
-  //       name: "Cards",
-  //       miniName: "C",
-  //       component: <Cards />,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/grid",
-  //       name: "Grid",
-  //       miniName: "G",
-  //       component: <Grid />,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/notifications",
-  //       name: "Notifications",
-  //       miniName: "N",
-  //       component: <Notifications />,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/icons",
-  //       name: "Icons",
-  //       miniName: "I",
-  //       component: <Icons />,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       path: "/typography",
-  //       name: "Typography",
-  //       miniName: "T",
-  //       component: <Typography />,
-  //       layout: "/admin",
-  //     },
-  //     {
-  //       collapse: true,
-  //       name: "Multi Level",
-  //       miniName: "M",
-  //       state: "multiCollapse",
-  //       views: [
-  //         {
-  //           path: "#pablo",
-  //           name: "Third level menu",
-  //           component: () => {},
-  //           layout: "/",
-  //         },
-  //         {
-  //           path: "#pablo",
-  //           name: "Just another link",
-  //           component: () => {},
-  //           layout: "/",
-  //         },
-  //         {
-  //           path: "#pablo",
-  //           name: "One last link",
-  //           component: () => {},
-  //           layout: "/",
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    collapse: true,
+    name: "Components",
+    icon: "ni ni-ui-04 text-info",
+    state: "componentsCollapse",
+    views: [
+      {
+        path: "/buttons",
+        name: "Buttons",
+        miniName: "B",
+        component: <Buttons />,
+        layout: "/admin",
+      },
+      {
+        path: "/cards",
+        name: "Cards",
+        miniName: "C",
+        component: <Cards />,
+        layout: "/admin",
+      },
+      {
+        path: "/grid",
+        name: "Grid",
+        miniName: "G",
+        component: <Grid />,
+        layout: "/admin",
+      },
+      {
+        path: "/notifications",
+        name: "Notifications",
+        miniName: "N",
+        component: <Notifications />,
+        layout: "/admin",
+      },
+      {
+        path: "/icons",
+        name: "Icons",
+        miniName: "I",
+        component: <Icons />,
+        layout: "/admin",
+      },
+      {
+        path: "/typography",
+        name: "Typography",
+        miniName: "T",
+        component: <Typography />,
+        layout: "/admin",
+      },
+      {
+        collapse: true,
+        name: "Multi Level",
+        miniName: "M",
+        state: "multiCollapse",
+        views: [
+          {
+            path: "#pablo",
+            name: "Third level menu",
+            component: () => {},
+            layout: "/",
+          },
+          {
+            path: "#pablo",
+            name: "Just another link",
+            component: () => {},
+            layout: "/",
+          },
+          {
+            path: "#pablo",
+            name: "One last link",
+            component: () => {},
+            layout: "/",
+          },
+        ],
+      },
+    ],
+  },
   // {
   //   collapse: true,
   //   name: "Forms",
