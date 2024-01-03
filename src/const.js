@@ -4,16 +4,16 @@ import { parseJwt,logOut } from "./helpers";
 export const BASE_URL = "http://localhost:3000";
 
 // DEVELOPMENT/
-// export const GET_REPORT_PDF = "http://devs.h-trace.com/reports/";
-// //export const BASE_URL = "http://development.h-trace.com";
-// export const SERVER_URL = "http://devs.h-trace.com";
-// export const SUBSCRIPTION_URL = "ws://devs.h-trace.com/subscriptions";
+export const GET_REPORT_PDF = "http://devs.h-trace.com/reports/";
+//export const BASE_URL = "http://development.h-trace.com";
+export const SERVER_URL = "http://devs.h-trace.com";
+export const SUBSCRIPTION_URL = "ws://devs.h-trace.com/subscriptions";
 
 // TESTING
- export const GET_REPORT_PDF = "http://testing.h-trace.com/reports/";
- //export const BASE_URL = "http://test-dash.h-trace.com";
- export const SERVER_URL = "http://testing.h-trace.com";
- export const SUBSCRIPTION_URL = "ws://testing.h-trace.com/subscriptions";
+//  export const GET_REPORT_PDF = "http://testing.h-trace.com/reports/";
+//  export const BASE_URL = "http://test-dash.h-trace.com";
+//  export const SERVER_URL = "http://testing.h-trace.com";
+//  export const SUBSCRIPTION_URL = "ws://testing.h-trace.com/subscriptions";
 
 // // PRODUCTION
 // export const GET_REPORT_PDF = "https://api.h-trace.com/reports/";

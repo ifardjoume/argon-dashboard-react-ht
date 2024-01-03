@@ -93,7 +93,7 @@ import TempIntrusionChart from "./graficoTempIntrusion/TempIntrusionChart";
 import successIcon from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 86.png";
 import failedIcon2 from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 87.png";
 import uncertainIcon2 from "../../../assets/img/icons/statusIcons/Iconos_Mesa de trabajo 1 copia 88.png";
-import  "../../../assets/css/myCss/global.css";
+import "../../../assets/css/myCss/global.css";
 function Dashboard() {
   //hooks
   const [
@@ -541,8 +541,7 @@ function Dashboard() {
     );
   }
   return (
-    <div >
-    
+    <div>
       <CardsHeader
         name="Default"
         parentName="Dashboards"
@@ -657,22 +656,24 @@ function Dashboard() {
                           </div>
                         ) : (
                           <>
-                          {allData?.uncertShipsState + allData?.failShipsState === 0 ? (
-                            <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                height: "100%",
-                              }}
-
-                            >
-                              No data to show
-                            </div>
-                          ) : (
-                            <div style={{ height: "100%" }}>
-                              <Pie data={failUncertain} options={options} />
-                            </div>)}
+                            {allData?.uncertShipsState +
+                              allData?.failShipsState ===
+                            0 ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  height: "100%",
+                                }}
+                              >
+                                No data to show
+                              </div>
+                            ) : (
+                              <div style={{ height: "100%" }}>
+                                <Pie data={failUncertain} options={options} />
+                              </div>
+                            )}
                           </>
                         )}
                       </CardBody>
@@ -770,7 +771,6 @@ function Dashboard() {
                             alignItems: "center",
                             justifyContent: "center",
                             height: "100%",
-                          
                           }}
                         >
                           <Spinner className="spinner" />
@@ -1130,7 +1130,7 @@ function Dashboard() {
         className="custom-modal" // Agrega una clase CSS personalizada
         isOpen={modalCheckpoints}
         toggle={toggleModalCheckpoints}
-        style={{width:"25vw"}}
+        style={{ width: "25vw" }}
       >
         <ModalHeader toggle={toggleModalCheckpoints}>ROUTE MAP</ModalHeader>
         <ModalBody>
@@ -1194,7 +1194,10 @@ function Dashboard() {
         style={{ minWidth: "75vw" }}
       >
         <ModalBody>
-          <TempIntrusionChart shipment_id={shipment_id} />
+          <TempIntrusionChart
+            shipment_id={shipment_id}
+           
+          />
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={toggleModalAlerts}>

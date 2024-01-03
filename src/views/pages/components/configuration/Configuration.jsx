@@ -52,7 +52,7 @@ const Configuration = () => {
   return (
     <>
       <h1 style={{ textAlign: "center" }}>Settings</h1>
-      <div style={{ width: "80%", margin: "auto" }}>
+      <div style={{ width: "90%", margin: "auto" }}>
 
         {/* company */}
         <AccordionItem
@@ -116,7 +116,7 @@ const Configuration = () => {
         >
           <p>Información del acordeón...</p>
         </AccordionItem>
-        
+
         {/* devices */}
         <AccordionItem
           title="My devices"

@@ -38,6 +38,9 @@ const TempGraph = ({shipment_id}) => {
       },
     ] = useLazyQuery(GET_SHIPMENT_DETAIL);
   
+    let checkpoints = contentData?.shipment?.checkpoints;
+    let last_checkpoint = contentData?.shipment?.last_checkpoint;
+
     useEffect(() => {
       const fetchShipment = async () => {
         try {
@@ -137,12 +140,28 @@ const TempGraph = ({shipment_id}) => {
         intrusion: hasIntrusion ? 1 : 0,
         timestamp: contentData?.shipment?.temperature_readings[i]?.timestamp.toLocaleString(),
         millisec: Date.parse(contentData?.shipment?.temperature_readings[i]?.timestamp),
-      
+        last_checkpoint: last_checkpoint?.temperature,
+        last_responsible_name: last_checkpoint?.responsible_name,
+        last_location: last_checkpoint?.location,
+        last_label: last_checkpoint?.label,
       });
     }
-  
+    //pushear todos los checkpoints al array de datastate y luego ordenarlos x timestamp!!!!!!!!!!!
+    checkpoints?.forEach((checkpoint) => {
+      data.push({
+        value: checkpoint ? checkpoint?.temperature : null,
+        checkpoint: checkpoint ? checkpoint?.temperature : null, // Agregar el checkpoint
+        responsible_name: checkpoint ? checkpoint?.responsible_name : null,
+        location: checkpoint ? checkpoint?.location : "",
+        label: checkpoint ? checkpoint?.label : "",
+        timestamp: checkpoint?.timestamp.toLocaleString(),
+        millisec: Date.parse(checkpoint?.timestamp),
+        intrusion: checkpoint?.hall !== null ? checkpoint?.hall : 0,
+      });
+    });
+    data.sort((a, b) => a.millisec - b.millisec);
     setDataState(data);
-  }, [contentData]);
+  }, [contentData, checkpoints]);
    //LOADING ---------------------------------------------------------------------------
   
    while (loading) {
@@ -160,18 +179,38 @@ const TempGraph = ({shipment_id}) => {
         padding: "10px",
         border: "1px solid #ccc",
       };
-  
+
       return (
         <div style={tooltipStyle}>
-          <p>{`Fecha: ${getTimestamp(label)}`}</p>
-          <p style={{ color: "#00ABC8" }}>Temp: {payload[0].value}°C</p>
-          <p style={{ color: "#FF001F" }}>{`Intrusion: ${payload[1].value}`}</p>
+          <p style={{ display: "flex" }}>
+            <div>{`Fecha: ${getTimestamp(label)}`}</div>
+
+            {payload[0]?.payload?.checkpoint && (
+              <div style={{ marginLeft: "10px" }}>
+                {`Checkpoint: ${
+                  payload[0]?.payload?.label ? payload[0]?.payload?.label : ""
+                } - ${payload[0]?.payload?.location} - ${
+                  payload[0]?.payload?.responsible_name
+                }`}
+              </div>
+            )}
+          </p>
+
+          <p style={{ color: "#00ABC8" }}>Temp: {payload[0]?.value}°C</p>
+          {payload[1]?.payload?.value && (
+            <p style={{ color: "#FF001F" }}>
+              {`Intrusion: ${
+                payload[1]?.value === 1 || payload[1]?.value === 0
+                  ? payload[1]?.value
+                  : 0
+              }`}
+            </p>
+          )}
         </div>
       );
     }
-  
+
     return null;
-  
   };
 
 
@@ -290,7 +329,13 @@ const TempGraph = ({shipment_id}) => {
                 stroke="#FF001F"
                 dot={false}
               />
-
+                 <Line
+                yAxisId="left"
+                type="monotone"
+                dataKey="checkpoint"
+                stroke="#00ABC8"
+                dot={{ stroke: "#00ABC8", strokeWidth: 5, fill: "white" }}
+              />
               <ReferenceLine
                 y={data[0].max} // Usamos el valor máximo del primer punto de datos como ejemplo
                 stroke="orange"

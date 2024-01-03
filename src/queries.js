@@ -217,6 +217,17 @@ export const GET_SHIPMENT_DETAIL = gql`
         timestamp
         temperature
         label
+        hall
+      }
+      last_checkpoint {
+        label
+        location
+        location_id
+        responsible_id
+        responsible_name
+        temperature
+        timestamp
+        hall
       }
       temperature_readings {
         value
