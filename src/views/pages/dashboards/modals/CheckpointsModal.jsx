@@ -2,7 +2,7 @@ import { useLazyQuery, useQuery } from "@apollo/client";
 
 import { convertirHoraLocal } from "helpers";
 import { GET_SHIPMENT_DETAIL } from "queries";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BsCircleFill } from "react-icons/bs";
 import styles from "./checkpointModal.module.css";
 import { GET_COMPANY_DETAIL } from "queries";
@@ -21,11 +21,13 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import Typography from "@mui/material/Typography";
 
 import "react-vertical-timeline-component/style.min.css";
-import { createTheme } from "@mui/material";
+import { checkboxClasses, createTheme } from "@mui/material";
 import { Badge, CardBody, Spinner } from "reactstrap";
 
-const CheckpointsModal = ({ shipment_id, dropdown }) => {
+const CheckpointsModal = ({ shipment_id, dropdown,checkpointsData  }) => {
+  const[filteredCheckpoints,setFilteredCheckpoints]=useState([])
   //queries
+
   const [
     getShipment,
     { loading: contentLoading, error: contentError, data: contentData },
@@ -53,7 +55,9 @@ const CheckpointsModal = ({ shipment_id, dropdown }) => {
       };
       getShipmentDetail();
     }
-  }, [shipment_id, contentData]);
+    setFilteredCheckpoints(checkpointsData)
+    console.log(checkpointsData)
+  }, [shipment_id, contentData, checkpointsData]);
 
   let totalDuration = null;
 
@@ -170,20 +174,22 @@ const CheckpointsModal = ({ shipment_id, dropdown }) => {
               // position: "relative",
             }}
           >
+          
             <Timeline align="left">
-              {contentData?.shipment?.checkpoints?.map((c, i) => (
+      
+              {filteredCheckpoints?.checkpoints?.map((c, i) => (
                 <TimelineItem key={i}>
                   <TimelineSeparator>
                     <TimelineDot
                       style={{
                         backgroundColor:
-                          i === contentData?.shipment?.checkpoints?.length - 1
+                          i === filteredCheckpoints?.checkpoints?.length - 1
                             ? "#00ABC8"
                             : "#bdbdbd",
                         //color: i === data?.shipment?.checkpoints?.length - 1 ? "#FFFFFF" : "#000000" // Puedes ajustar el color del texto según tu diseño
                       }}
                     />
-                    {i !== contentData?.shipment?.checkpoints?.length - 1 && (
+                    {i !== filteredCheckpoints?.checkpoints?.length -1 && (
                       <TimelineConnector />
                     )}
                   </TimelineSeparator>

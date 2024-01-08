@@ -934,9 +934,9 @@ const Shipments = () => {
                           >
                             <DropdownShipments
                               shipment_id={s.shipment_id}
-                              //expanded={expanded}
                               index={index}
                               gmt={company_detail.company.gmt}
+                              data={data[index]}
                             />
                           </Collapse>
                         </td>

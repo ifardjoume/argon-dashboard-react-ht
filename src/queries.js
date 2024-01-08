@@ -480,6 +480,15 @@ export const GET_SHIPMENTS_PAG_TO_HEADER = gql`
         departure
         arrival
         status
+        checkpoints {
+          responsible_id
+          responsible_name
+          timestamp
+          location
+          temperature
+          battery_level
+          label
+        }
         temperature_range {
           name
           max
