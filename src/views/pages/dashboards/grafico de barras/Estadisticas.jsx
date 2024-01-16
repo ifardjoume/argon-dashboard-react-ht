@@ -47,7 +47,7 @@ export default function Estadisticas() {
 try {
  const fetch2 = async () => {
       const request = await axios.get(
-        `${SERVER_URL}/getAllValues/${company_id}/${initialDayMonth}`,
+        `${SERVER_URL}/getAllValues/${company_id}/${initialDayMonth}/${null}`,
         { headers: { authorization: `Bearer ${token}` } }
       );
     

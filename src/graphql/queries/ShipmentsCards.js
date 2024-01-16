@@ -72,7 +72,7 @@ export const useShipments = () => {
   async function fetchData(type, company_id) {
 
     const result = await axios.get(
-      `${SERVER_URL}/getAllValues/${company_id}/${type}`,
+      `${SERVER_URL}/getAllValues/${company_id}/${type}/${null}`,
       { headers: { authorization: `Bearer ${token}` } }
     );
  

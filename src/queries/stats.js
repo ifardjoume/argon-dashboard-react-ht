@@ -19,7 +19,7 @@ export const useFailedUncertain= () => {
   //traigo la data por mes/semana segun el filtro
   function fetchData(type, company_id) {
     const request = axios.get(
-      `${SERVER_URL}/getAllValues/${company_id}/${type}`,
+      `${SERVER_URL}/getAllValues/${company_id}/${type}/${null}`,
       { headers: { authorization: `Bearer ${token}` } }
     );
 
