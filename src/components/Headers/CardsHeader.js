@@ -113,7 +113,7 @@ function CardsHeader({
     margin: "auto",
     fontSize: window.innerWidth >= 800 ? "1.7vw" : "45px",
   };
-  const handleDataChange = (e) => {
+  const handleDateChange = (e) => {
     console.log(e.target.value);
   };
   return (
@@ -163,7 +163,7 @@ function CardsHeader({
                  
                   value="custom"
                   onChange={(e) => {
-                    handleDataChange(e);
+                    handleDateChange(e);
                     handlerInitialFilter(e);
                   }}
                   placeholder="From"// no funciona, ver css del dash viejo!
