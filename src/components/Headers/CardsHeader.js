@@ -29,13 +29,18 @@ import {
   Row,
   Col,
   Spinner,
+  FormGroup,
+  Label,
+  Input,
 } from "reactstrap";
+import ReactDatetime from "react-datetime";
 import { getPercentageChange } from "helpers";
 import inTransitIcon from "../../assets/img/icons/common/oldIcons/viajesEnCurso.png";
 import completedIcon from "../../assets/img/icons/common/oldIcons/viajesHechos.png";
 import succededIcon from "../../assets/img/icons/common/oldIcons/viajesConformes.png";
 import uncertainIcon from "../../assets/img/icons/common/oldIcons/viajesParaRevision.png";
 import failedIcon from "../../assets/img/icons/common/oldIcons/viajesConformes.png";
+import ReactDatetimeClass from "react-datetime";
 
 function CardsHeader({
   name,
@@ -82,6 +87,8 @@ function CardsHeader({
     margin: "1%",
     position: "relative",
     left: "-1%",
+    // border: "solid red 1px",
+    display: "flex",
   };
   const cardsContainer = {
     // border: "red solid 1px",
@@ -106,22 +113,25 @@ function CardsHeader({
     margin: "auto",
     fontSize: window.innerWidth >= 800 ? "1.7vw" : "45px",
   };
-
+  const handleDataChange = (e) => {
+    console.log(e.target.value);
+  };
   return (
     <>
-      <div className="header  pb-8 pt-5 pt-md-8" >{/* header bg-gradient-info pb-8 pt-5 pt-md-8" */}
-        
+      <div className="header  pb-8 pt-5 pt-md-8">
+        {/* header bg-gradient-info pb-8 pt-5 pt-md-8" */}
+
         <Container fluid>
           <div /* className="header-body" */>
             {/* ---buttons---------- */}
             <div style={buttonsContainerStyle}>
               <Button
                 style={{
-                  borderColor:initialFilter === 'day' ? '#00ABC8' : 'gray',
+                  borderColor: initialFilter === "day" ? "#00ABC8" : "gray",
                   // borderWidth: "1px",
                   height: "40px",
                   textAlign: "center",
-                  backgroundColor: initialFilter === 'day' ? '#00ABC8' : 'gray', // Color rojo si es 'day', gris en caso contrario
+                  backgroundColor: initialFilter === "day" ? "#00ABC8" : "gray", // Color rojo si es 'day', gris en caso contrario
                 }}
                 color="primary"
                 id="initial_filter_day"
@@ -132,12 +142,13 @@ function CardsHeader({
               </Button>
               <Button
                 style={{
-                  borderColor:initialFilter === 'month' ? '#00ABC8' : 'gray',
-                  
+                  borderColor: initialFilter === "month" ? "#00ABC8" : "gray",
+
                   height: "40px",
                   width: "150px",
                   textAlign: "center",
-                  backgroundColor: initialFilter === 'month' ? '#00ABC8' : 'gray', // Color rojo si es 'day', gris en caso contrario
+                  backgroundColor:
+                    initialFilter === "month" ? "#00ABC8" : "gray", // Color rojo si es 'day', gris en caso contrario
                 }}
                 color="primary"
                 value="month"
@@ -145,6 +156,20 @@ function CardsHeader({
               >
                 This month
               </Button>
+              {/* <div style={{ width: "130px" }}> */}
+                <input
+                  type="date"
+                  name="from"
+                 
+                  value="custom"
+                  onChange={(e) => {
+                    handleDataChange(e);
+                    handlerInitialFilter(e);
+                  }}
+                  placeholder="From"// no funciona, ver css del dash viejo!
+                />
+                 
+              {/* </div> */}
             </div>
 
             {/* Card stats */}
@@ -174,7 +199,12 @@ function CardsHeader({
 
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
+                          <Spinner
+                            style={{
+                              color: "rgb(14, 66, 186)",
+                              borderWidth: "3px",
+                            }}
+                          />
                         ) : (
                           inTransitShipsState
                         )}
@@ -226,7 +256,12 @@ function CardsHeader({
                       </div>
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
+                          <Spinner
+                            style={{
+                              color: "rgb(14, 66, 186)",
+                              borderWidth: "3px",
+                            }}
+                          />
                         ) : (
                           allData?.completedShipsState
                         )}
@@ -315,7 +350,12 @@ function CardsHeader({
                       </div>
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
+                          <Spinner
+                            style={{
+                              color: "rgb(14, 66, 186)",
+                              borderWidth: "3px",
+                            }}
+                          />
                         ) : (
                           allData?.succShipsState
                         )}
@@ -403,7 +443,12 @@ function CardsHeader({
                       </div>
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
+                          <Spinner
+                            style={{
+                              color: "rgb(14, 66, 186)",
+                              borderWidth: "3px",
+                            }}
+                          />
                         ) : (
                           allData?.uncertShipsState
                         )}
@@ -492,7 +537,12 @@ function CardsHeader({
                       </div>
                       <span style={card_data}>
                         {loading ? (
-                          <Spinner style={{ color: "rgb(14, 66, 186)",borderWidth:"3px" }} />
+                          <Spinner
+                            style={{
+                              color: "rgb(14, 66, 186)",
+                              borderWidth: "3px",
+                            }}
+                          />
                         ) : (
                           allData?.failShipsState
                         )}

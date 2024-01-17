@@ -7,17 +7,16 @@ import {
 import axios from "axios";
 import { company_id, SERVER_URL } from "../../const";
 import { logOut, parseJwt } from "../../helpers.js";
-import {access_parced} from '../../const'
+import { access_parced } from "../../const";
 import FilterDayMonth from "context/filterDayMonth";
 
 export const useShipments = () => {
-  
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   if (!parseJwt(localStorage.getItem("token")).SUDO) {
     if (access_parced.dash_control === false) logOut();
   }
   const { initialDayMonth, setInitialDayMonth } = useContext(FilterDayMonth);
-   
+
   // ESTADOS LOCALES ------------------------------------------------------------------------
   //estados donde me guardo la info traida de la query
   const [inTransitShipsState, setInTransitShipsState] = useState(0);
@@ -64,57 +63,55 @@ export const useShipments = () => {
 
   //estado para setear info segun dia o mes
   const handlerInitialFilter = function (e) {
-    setInitialFilter(e.target.value);
-    setInitialDayMonth(e.target.value)
+      console.log(e.target.value)
+      setInitialFilter(e.target.value);
+      setInitialDayMonth(e.target.value)
+    
   };
 
   //TRAIGO LA DATA DESDE EL SERVIDOR SEGUN FILTRO MES/DIA ------------------------------------------------------------------
   async function fetchData(type, company_id) {
-
     const result = await axios.get(
       `${SERVER_URL}/getAllValues/${company_id}/${type}/${null}`,
       { headers: { authorization: `Bearer ${token}` } }
     );
- 
 
     try {
       //data actual de viajes en transito
 
       let totalInTransit = 0;
-      for (
-        let i = 0;
-        i < result?.data?.values[0]?.in_transit?.length;
-        i++
-      ) {
+      for (let i = 0; i < result?.data?.values[0]?.in_transit?.length; i++) {
         totalInTransit =
-          totalInTransit +
-          result?.data?.values[0]?.in_transit[i]?.in_transit;
+          totalInTransit + result?.data?.values[0]?.in_transit[i]?.in_transit;
       }
       setInTransitShipsState(totalInTransit);
       //data actual de viajes completos
       if (
         initialDay.toISOString().split("T")[0] ===
-        result?.data?.values[0]?.stadistic_data[0]?.date?.split("T")[0] ||
+          result?.data?.values[0]?.stadistic_data[0]?.date?.split("T")[0] ||
         initialMonth.toISOString().split("T")[0] ===
-        result?.data?.values[0]?.stadistic_data[0]?.date?.split("T")[0]
+          result?.data?.values[0]?.stadistic_data[0]?.date?.split("T")[0]
       ) {
-
         setAllData({
           ...allData,
           completedShipsState:
             result.data?.values[0]?.stadistic_data[0]?.successful +
             result.data?.values[0]?.stadistic_data[0]?.uncertain +
             result.data?.values[0]?.stadistic_data[0]?.failed,
-          succShipsState:
-            result.data?.values[0]?.stadistic_data[0]?.successful,
+          succShipsState: result.data?.values[0]?.stadistic_data[0]?.successful,
           uncertShipsState:
             result.data?.values[0]?.stadistic_data[0]?.uncertain,
           failShipsState: result.data?.values[0]?.stadistic_data[0]?.failed,
           branchesWithMoreAlerts: result.data?.ordered?.slice(0, 4),
-          causes: initialDay.toISOString().split("T")[0] === result?.data?.values[0]?.causes[0]?.date?.split("T")[0] || initialMonth.toISOString().split("T")[0] === result?.data?.values[0]?.causes[0]?.date?.split("T")[0] ? result.data?.values[0]?.causes[0] : 0,
+          causes:
+            initialDay.toISOString().split("T")[0] ===
+              result?.data?.values[0]?.causes[0]?.date?.split("T")[0] ||
+            initialMonth.toISOString().split("T")[0] ===
+              result?.data?.values[0]?.causes[0]?.date?.split("T")[0]
+              ? result.data?.values[0]?.causes[0]
+              : 0,
         });
       } else {
-
         setAllData({
           ...allData,
           completedShipsState: 0,
@@ -129,9 +126,9 @@ export const useShipments = () => {
       // datos de dia/mes anterior
       if (
         yesterday ===
-        result.data?.values[0]?.stadistic_data[1]?.date?.split("T")[0] ||
+          result.data?.values[0]?.stadistic_data[1]?.date?.split("T")[0] ||
         initialPrevMonth ===
-        result.data?.values[0]?.stadistic_data[1]?.date.split("T")[0]
+          result.data?.values[0]?.stadistic_data[1]?.date.split("T")[0]
       ) {
         setPrevData({
           ...prevData,
@@ -143,8 +140,7 @@ export const useShipments = () => {
             result.data.values[0]?.stadistic_data[1]?.successful,
           prevUncertShipsState:
             result.data.values[0]?.stadistic_data[1]?.uncertain,
-          prevFailShipsState:
-            result.data.values[0]?.stadistic_data[1]?.failed,
+          prevFailShipsState: result.data.values[0]?.stadistic_data[1]?.failed,
         });
       } else {
         setPrevData({
@@ -156,14 +152,11 @@ export const useShipments = () => {
         });
       }
       setLoading(false);
-     
-     
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error:", error);
       console.log(error);
       setLoading(false);
-    };
+    }
   }
 
   // QUERIES / SUBSCRIPTIONS / MUTATIONS --------------------------------------------------------------------------
@@ -183,7 +176,6 @@ export const useShipments = () => {
 
   // CUANDO SE INICIA EL COMPONENTE ---------------------------------------------------------------------------------
   useEffect(() => {
-
     setLoading(true);
     if (company_id) {
       fetchData(initialFilter, company_id);
@@ -205,7 +197,12 @@ export const useShipments = () => {
       updatedShipError
     );
 
-  
-  return [inTransitShipsState,loading, allData, handlerInitialFilter,prevData,initialFilter]
-      
-}
+  return [
+    inTransitShipsState,
+    loading,
+    allData,
+    handlerInitialFilter,
+    prevData,
+    initialFilter,
+  ];
+};
