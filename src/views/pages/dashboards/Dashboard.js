@@ -225,52 +225,7 @@ function Dashboard() {
     changeFilter(tab);
   };
 
-  // const renderTable = (tab) => {
-  //   const columns = Object.keys(data[tab][0]);
-
-  //   const columnMappings = {
-  //     COMMENTS: "mo.coments",
-  //     ALERTS: "mo.Alerts",
-  //     "LAST CHECKPOINT": "mo.Check",
-  //   };
-  //   const handleDivClick = (column) => {
-  //     console.log("clickeando ando en " + column);
-  //   };
-
-  //   return (
-  //     <Table hover>
-  //       <thead>
-  //         <tr>
-  //           {columns.map((column) => (
-  //             <th key={column}>{column}</th>
-  //           ))}
-  //         </tr>
-  //       </thead>
-  //       <tbody>
-  //         {data[tab].map((item, index) => (
-  //           <tr key={index} className="table-row">
-  //             {columns.map((column) => (
-  //               <td key={column}>
-  //                 {column === "COMMENTS" ||
-  //                 column === "ALERTS" ||
-  //                 column === "LAST CHECKPOINT" ? (
-  //                   <div
-  //                     onClick={() => handleDivClick(column)}
-  //                     style={{ cursor: "pointer" }}
-  //                   >
-  //                     {columnMappings[column] || item[column]}
-  //                   </div>
-  //                 ) : (
-  //                   item[column]
-  //                 )}
-  //               </td>
-  //             ))}
-  //           </tr>
-  //         ))}
-  //       </tbody>
-  //     </Table>
-  //   );
-  // };
+ 
   function TablaDatos() {
     if (lazyPaginatedDataLoading || paginatedDataLoading) {
       return (

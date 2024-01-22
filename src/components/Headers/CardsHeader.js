@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // reactstrap components
@@ -70,7 +70,7 @@ function CardsHeader({
     prevData?.prevFailShipsState ? prevData?.prevFailShipsState : 0,
     allData?.failShipsState
   );
-
+  const [date, setDate] = useState(null);
   //card styles
   const commonCardStyle = {
     minHeight: "180px",
@@ -114,8 +114,10 @@ function CardsHeader({
     fontSize: window.innerWidth >= 800 ? "1.7vw" : "45px",
   };
   const handleDateChange = (e) => {
-    console.log(e.target.value);
+    localStorage.setItem("custom_date", e.target.value);
+    setDate(e.target.value);
   };
+
   return (
     <>
       <div className="header  pb-8 pt-5 pt-md-8">
@@ -156,20 +158,24 @@ function CardsHeader({
               >
                 This month
               </Button>
-              {/* <div style={{ width: "130px" }}> */}
-                <input
-                  type="date"
-                  name="from"
-                 
-                  value="custom"
-                  onChange={(e) => {
-                    handleDateChange(e);
-                    handlerInitialFilter(e);
-                  }}
-                  placeholder="From"// no funciona, ver css del dash viejo!
-                />
-                 
-              {/* </div> */}
+
+              <Input
+                className="inputDate"
+                type="date"
+               
+                onChange={(e) => {
+                  handleDateChange(e);
+                  handlerInitialFilter(e, "custom");
+                }}
+                style={{
+                 width:'200px',
+                }}
+                placeholder={
+                  localStorage.getItem("custom_date") !== "null"
+                    ? localStorage.getItem("custom_date")
+                    : "Select a date"
+                }
+              />
             </div>
 
             {/* Card stats */}

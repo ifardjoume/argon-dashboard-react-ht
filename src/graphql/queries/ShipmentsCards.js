@@ -9,13 +9,14 @@ import { company_id, SERVER_URL } from "../../const";
 import { logOut, parseJwt } from "../../helpers.js";
 import { access_parced } from "../../const";
 import FilterDayMonth from "context/filterDayMonth";
+import { set } from "date-fns";
 
 export const useShipments = () => {
   const token = localStorage.getItem("token");
   if (!parseJwt(localStorage.getItem("token")).SUDO) {
     if (access_parced.dash_control === false) logOut();
   }
-  const { initialDayMonth, setInitialDayMonth } = useContext(FilterDayMonth);
+  const { initialDayMonth, setInitialDayMonth, custom_date, setCustom_date } = useContext(FilterDayMonth);
 
   // ESTADOS LOCALES ------------------------------------------------------------------------
   //estados donde me guardo la info traida de la query
@@ -41,8 +42,12 @@ export const useShipments = () => {
   const [loading, setLoading] = useState(true);
 
   //estado para el filtro inicial mes/día
-  const [initialFilter, setInitialFilter] = useState("month");
-
+  const [initialFilter, setInitialFilter] = useState(
+    localStorage.getItem("initialDayMonth") || "day"
+  );
+  // const [custom_date, setCustom_date] = useState(
+  //   localStorage.getItem("custom_date") || null
+  // );
   //estados y variables para el seteo de fechas y filtros mes/dia
   const date = new Date();
   const firstDayOfMonth = new Date().setDate("01");
@@ -61,18 +66,28 @@ export const useShipments = () => {
       .split("T")[0]
   );
 
-  //estado para setear info segun dia o mes
-  const handlerInitialFilter = function (e) {
-      console.log(e.target.value)
+  //estado para setear info segun dia o mes(day, month o custom para el date picker)
+  const handlerInitialFilter = function (e, string) {
+    if (string) {
+      setInitialFilter(string);
+      setCustom_date(e.target.value);
+      setInitialDayMonth(string);
+      localStorage.setItem("initialDayMonth", string);
+      localStorage.setItem("custom_date", e.target.value);
+    } else {
+      console.log(e.target.value);
       setInitialFilter(e.target.value);
-      setInitialDayMonth(e.target.value)
-    
+      setInitialDayMonth(e.target.value);
+      setCustom_date(null);
+      localStorage.setItem("initialDayMonth", e.target.value);
+      localStorage.setItem("custom_date", null);
+    }
   };
 
-  //TRAIGO LA DATA DESDE EL SERVIDOR SEGUN FILTRO MES/DIA ------------------------------------------------------------------
+  //TRAIGO LA DATA DESDE EL SERVIDOR SEGUN FILTRO MES/DIA/CUSTOM ------------------------------------------------------------------
   async function fetchData(type, company_id) {
     const result = await axios.get(
-      `${SERVER_URL}/getAllValues/${company_id}/${type}/${null}`,
+      `${SERVER_URL}/getAllValues/${company_id}/${type}/${custom_date}`,
       { headers: { authorization: `Bearer ${token}` } }
     );
 
@@ -151,6 +166,47 @@ export const useShipments = () => {
           prevFailShipsState: 0,
         });
       }
+      //si hay custom_date
+      if (custom_date) {
+        if (
+          custom_date ===
+          result.data?.values[0]?.stadistic_data[0]?.date?.split("T")[0]
+        ) {
+          setAllData({
+            ...allData,
+            completedShipsState:
+              result.data?.values[0]?.stadistic_data[0]?.successful +
+              result.data?.values[0]?.stadistic_data[0]?.uncertain +
+              result.data?.values[0]?.stadistic_data[0]?.failed,
+
+            succShipsState:
+              result.data?.values[0]?.stadistic_data[0]?.successful,
+
+            uncertShipsState:
+              result.data?.values[0]?.stadistic_data[0]?.uncertain,
+
+            failShipsState: result.data?.values[0]?.stadistic_data[0]?.failed,
+
+            branchesWithMoreAlerts: result.data?.ordered?.slice(0, 4),
+
+            causes:
+              custom_date ===
+                result?.data?.values[0]?.causes[0]?.date?.split("T")[0] ||
+              initialMonth.toISOString().split("T")[0] ===
+                result?.data?.values[0]?.causes[0]?.date?.split("T")[0]
+                ? result.data?.values[0]?.causes[0]
+                : 0,
+          });
+        } else {
+          setPrevData({
+            ...prevData,
+            prevCompletedShipsState: 0,
+            prevSuccShipsState: 0,
+            prevUncertShipsState: 0,
+            prevFailShipsState: 0,
+          });
+        }
+      }
       setLoading(false);
     } catch (error) {
       console.error("Error:", error);
@@ -183,7 +239,13 @@ export const useShipments = () => {
       setLoading(false);
     }
     // setLoading(false);
-  }, [initialFilter, company_id, updatedShipData, createdShipData]);
+  }, [
+    initialFilter,
+    company_id,
+    updatedShipData,
+    createdShipData,
+    custom_date,
+  ]);
 
   //MANEJO DE ERRORES ------------------------------------------------------------------------------------------------
   if (createdShipError)

@@ -108,6 +108,8 @@ export const logOut = () => {
   localStorage.setItem("assigned_to", null);
   localStorage.setItem("tempAlert", false);
   localStorage.setItem("intrusion", false);
+  localStorage.setItem("custom_date", null);
+  localStorage.setItem("initialDayMonth", "day");
   window.location.replace("/");
 };
 

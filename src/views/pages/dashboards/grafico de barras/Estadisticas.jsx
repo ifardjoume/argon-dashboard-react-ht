@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 
-
 import { useSubscription } from "@apollo/client";
 //import { SHIPMENTS_UPDATED_SUBSCRIPTION } from "../../queries";
 import axios from "axios";
@@ -9,28 +8,22 @@ import styles from "./estadisticas.module.css";
 import { SHIPMENTS_UPDATED_SUBSCRIPTION } from "queries";
 import { SERVER_URL, company_id } from "const";
 import FilterDayMonth from "context/filterDayMonth";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 export default function Estadisticas() {
-  const { initialDayMonth, setInitialDayMonth } = useContext(FilterDayMonth);
+  const { initialDayMonth, setInitialDayMonth, custom_date } = useContext(FilterDayMonth);
 
   const token = localStorage.getItem("token");
   const [filterData, setFilterData] = useState("allShips");
   const [info, setInfo] = useState({});
-
-  //traigo la data por mes/semana segun el filtro
-  //  async function fetchData(type, company_id) {
-  //     const request = await axios.get(
-  //       `${SERVER_URL}/getAllValues/${company_id}/${type}`,
-  //       { headers: { authorization: `Bearer ${token}` } }
-  //     );
-
-  //     request
-  //       .then((result) => {
-  //         setInfo(result.data?.values?.[0]);
-  //       })
-  //       .catch((error) => console.error("Error:", error));
-  //   }
+ 
 
   // QUERIES/MUTATIONS/SUBSCRIPTIONS -----------------------------------------------------------------------
   //subscription de viajes terminados
@@ -43,23 +36,23 @@ export default function Estadisticas() {
   // CUANDO SE INICIA EL COMPONENTE -------------------------------------------------------------------------
   useEffect(() => {
     // fetchData(initialDayMonth, company_id);
-    
+
 try {
- const fetch2 = async () => {
-      const request = await axios.get(
-        `${SERVER_URL}/getAllValues/${company_id}/${initialDayMonth}/${null}`,
-        { headers: { authorization: `Bearer ${token}` } }
-      );
-    
-      setInfo(request?.data?.values?.[0])
-    };
-    fetch2()    
-} catch (error) {
-   console.log(error)
-   console.log('error tratando de traer la data de estadisticas') 
-}
-    
-  }, [initialDayMonth, updatedShipData, company_id]);
+      const fetch2 = async () => {
+        const request = await axios.get(
+          `${SERVER_URL}/getAllValues/${company_id}/${initialDayMonth}/${custom_date}`,
+          { headers: { authorization: `Bearer ${token}` } }
+        );
+
+        setInfo(request?.data?.values?.[0]);
+      };
+      fetch2();
+    } catch (error) {
+      console.log(error);
+      console.log("error tratando de traer la data de estadisticas");
+    }
+
+  }, [initialDayMonth, updatedShipData, company_id, custom_date]);
 
   // ESTADOS LOCALES -------------------------------------------------------------------------------------------
   //seteo de fechas desde el año/semana anterior
@@ -203,11 +196,25 @@ try {
   }
 
   //recorro la data y seteo en el array hecho por default, luego lo ordeno por fecha
-  if (info && initialDayMonth === "day") {
+  if (info && (initialDayMonth === "day" || initialDayMonth === "custom")) {
     let id = 0;
     for (let i = 0; i <= 6; i++) {
-      let fecha = new Date(new Date(new Date().setDate(today.getDate() - i)));
+      let fecha = "";
+      if (localStorage.getItem("custom_date") !== 'null') {
+        fecha = new Date(
+          new Date(
+            new Date(localStorage.getItem("custom_date")).setDate(
+              new Date(localStorage.getItem("custom_date")).getDate() - i
+            )
+          )
+        );
+      } else {
+        fecha = new Date(new Date(new Date().setDate(today.getDate() - i)));
+      }
+
+      // let fecha = new Date(new Date(new Date().setDate(today.getDate() - i)));
       let numberDayOfWeek = fecha.getDay();
+     
       weekData[numberDayOfWeek].id = id;
       id--;
       fecha = fecha.toISOString().slice(0, 10);
@@ -259,14 +266,14 @@ try {
         {initialDayMonth === "day" && "Weekly stadistics"}
         {initialDayMonth === "month" && " Annual stadistics"}
         <div className={styles.textContainer}>
-        {initialDayMonth === "month" ? (
-          <span className={styles.text}>*Last 12 months</span>
-        ) : (
-          <span className={styles.text}>*Last 7 days</span>
-        )}
-      </div>
+          {initialDayMonth === "month" ? (
+            <span className={styles.text}>*Last 12 months</span>
+          ) : (
+            <span className={styles.text}>*Last 7 days</span>
+          )}
+        </div>
       </h2>
-   
+
       {/* Filtros por estado */}
       <span className={styles.buttonsTitle}> Filter</span>
       <div className={styles.buttonsContainer}>
@@ -317,127 +324,120 @@ try {
       </div>
       {/* Grafico  */}
       <div className={styles.graphContainer}>
-       
-        <ResponsiveContainer width="100%" height="100%" >
-        <BarChart
-          data={initialDayMonth === "month" ? yearData : weekData}
-          barSize={10}
-          stackOffset={"none"}
-          className={styles.stadisticGraph}
-        style={{  left:"-10px" }}
-        >
-          <CartesianGrid horizontal={false} vertical={false} />
-          <XAxis
-            dataKey="name"
-           /*  padding={{ left: window.screen.width <= 450 ? 0 : 8 }} */
-            tickLine={false}
-            tick={{
-              fontSize: window.screen.width > 800 ? "0.8vw" : "2vw",
-              color: "#1B1464",
-            }}
-          
-          />
-          <YAxis
-            type="number"
-            tick={{
-              fontSize: window.screen.width > 800 ? "0.8vw" : "2vw",
-              color: "#1B1464",
-            }}
-            allowDecimals={false}
-          />
-          <Bar
-            dataKey="x"
-            stackId="a"
-            fill="#2dce89"//verde
-            radius={[12, 10, 10, 12]}
-          />
-          <Bar
-            dataKey="y"
-            stackId="a"
-            fill="#5e72e4"//azul
-            radius={[12, 10, 10, 12]}
-          />
-          <Bar
-            dataKey="z"
-            stackId="a"
-            fill="#f5365c"//rojo
-            radius={[12, 10, 10, 12]}
-          />
-        </BarChart>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={initialDayMonth === "month" ? yearData : weekData}
+            barSize={10}
+            stackOffset={"none"}
+            className={styles.stadisticGraph}
+            style={{ left: "-10px" }}
+          >
+            <CartesianGrid horizontal={false} vertical={false} />
+            <XAxis
+              dataKey="name"
+              /*  padding={{ left: window.screen.width <= 450 ? 0 : 8 }} */
+              tickLine={false}
+              tick={{
+                fontSize: window.screen.width > 800 ? "0.8vw" : "2vw",
+                color: "#1B1464",
+              }}
+            />
+            <YAxis
+              type="number"
+              tick={{
+                fontSize: window.screen.width > 800 ? "0.8vw" : "2vw",
+                color: "#1B1464",
+              }}
+              allowDecimals={false}
+            />
+            <Bar
+              dataKey="x"
+              stackId="a"
+              fill="#2dce89" //verde
+              radius={[12, 10, 10, 12]}
+            />
+            <Bar
+              dataKey="y"
+              stackId="a"
+              fill="#5e72e4" //azul
+              radius={[12, 10, 10, 12]}
+            />
+            <Bar
+              dataKey="z"
+              stackId="a"
+              fill="#f5365c" //rojo
+              radius={[12, 10, 10, 12]}
+            />
+          </BarChart>
         </ResponsiveContainer>
-       
-      
       </div>
-     
-    
     </div>
   );
 
-// const data = [
-//     {
-//       name: 'Page A',
-//       uv: 4000,
-//       pv: 2400,
-//       amt: 2400,
-//     },
-//     {
-//       name: 'Page B',
-//       uv: 3000,
-//       pv: 1398,
-//       amt: 2210,
-//     },
-//     {
-//       name: 'Page C',
-//       uv: 2000,
-//       pv: 9800,
-//       amt: 2290,
-//     },
-//     {
-//       name: 'Page D',
-//       uv: 2780,
-//       pv: 3908,
-//       amt: 2000,
-//     },
-//     {
-//       name: 'Page E',
-//       uv: 1890,
-//       pv: 4800,
-//       amt: 2181,
-//     },
-//     {
-//       name: 'Page F',
-//       uv: 2390,
-//       pv: 3800,
-//       amt: 2500,
-//     },
-//     {
-//       name: 'Page G',
-//       uv: 3490,
-//       pv: 4300,
-//       amt: 2100,
-//     },
-//   ];
-//   return (
+  // const data = [
+  //     {
+  //       name: 'Page A',
+  //       uv: 4000,
+  //       pv: 2400,
+  //       amt: 2400,
+  //     },
+  //     {
+  //       name: 'Page B',
+  //       uv: 3000,
+  //       pv: 1398,
+  //       amt: 2210,
+  //     },
+  //     {
+  //       name: 'Page C',
+  //       uv: 2000,
+  //       pv: 9800,
+  //       amt: 2290,
+  //     },
+  //     {
+  //       name: 'Page D',
+  //       uv: 2780,
+  //       pv: 3908,
+  //       amt: 2000,
+  //     },
+  //     {
+  //       name: 'Page E',
+  //       uv: 1890,
+  //       pv: 4800,
+  //       amt: 2181,
+  //     },
+  //     {
+  //       name: 'Page F',
+  //       uv: 2390,
+  //       pv: 3800,
+  //       amt: 2500,
+  //     },
+  //     {
+  //       name: 'Page G',
+  //       uv: 3490,
+  //       pv: 4300,
+  //       amt: 2100,
+  //     },
+  //   ];
+  //   return (
 
-//       <BarChart
-//         width={500}
-//         height={300}
-//         data={data}
-//         margin={{
-//           top: 20,
-//           right: 30,
-//           left: 20,
-//           bottom: 5,
-//         }}
-//       >
-//         <CartesianGrid strokeDasharray="3 3" />
-//         <XAxis dataKey="name" />
-//         <YAxis />
-       
-       
-//         <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-//         <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
-//       </BarChart>
-  
-//   );
+  //       <BarChart
+  //         width={500}
+  //         height={300}
+  //         data={data}
+  //         margin={{
+  //           top: 20,
+  //           right: 30,
+  //           left: 20,
+  //           bottom: 5,
+  //         }}
+  //       >
+  //         <CartesianGrid strokeDasharray="3 3" />
+  //         <XAxis dataKey="name" />
+  //         <YAxis />
+
+  //         <Bar dataKey="pv" stackId="a" fill="#8884d8" />
+  //         <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+  //       </BarChart>
+
+  //   );
 }
