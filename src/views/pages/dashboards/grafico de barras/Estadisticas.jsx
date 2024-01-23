@@ -54,7 +54,7 @@ try {
 
   }, [initialDayMonth, updatedShipData, company_id, custom_date]);
 
-  // ESTADOS LOCALES -------------------------------------------------------------------------------------------
+  // ESTADOS LOCALES -------------------------------------------------------------------------------------------//
   //seteo de fechas desde el año/semana anterior
   const today = new Date();
   const lastYear = new Date(new Date().setFullYear(today.getFullYear() - 1));
