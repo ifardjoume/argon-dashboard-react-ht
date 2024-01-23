@@ -64,7 +64,7 @@ import { dataTable } from "variables/general";
 //         entries.
 //       </label>
 //     </div>
-//   ),
+//   ),///
 // });
 
 //const { SearchBar } = Search;
