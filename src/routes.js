@@ -13,7 +13,7 @@
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-*/
+*//////////
 import Alternative from "views/pages/dashboards/Alternative.js";
 import Buttons from "views/pages/components/Buttons.js";
 import Calendar from "views/pages/Calendar.js";
