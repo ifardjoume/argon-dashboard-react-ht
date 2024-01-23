@@ -23,7 +23,7 @@ import ReactToPrint from "react-to-print";
 // import ToolkitProvider/*,  { Search } */ from "react-bootstrap-table2-toolkit";
 // react component used to create sweet alerts
 import ReactBSAlert from "react-bootstrap-sweetalert";
-// reactstrap components
+// reactstrap components///
 import {
   Button,
   ButtonGroup,
